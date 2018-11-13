@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <h1 class="card-header">
+            <i class="fas fa-users"></i> {{ title }}
+            <div class="btn-group btn-group-sm float-right" role="group" aria-label="Grid Buttons">
+                <button type="button" class="btn btn-outline-secondary" id="clear"><i class="fas fa-times"></i> Clear Filters</button>
+                <button type="button" class="btn btn-outline-success" id="export"><i class="fas fa-download"></i> Export</button>
+            </div>
+        </h1>
+        <div class="card-body">
+            <small class="text-muted">
+                Double click on row for more details.
+            </small>
+            <div id="jqxGrid"></div>
+        </div>
+        <div class="card-footer">
+            <a href="{{ path('customer_new') }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Create New Customer</a>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="application/javascript" src="{{ asset('vendor/jqwidgets/jqx-all.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            var data = {{ customers|json_encode|raw }};
+            var source = {
+                localdata: data,
+                datafields: [
+                    {name: 'id', type: 'integer'},
+                    {name: 'name', type: 'string'},
+                    {name: 'email', type: 'string'},
+                    {name: 'quotes', type: 'number'},
+                ],
+                datatype: "json"
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            $("#jqxGrid").jqxGrid({
+                theme: 'light',
+                width: '100%',
+                source: dataAdapter,
+                showfilterrow: true,
+                filterable: true,
+                sortable: true,
+                pageable: true,
+                showcolumnlines: false,
+                columns: [
+                    {text: '#', columntype: 'integer', datafield: 'id', width: '10%'},
+                    {text: 'Customer', datafield: 'name', width: '40%'},
+                    {text: 'Email', datafield: 'email', columntype: 'string', width: '40%'},
+                    {text: 'Quotes', datafield: 'quotes', filtertype: 'number', width: '10%'},
+                ]
+            });
+
+            $('#clear').click(function () {
+                $("#jqxGrid").jqxGrid('clearfilters');
+            });
+
+            $('#export').click(function () {
+                $('#jqxGrid').jqxGrid('exportdata', 'xls', 'All Customers {{ 'now'|date('d-m-Y') }}');
+            });
+
+            $('#jqxGrid').on('rowclick',function(e){
+                var data = $(this).jqxGrid('getrowdatabyid', e.args.rowindex);
+                var url = '{{ path('customer_show',{'id': 'value' }) }}';
+                var urlReplaced = url.replace('value', data.id);
+                window.location.href = urlReplaced;
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/jqwidgets/styles/jqx.base.css') }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('vendor/jqwidgets/styles/jqx.light.css') }}" type="text/css"/>
+{% endblock %}
+
+

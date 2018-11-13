@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <h1 class="card-header">
+            <i class="fas fa-file-alt"></i> {{ title }}
+            <div class="btn-group btn-group-sm float-right" role="group" aria-label="Grid Buttons">
+                <button type="button" class="btn btn-outline-secondary" id="clear"><i class="fas fa-times"></i> Clear Filters</button>
+                <button type="button" class="btn btn-outline-success" id="export"><i class="fas fa-download"></i> Export</button>
+            </div>
+        </h1>
+        <div class="card-body">
+            <span class="text-muted">
+                Double click on row for more details.
+            </span>
+            <div id="jqxGrid"></div>
+        </div>
+        <div class="card-footer">
+            <a href="{{ path('quote_new') }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Create New Quote</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('vendor/jqwidgets/jqx-all.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            var data = {{ quotes|json_encode|raw }};
+            var source = {
+                localdata: data,
+                datafields: [
+                    {name: 'id', type: 'integer'},
+                    {name: 'quote_id', type: 'string'},
+                    {name: 'request', type: 'string'},
+                    {name: 'customer', type: 'string'},
+                    {name: 'sketches', type: 'number'},
+                    {name: 'generated_at', type: 'date'},
+                    {name: 'status', type: 'string'},
+                ],
+                datatype: "json"
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            $("#jqxGrid").jqxGrid({
+                theme: 'light',
+                width: '100%',
+                source: dataAdapter,
+                showfilterrow: true,
+                filterable: true,
+                sortable: false,
+                pageable: false,
+                showcolumnlines: false,
+                columns: [
+                    {text: '#', columntype: 'integer', datafield: 'id', width: '10%', hidden: true},
+                    {text: '#', columntype: 'string', datafield: 'quote_id', width: '10%'},
+                    {text: 'Request', datafield: 'request', width: '25%'},
+                    {text: 'Email of Customer', datafield: 'customer', columntype: 'string', width: '25%'},
+                    {text: 'Sketches', datafield: 'sketches', filtertype: 'number', width: '10%'},
+                    {text: 'Generated At', datafield: 'generated_at', filtertype: 'range', width: '20%', cellsformat: 'dd/MM/yyyy'},
+                    {text: 'Status', datafield: 'status', filtertype: 'checkedlist', width: '10%'},
+                ]
+            });
+
+            $('#clear').click(function () {
+                $("#jqxGrid").jqxGrid('clearfilters');
+            });
+
+            $('#export').click(function () {
+                $('#jqxGrid').jqxGrid('exportdata', 'xls', 'All Quotes {{ 'now'|date('d-m-Y') }}');
+            });
+
+            $('#jqxGrid').on('rowclick',function(e){
+                var data = $(this).jqxGrid('getrowdatabyid', e.args.rowindex);
+                var url = '{{ path('quote_show',{'id': 'value' }) }}';
+                var urlReplaced = url.replace('value', data.id);
+                window.location.href = urlReplaced;
+            });
+
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/jqwidgets/styles/jqx.base.css') }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('vendor/jqwidgets/styles/jqx.light.css') }}" type="text/css"/>
+{% endblock %}
+
+

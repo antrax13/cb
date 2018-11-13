@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <h1 class="card-header">
+                    {{ title }}
+                </h1>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card border-success">
+                                <div class="card-header text-white bg-success">
+                                    Create New Shipping Text
+                                </div>
+                                <div class="card-body">
+                                    {{ form_row(form.name) }}
+                                    {{ form_row(form.description, {'attr' : {'rows': 10}}) }}
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Shipping Option Text
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            {% if shippings|length > 0 %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="alert alert-info">If you need to modify data please contact your System Administrator.</div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr class="bg-info">
+                                                <td>#</td>
+                                                <td>Name</td>
+                                                <td>Description</td>
+                                                <td>Raw Description </td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for shipping in shippings %}
+                                                <tr>
+                                                    <td>{{ shipping.id }}</td>
+                                                    <td>{{ shipping.name }}</td>
+                                                    <td>{{ shipping.description }}</td>
+                                                    <td>{{ shipping.description|raw }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info">
+                                    No shipping information found.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ path('customers') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

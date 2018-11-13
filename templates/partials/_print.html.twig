@@ -1,0 +1,110 @@
+<!-- QUOTE DETAILS -->
+<table class="table table-borderless">
+    <thead>
+    <tr>
+        <td width="100"><h4 style="color: #00aae7;">Customer</h4></td>
+        <td width="150">{{ quote.customer.name }}</td>
+        <td width="150"><h4 style="color: #00aae7;">Quote No</h4></td>
+        <td>#CBQ00{{ quote.id }}</td>
+    </tr>
+    <tr>
+        <td><h4 style="color: #00aae7;">Email</h4></td>
+        <td>{{ quote.customer.email }}</td>
+        <td><h4 style="color: #00aae7;">Date</h4></td>
+        <td>{{ 'now'|date('d/m/Y') }}</td>
+    </tr>
+    </thead>
+</table>
+
+<!-- REQUEST DETAILS -->
+<h3>Thank you for your query</h3>
+<p style="font-size: 12px;">
+Purpose of this document is to provide more details regarding your query.
+Please check all information on this document.
+We are happy to answer further questions or comments that you might have. Don't hesitate to contact us on
+<a href="mailto:info@cocktailbrandalism.com" target="_top">info@cocktailbrandalism.com</a>.
+</p>
+<h4 style="color: #00aae7;">Request</h4>
+{{ quote.request }}
+
+<!-- RESPOND DETAILS-->
+<h4 style="color: #00aae7;">Notes</h4>
+{{ quote.answer ? quote.answer : 'N/A' }}
+
+<!-- STAMPS & LOGOS -->
+<h4 style=" color: #00aae7;">Stamp Details</h4>
+<table>
+    <tbody>
+    {% if quote.brandSketchesNotRemoved|length > 0 %}
+        {% set pictureCount = 0 %}
+        {% for sketch in quote.brandSketchesNotRemoved %}
+
+            {% if pictureCount % 2 == 0 %}
+                <tr nobr="true">
+                <td style="font-size: 10px; text-align: center;">
+                    <img src="{{ asset('uploads/sketches/'~sketch.file) }}" style="width: 200px;"><br/>
+                    <strong>Price:</strong> £{{ sketch.price }}<br/>
+                    <strong>Weight:</strong> {{ sketch.weight }}<br/>
+                    <strong>Stamp Type:</strong> {{ sketch.stampType.value }}<br/>
+                    <strong>Stamp Dimensions:</strong> {{ sketch.dimension }}<br/>
+                    {% if sketch.note %}<strong>Note:</strong> {{ sketch.note }}{% endif %}
+                </td>
+            {% else %}
+                <td style="font-size: 10px; text-align: center;">
+                    <img src="{{ asset('uploads/sketches/'~sketch.file) }}" style="width: 200px;"><br/>
+                    <strong>Price:</strong> £{{ sketch.price }}<br/>
+                    <strong>Weight:</strong> {{ sketch.weight }}<br/>
+                    <strong>Stamp Type:</strong> {{ sketch.stampType.value }}<br/>
+                    <strong>Stamp Dimensions:</strong> {{ sketch.dimension }}<br/>
+                    {% if sketch.note %}<strong>Note:</strong> {{ sketch.note }}{% endif %}
+                </td>
+                </tr>
+            {% endif %}
+
+            {% set pictureCount = pictureCount + 1 %}
+
+        {% endfor %}
+        {% if quote.brandSketchesNotRemoved|length % 2 != 0 %}
+            <td class="tdValue"></td></tr>
+        {% endif %}
+    {% else %}
+        <tr>
+            <td>
+                N/A
+            </td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>
+
+<!-- SHIPPING INFORMATION -->
+<h4 style="color: #00aae7;">
+Shipping {{ quote.shippingTo ? 'to '~quote.shippingTo : 'destination to be confirmed' }}</h4>
+{{ quote.shipping ? quote.shipping.description|raw : 'To be confirmed with customer.' }}
+
+<!-- PAYMENT INFORMATION -->
+<h4 style="color: #00aae7;">Payment Options</h4>
+{{ paymentOption.description|raw }}
+
+<!-- HANDLE OPTIONS -->
+<br/><br/>
+<table>
+    <thead>
+    <tr>
+        <td colspan="2"><h4 style="color: #00aae7;">Handle Options</h4></td>
+    </tr>
+    <tr>
+        <td><img src="{{ asset('images/shapes.jpg') }}" style="width: 250px;"></td>
+        <td><img src="{{ asset('images/handles.png') }}" style="width: 250px;"></td>
+    </tr>
+    </thead>
+</table>
+
+<!-- Thank you message -->
+<h1 style="text-align: center; color: #00aae7;">We are looking forward to hear from you.</h1>
+
+
+
+
+
+

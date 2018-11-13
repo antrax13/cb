@@ -1,0 +1,13 @@
+
+<div class="card">
+    <h1 class="card-header">
+        {{ title }}
+    </h1>
+    <div class="card-body">
+        {% include 'partials/_customerForm.html.twig' %}
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Create Customer</button>
+        <a href="{{ path('customers') }}" class="btn btn-secondary float-right">Close</a>
+    </div>
+</div>

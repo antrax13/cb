@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('quote_show', {'id': quote.id}) }}"><i
+                                        class="fas fa-file"></i> Quote</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#"><span
+                                        class="badge badge-info">{{ quote.brandSketchesNotRemoved|length }}</span>
+                                Sketch</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('quote_preview', {'id': quote.id}) }}"><i
+                                        class="fas fa-print"></i> Preview & Generate PDF</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card border-success">
+                                <div class="card-header text-white bg-success">
+                                    Upload New Sketch
+                                    <a href="{{ asset('images/fedex.png') }}" target="_blank" class="btn btn-sm float-right btn-primary">
+                                        <i class="fas fa-shipping-fast"></i>
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    {{ form_row(form.file) }}
+                                    {{ form_row(form.price) }}
+                                    {{ form_row(form.weight) }}
+                                    {{ form_row(form.dimension) }}
+                                    {{ form_row(form.stampType) }}
+                                    {{ form_row(form.note) }}
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Add New
+                                        Sketch
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card">
+                                <div class="card-header">
+                                    Sketches
+                                </div>
+                                <div class="card-body">
+                                    {% if quote.brandSketches|length > 0 %}
+                                        <div class="row">
+                                            {% for sketch in quote.brandSketchesNotRemoved %}
+                                                <div class="col-md-4">
+                                                    <div class="card mb-4 shadow-sm">
+                                                        <div class="card-img-top my-card-img-top">
+                                                            <img class="sketch-img"
+                                                                 src="{{ asset('uploads/sketches/'~sketch.file) }}"
+                                                                 alt="{{ sketch.file }}"
+                                                                 style="width: 100%;"
+                                                            >
+                                                        </div>
+
+                                                        <div class="card-body">
+                                                            <p class="card-text">
+                                                            <div class="row">
+                                                                <dt class="col-6">Price</dt>
+                                                                <dd class="col-6">£{{ sketch.price }}</dd>
+                                                            </div>
+                                                            <div class="row">
+                                                                <dt class="col-6">Weight</dt>
+                                                                <dd class="col-6">{{ sketch.weight }}</dd>
+                                                            </div>
+                                                            <div class="row">
+                                                                <dt class="col-6">Stamp Type</dt>
+                                                                <dd class="col-6">{{ sketch.stampType }}</dd>
+                                                            </div>
+                                                            <div class="row">
+                                                                <dt class="col-6">Dimensions</dt>
+                                                                <dd class="col-6">{{ sketch.dimension }}</dd>
+                                                            </div>
+                                                            {% if sketch.note %}
+                                                            <div class="row">
+                                                                <dt class="col-6">Note</dt>
+                                                                <dd class="col-6">{{ sketch.note }}</dd>
+                                                            </div>
+                                                            {% endif %}
+                                                            </p>
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div class="btn-group">
+                                                                    <a href="{{ path('delete_sketch', {'id': sketch.id}) }}"
+                                                                       class="btn btn-sm btn-outline-danger js-delete-sketch">
+                                                                        <i class="fas fa-trash"></i> Delete
+                                                                    </a>
+                                                                </div>
+                                                                <small class="text-muted">{{ sketch.size }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-info">
+                                            No sketches found.
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ path('quote_show', {'id': quote.id}) }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(".js-delete-sketch").on('click', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-check"></i>  Yes, delete quote!',
+                allowOutsideClick: false,
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = url;
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

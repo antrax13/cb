@@ -1,0 +1,11 @@
+{% block flash_messages %}
+    {% for type, messages in app.session.flashbag.all() %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type }} alert-dismissible animated fadeId" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                {{ type == 'success' ? '<i class="fas fa-check-circle animated flash"></i>' : '<i class="fas fa-info-circle  animated flash"></i>' }} {{ message | raw }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
+
