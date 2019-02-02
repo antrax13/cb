@@ -7,50 +7,17 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('quote_show', {'id': quote.id}) }}"><i class="fas fa-file"></i> Quote</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('quote_sketch_show', {'id': quote.id}) }}"><span class="badge badge-info">{{ quote.brandSketchesNotRemoved|length }}</span> Sketch</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#"><i class="fas fa-print"></i> Preview & Generate PDF</a>
-                        </li>
-                    </ul>
+                    {% include 'quote/partials/_tabs.html.twig' %}
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="card">
-                                <div class="card-header">
-                                    HTML Version
-                                </div>
-                                <div class="card-body">
-                                    {% include 'partials/_print.html.twig' %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="card">
-                                <div class="card-header">
-                                    PDF Version
-                                </div>
-                                <div class="card-body">
-                                    <iframe src="{{ path('generate_pdf', {'id':quote.id}) }}" width="100%" height="940px"></iframe>
+                    <iframe src="{{ path('generate_pdf', {'id':quote.id}) }}" width="100%" height="940px"></iframe>
 
-                                    <small class="text-muted">Internet Explorer wont load PDF please use different browser.</small>
-                                </div>
-                                <div class="card-footer">
-                                    <a href="{{ path('generate_pdf', {'id' : quote.id}) }}" class="btn btn-success"><i class="fas fa-file-export"></i> Download PDF</a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <small class="text-muted">Internet Explorer wont load PDF please use different browser.</small>
 
                 </div>
                 <div class="card-footer">
+                    <a href="{{ path('generate_pdf', {'id' : quote.id}) }}" class="btn btn-success"><i class="fas fa-file-export"></i> Download PDF</a>
+
                     <a href="{{ path('quotes') }}" class="btn btn-secondary float-right">Close</a>
                 </div>
             </div>

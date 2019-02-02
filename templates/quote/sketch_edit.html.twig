@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <h1 class="card-header">
+                    {{ title }}
+                </h1>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card inner-card">
+                                <div class="card-header ">
+                                    Edit Sketch
+                                </div>
+                                <div class="card-body">
+                                    {{ form_row(form.name) }}
+                                    {{ form_row(form.newFile) }}
+                                    {{ form_row(form.stampType) }}
+                                    {{ form_row(form.price) }}
+                                    {{ form_row(form.qty) }}
+                                    {{ form_row(form.weight) }}
+                                    {{ form_row(form.dimension) }}
+                                    {{ form_row(form.stampShape) }}
+                                    {{ form_row(form.handle) }}
+                                    {{ form_row(form.note) }}
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Update Sketch</button>
+                                    <a href="{{ asset('images/fedex.png') }}" target="_blank" class="btn btn-md btn-primary">
+                                        <i class="fas fa-shipping-fast"></i> Delivery Options
+                                    </a>
+                                    <a href="{{ asset('images/prices.pdf') }}" target="_blank" class="btn btn-md btn-primary">
+                                        <i class="fas fa-pound-sign"></i> Price Examples
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card inner-card">
+                                <div class="card-img-top" style="text-align: center;">
+                                    <img class="sketch-img-preview"
+                                         src="{{ asset('/uploads/sketches/'~sketch.file) }}"
+                                         alt="{{ sketch.file }}"
+                                    >
+                                </div>
+
+                                <div class="card-body">
+                                    <p class="card-text">
+                                    <h3>Current Sketch</h3>
+                                    <div class="row">
+                                        <dt class="col-6">Stamp Type</dt>
+                                        <dd class="col-6">{{ sketch.stampType }}</dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-6">Price</dt>
+                                        <dd class="col-6">£{{ sketch.price }}</dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-6">Quantity</dt>
+                                        <dd class="col-6">{{ sketch.qty }}</dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-6">Weight</dt>
+                                        <dd class="col-6">{{ sketch.weight }}kg</dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-6">Stamp Shape</dt>
+                                        <dd class="col-6">{{ sketch.stampShape }}</dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-6">Dimensions</dt>
+                                        <dd class="col-6">{{ sketch.dimension }}</dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-6">Handle</dt>
+                                        <dd class="col-6">{{ sketch.handle }}</dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-6">Note</dt>
+                                        <dd class="col-6">{{ sketch.note }}</dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-6">Size of File</dt>
+                                        <dd class="col-6">{{ sketch.size }}</dd>
+                                    </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ path('quote_sketch_show', {'id' : sketch.quote.id}) }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+    <script>
+        $('.custom-file-input').on('change',function(){
+            var fileName = document.getElementById("sketch_edit_newFile").files[0].name;
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+
+            // $(this).next('.ice_stamp_custom_form_file').val(fileName);
+        })
+    </script>
+{% endblock %}

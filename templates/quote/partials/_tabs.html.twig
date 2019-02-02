@@ -1,0 +1,21 @@
+{% set current_path = app.request.get('_route') %}
+
+<ul class="nav nav-tabs card-header-tabs">
+    <li class="nav-item">
+        <a class="nav-link {{ 'quote_show' in current_path ? 'active' }}"
+           href="{{ path('quote_show', {'id': quote.id}) }}"><i class="fas fa-file"></i> #CBQ00{{ quote.id }} Details</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ 'quote_sketch_show' in current_path ? 'active' }}"
+           href="{{ path('quote_sketch_show', {'id': quote.id}) }}"><span
+                    class="badge badge-info">{{ quote.brandSketchesNotRemoved|length }}</span> Sketch</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ 'quote_preview' in current_path ? 'active' }}"
+           href="{{ path('quote_preview', {'id': quote.id}) }}"><i class="fas fa-print"></i> Quote Preview</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ 'quote_invoice' in current_path ? 'active' }}"
+           href="{{ path('quote_invoice', {'id': quote.id}) }}"><i class="fas fa-file-invoice-dollar"></i> Invoice</a>
+    </li>
+</ul>

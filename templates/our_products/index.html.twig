@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row no-top-border-card">
+        {% for item in items %}
+        <div class="col-md-3">
+            <div class="card" style="margin-bottom: 10px;">
+                <img src="images/{{ asset(item.image) }}" class="card-img-top" alt="Ice Stamp"
+                     style="border-top: 1px solid rgba(0,0,0,.125)">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.type }}</h5>
+                    <p class="card-text">{{ item.intro }}</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary btn-md btn-block">Read More</button>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <div class="alert alert-info">
+                No custom products found.
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

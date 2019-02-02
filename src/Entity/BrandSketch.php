@@ -24,7 +24,7 @@ class BrandSketch
     private $file;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      * @Assert\NotBlank()
      */
     private $weight;
@@ -79,6 +79,29 @@ class BrandSketch
      */
     private $note;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $handle;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $qty;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\StampShape")
+     * @Assert\NotBlank()
+     */
+    private $stampShape;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $name;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,12 +119,12 @@ class BrandSketch
         return $this;
     }
 
-    public function getWeight(): ?string
+    public function getWeight()
     {
         return $this->weight;
     }
 
-    public function setWeight(?string $weight): self
+    public function setWeight($weight): self
     {
         $this->weight = $weight;
 
@@ -213,6 +236,54 @@ class BrandSketch
     public function setNote(?string $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getHandle(): ?string
+    {
+        return $this->handle;
+    }
+
+    public function setHandle(?string $handle): self
+    {
+        $this->handle = $handle;
+
+        return $this;
+    }
+
+    public function getQty(): ?int
+    {
+        return $this->qty;
+    }
+
+    public function setQty(?int $qty): self
+    {
+        $this->qty = $qty;
+
+        return $this;
+    }
+
+    public function getStampShape(): ?StampShape
+    {
+        return $this->stampShape;
+    }
+
+    public function setStampShape(?StampShape $stampShape): self
+    {
+        $this->stampShape = $stampShape;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

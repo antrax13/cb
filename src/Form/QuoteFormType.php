@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Country;
 use App\Entity\Customer;
 use App\Entity\Quote;
 use App\Entity\Shipping;
@@ -22,7 +23,10 @@ class QuoteFormType extends AbstractType
             ])
             ->add('request')
             ->add('answer')
-            ->add('shippingTo')
+            ->add('shippingCountry', EntityType::class,[
+                'class' => Country::class,
+                'placeholder' => 'Please choose',
+            ])
             ->add('shipping', EntityType::class, [
                 'class' => Shipping::class,
                 'placeholder' => 'Please choose'

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <h1 class="card-header">
+                    {{ title }}
+                </h1>
+                <div class="card-body">
+                    {{ form_row(form.quote) }}
+                    {{ form_row(form.vat) }}
+                    {{ form_row(form.billingAddressFirst) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.billingAddress) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.shippingAddress) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.invoicedPhone) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.shippingPhone) }}
+                        </div>
+                    </div>
+                    {{ form_row(form.invoicedVat) }}
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Create Invoice</button>
+                    <a href="{{ path('invoices') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\BrandSketch;
+use App\Entity\StampShape;
 use App\Entity\StampType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,21 +17,39 @@ class BrandSketchFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file',FileType::class,[
-
-            ])
-            ->add('weight', null, [
-                'help' => 'also include unit'
-            ])
-            ->add('price', null, [
-                'help' => 'price is in pounds (£)'
+            ->add('name', null, [
+                'help' => 'will be used for search',
+                'label' => 'Logo description'
             ])
             ->add('stampType', EntityType::class,[
                 'class' => StampType::class,
                 'placeholder' => 'Please choose',
             ])
+            ->add('file',FileType::class,[
+
+            ])
+            ->add('weight', null, [
+                'help' => 'in kilograms (kg)'
+            ])
+            ->add('price', null, [
+                'help' => 'price in pounds (£)'
+            ])
+            ->add('qty', null, [
+                'label' => 'Quantity'
+            ])
+            ->add('stampType', EntityType::class,[
+                'class' => StampType::class,
+                'placeholder' => 'Please choose',
+            ])
+            ->add('stampShape', EntityType::class,[
+                'class' => StampShape::class,
+                'placeholder' => 'Please choose',
+            ])
             ->add('dimension', null, [
                 'help' => 'also include units'
+            ])
+            ->add('handle', null, [
+
             ])
             ->add('note', null, [
                 'help' => 'special requirements, notes, descriptions'

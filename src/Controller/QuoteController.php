@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\BrandSketch;
+use App\Entity\Invoice;
 use App\Entity\Quote;
 use App\Form\BrandSketchFormType;
+use App\Form\InvoiceNewFormType;
 use App\Form\QuoteFormType;
+use App\Form\SketchEditType;
+use App\Repository\InvoiceRepository;
 use App\Repository\QuoteRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,13 +82,31 @@ class QuoteController extends AbstractController
     /**
      * @Route("/quote/{id}", name="quote_show")
      */
-    public function showAction(Request $request,Quote $quote, ObjectManager $manager){
+    public function showAction(Quote $quote){
         if($quote->getIsRemoved()){
             $this->addFlash('danger','Quote has been removed. Contact Administrator to update Quote: '.$quote->getId().' manually.');
              return $this->redirectToRoute('quotes');
         }
 
         $breadcrumbs = ['Quote', '#CBQ00'.$quote->getId()];
+
+        return $this->render('quote/show.html.twig', [
+            'title' => 'Quote',
+            'breadcrumbs' => $breadcrumbs,
+            'quote' => $quote,
+        ]);
+    }
+
+    /**
+     * @Route("/quote/{id}/edit", name="quote_show_edit")
+     */
+    public function editQuoteAction(Request $request,Quote $quote, ObjectManager $manager){
+        if($quote->getIsRemoved()){
+            $this->addFlash('danger','Quote has been removed. Contact Administrator to update Quote: '.$quote->getId().' manually.');
+            return $this->redirectToRoute('quotes');
+        }
+
+        $breadcrumbs = ['Quote', '#CBQ00'.$quote->getId(), 'Edit'];
 
         $form = $this->createForm(QuoteFormType::class, $quote);
 
@@ -97,16 +119,18 @@ class QuoteController extends AbstractController
 
             $this->addFlash('success', 'Quote has been updated');
 
-            return $this->redirectToRoute('quotes');
+            return $this->redirectToRoute('quote_show', ['id' => $quote->getId()]);
         }
 
-        return $this->render('quote/show.html.twig', [
+        return $this->render('quote/edit_details.html.twig', [
             'title' => 'Quote',
             'breadcrumbs' => $breadcrumbs,
             'quote' => $quote,
             'form' => $form->createView(),
         ]);
     }
+
+
 
     /**
      * @Route("/quote/{id}/sketch", name="quote_sketch_show")
@@ -183,6 +207,22 @@ class QuoteController extends AbstractController
     }
 
     /**
+     * @Route("/sketch/{id}/undo-delete", name="undo_delete_sketch")
+     */
+    public function undoDeleteSketch(BrandSketch $sketch, ObjectManager $manager)
+    {
+        $sketch->setIsRemoved(false);
+        $manager->persist($sketch);
+        $manager->flush();
+
+        $this->addFlash('success', 'Sketch has been reverted back to quote.');
+
+        return $this->redirectToRoute('quote_sketch_show', [
+            'id' => $sketch->getQuote()->getId(),
+        ]);
+    }
+
+    /**
      * @Route("/quote/{id}/delete", name="delete_quote")
      */
     public function deleteQuote(Quote $quote, ObjectManager $manager)
@@ -194,5 +234,91 @@ class QuoteController extends AbstractController
         $this->addFlash('success', 'Quote has been removed. Thank you.');
 
         return $this->redirectToRoute('quotes');
+    }
+
+    /**
+     * @Route("/sketch/{id}/edit", name="edit_sketch")
+     */
+    public function editSketch(Request $request, BrandSketch $sketch, ObjectManager $manager)
+    {
+
+        $breadcrumbs = ['Sketch', $sketch->getId(), 'Edit'];
+
+        $form = $this->createForm(SketchEditType::class, $sketch);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            /** @var UploadedFile $file */
+            $file = $form->get('newFile')->getData();
+            if($file){
+                $fileExtension = $file->guessExtension();
+                $fileName = md5(uniqid()) . '.' . $fileExtension;
+                $fileOriginal = $file->getClientOriginalName();
+                $fileSize = number_format($file->getSize() / 1048576, 2) . 'MB';
+
+                // moves the file to the directory where tags are stored
+                $file->move(
+                    $this->getParameter('sketch_dir'),
+                    $fileName
+                );
+
+                $sketch->setOriginalFile($fileOriginal);
+                $sketch->setSize($fileSize);
+                $sketch->setExtension($fileExtension);
+                $sketch->setFile($fileName);
+            }
+
+            $manager->persist($sketch);
+            $manager->flush();
+
+            $this->addFlash('success', 'Sketch has been updated.');
+            return $this->redirectToRoute('quote_sketch_show', [
+                'id' => $sketch->getQuote()->getId()
+            ]);
+        }
+
+        return $this->render('quote/sketch_edit.html.twig', [
+            'sketch' => $sketch,
+            'breadcrumbs' => $breadcrumbs,
+            'title' => 'Sketch Edit',
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/quote/{id}/invoice", name="quote_invoice")
+     */
+    public function createInvoice(Request $request, Quote $quote, ObjectManager $manager, InvoiceRepository $repository)
+    {
+        $breadcrumbs = ['Quote', '#CBQ00'.$quote->getId(), 'Invoice'];
+
+        $invoices = $repository->findAll();
+
+        $invoice = new Invoice();
+        $invoice->setQuote($quote);
+        $invoice->setGeneratedAt(new \DateTime());
+        $invoice->setStatus('CREATED');
+
+        $form = $this->createForm(InvoiceNewFormType::class,$invoice);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $invoice = $form->getData();
+            $reference = str_pad(count($invoices)+1,'5','0', STR_PAD_LEFT).'N/'.date('Y');
+            $invoice->setReference($reference);
+            $manager->persist($invoice);
+            $manager->flush();
+
+            $this->addFlash('success','Invoice has been created');
+            return $this->redirectToRoute('invoices_show', ['id' => $invoice->getId()]);
+        }
+
+        return $this->render('quote/invoice.html.twig', [
+            'breadcrumbs' => $breadcrumbs,
+            'title' => 'Invoice',
+            'quote' => $quote,
+            'form' => $form->createView()
+        ]);
     }
 }

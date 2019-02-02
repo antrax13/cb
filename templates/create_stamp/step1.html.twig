@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+        <div class="card-header">
+            {% include 'create_stamp/partials/_tabs.html.twig' %}
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                No logo uploaded
+            </div>
+            <div class="row no-top-border-card">
+                <div class="col-lg-12">
+                    <div class="card-deck">
+                        <div class="card">
+                            <img src="{{ asset('images/stamp.jpg') }}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Ice Stamp</h5>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-outline-success btn-md btn-block">Create Ice Stamp</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img src="{{ asset('images/burningplate.jpg') }}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Burning Plate</h5>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-success btn-md btn-block">Create Burning Plate</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img src="{{ asset('images/heatstamp.jpg') }}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Heat Stamp</h5>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-success btn-md btn-block">Create Heat Stamp</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {{ form_widget(form) }}
+            <h2>Upload your logo</h2>
+            <ul>
+                <li>Size</li>
+                <li>Type</li>
+            </ul>
+            <h2>Item Selection</h2>
+            <ul>
+                <li>Burning Plate</li>
+                <li>Heat Stamp</li>
+                <li>Ice Stamp</li>
+                <li>Wax Stamp</li>
+            </ul>
+            <h2>Quantity</h2>
+            <ul>
+                <li>More than 10 of the same size and logo & type</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-md btn-success">Next Step</button>
+            <a href="#" class="btn btn-md btn-outline-secondary pull-right">Cancel</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

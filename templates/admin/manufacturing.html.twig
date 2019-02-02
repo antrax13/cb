@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <h1 class="card-header">
+                    {{ title }}
+                </h1>
+                <div class="card-body">
+                    {{ form_row(form.description, {'attr' : {'rows': 10}}) }}
+                    <div class="alert alert-info">
+                        <h1>Preview</h1>
+                        <hr />
+                        {{ data.description|raw }}
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Manufacturing Text</button>
+                    <a href="{{ path('customers') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

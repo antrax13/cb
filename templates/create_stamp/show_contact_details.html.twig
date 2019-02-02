@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            {% include 'create_stamp/partials/_tabs.html.twig' %}
+        </div>
+        <div class="card-body">
+            <h1 class="display-4">Your contact & shipping details</h1>
+            <p class="lead">Once the request is submitted this email will be used to send you a quote.</p>
+            <div class="alert alert-info">
+                <h5>Name
+                    <small class="text-muted">{{ enquiry.name }}</small>
+                </h5>
+                <h5>Email
+                    <small class="text-muted">{{ enquiry.email }}</small>
+                </h5>
+                <h5>Shipping Destination
+                    <small class="text-muted">{{ enquiry.shippingCountry.name }} ({{ enquiry.shippingCountry.code }})</small>
+                </h5>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-md btn-info"><i class="fas fa-edit"></i> Edit Details</button>
+            <a href="#" class="btn btn-md btn-outline-secondary float-right">Cancel</a>
+        </div>
+    </div>
+{% endblock %}

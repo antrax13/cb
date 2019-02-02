@@ -39,6 +39,7 @@ class Quote
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\BrandSketch", mappedBy="quote")
+     * @ORM\OrderBy({"isRemoved" = "ASC"})
      */
     private $brandSketches;
 
@@ -47,10 +48,6 @@ class Quote
      */
     private $isRemoved = false;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $shippingTo;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Shipping")
@@ -67,6 +64,16 @@ class Quote
      * @Assert\NotBlank()
      */
     private $status = 'Draft';
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Invoice", mappedBy="quote", cascade={"persist", "remove"})
+     */
+    private $invoice;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country")
+     */
+    private $shippingCountry;
 
     public function __construct()
     {
@@ -167,18 +174,6 @@ class Quote
         return $this;
     }
 
-    public function getShippingTo(): ?string
-    {
-        return $this->shippingTo;
-    }
-
-    public function setShippingTo(?string $shippingTo): self
-    {
-        $this->shippingTo = $shippingTo;
-
-        return $this;
-    }
-
     public function getShipping(): ?Shipping
     {
         return $this->shipping;
@@ -211,6 +206,41 @@ class Quote
     public function setStatus(?string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getInvoice(): ?Invoice
+    {
+        return $this->invoice;
+    }
+
+    public function setInvoice(?Invoice $invoice): self
+    {
+        $this->invoice = $invoice;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newQuote = $invoice === null ? null : $this;
+        if ($newQuote !== $invoice->getQuote()) {
+            $invoice->setQuote($newQuote);
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return '#CBQ00'.$this->getId();
+    }
+
+    public function getShippingCountry(): ?Country
+    {
+        return $this->shippingCountry;
+    }
+
+    public function setShippingCountry(?Country $shippingCountry): self
+    {
+        $this->shippingCountry = $shippingCountry;
 
         return $this;
     }

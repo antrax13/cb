@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+
+        <div class="card-header">
+            {% include 'create_stamp/partials/_tabs.html.twig' %}
+        </div>
+        <div class="card-body">
+            {{ form_widget(form) }}
+            <h2>Select Shape</h2>
+            <ul>
+                <li>Square</li>
+                <li>Rectangle</li>
+                <li>Circle</li>
+                <li>Ellipse</li>
+                <li>Custom</li>
+            </ul>
+            <h2>Is it sphere</h2>
+            <ul>
+                <li>Yes</li>
+                <li>No</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-md btn-success">Next Step</button>
+            <a href="#" class="btn btn-md btn-outline-secondary pull-right">Cancel</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

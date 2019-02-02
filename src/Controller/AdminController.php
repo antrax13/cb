@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Shipping;
+use App\Form\ManufacturingTextFormType;
 use App\Form\PaymentOptionFormType;
 use App\Form\ShippingOptionType;
+use App\Repository\ManufacturingTextRepository;
 use App\Repository\PaymentOptionTextRepository;
 use App\Repository\ShippingRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -80,7 +82,38 @@ class AdminController extends AbstractController
         return $this->render('admin/payment.html.twig', [
             'title' => $breadcrumbs[1],
             'breadcrumbs' => $breadcrumbs,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'data' => $payment
+        ]);
+    }
+
+    /**
+     * @Route("/admin/manufacturing", name="admin_manufacturing")
+     */
+    public function manufacturing(Request $request, ObjectManager $manager, ManufacturingTextRepository $repo)
+    {
+        $breadcrumbs = ['Admin', 'Manufacturing'];
+
+        $manufacturing = $repo->find(1);
+
+        $form = $this->createForm(ManufacturingTextFormType::class, $manufacturing);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $payment = $form->getData();
+            $manager->persist($payment);
+            $manager->flush();
+
+            $this->addFlash('success', 'Manufacturing text has been updated.');
+
+        }
+
+        return $this->render('admin/manufacturing.html.twig', [
+            'title' => $breadcrumbs[1],
+            'breadcrumbs' => $breadcrumbs,
+            'form' => $form->createView(),
+            'data' => $manufacturing
         ]);
     }
 }

@@ -5,31 +5,84 @@
 {% block body %}
     <div class="row">
         <div class="col-md-12">
-            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
             <div class="card">
                 <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#"><i class="fas fa-file"></i> Quote</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('quote_sketch_show', {'id': quote.id}) }}"><span class="badge badge-info">{{ quote.brandSketchesNotRemoved|length }}</span> Sketch</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('quote_preview', {'id': quote.id}) }}"><i class="fas fa-print"></i> Preview & Generate PDF</a>
-                        </li>
-                    </ul>
+                    {% include 'quote/partials/_tabs.html.twig' %}
                 </div>
                 <div class="card-body">
-                    {{ form_widget(form) }}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-success">
+                                    <div>
+                                        <h6 class="my-0">Quote Reference</h6>
+                                        <small class="text-muted">#CBQ00{{ quote.id }}</small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-success">
+                                    <div>
+                                        <h6 class="my-0">Customer</h6>
+                                        <small class="text-muted">{{ quote.customer.email }}
+                                        </small>
+                                        <br />
+                                        <small class="text-muted">{{ quote.customer.name }}
+                                        </small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div>
+                                        <h6 class="my-0">Status</h6>
+                                        <small class="text-muted">{{ quote.status }}</small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div>
+                                        <h6 class="my-0">Quote Generated Date</h6>
+                                        <small class="text-muted">{{ quote.generatedAt|date('d/m/Y H:i') }}</small>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card inner-card">
+                                <div class="card-header">
+                                    Quote Details
+                                </div>
+                                <div class="card-body">
+                                    <div class="alert alert-info">
+                                        <div class="row">
+                                            <dt class="col-3">Request</dt>
+                                            <dd class="col-9">{{ quote.request|nl2br }}</dd>
+                                        </div>
+                                        <div class="row">
+                                            <dt class="col-3">Answer</dt>
+                                            <dd class="col-9">{{ quote.answer|nl2br }}</dd>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <dt class="col-3">Shipping Country</dt>
+                                            <dd class="col-9">{{ quote.shippingCountry.name|default('Not Known') }}</dd>
+                                        </div>
+                                        <div class="row">
+                                            <dt class="col-3">Shipping Code</dt>
+                                            <dd class="col-9">{{ quote.shipping ?? 'Not Known'  }}</dd>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="{{ path('quote_show_edit', {'id': quote.id}) }}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit Details</a>
+                                    <a href="{{ path('delete_quote', {'id': quote.id}) }}"
+                                       class="btn btn-sm btn-outline-danger js-delete-quote"><i class="fas fa-trash"></i> Delete Quote</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Update Quote</button>
-                    <a href="{{ path('delete_quote', {'id': quote.id}) }}" class="btn btn-outline-danger js-delete-quote"><i class="fas fa-trash"></i> Delete Quote</a>
                     <a href="{{ path('quotes') }}" class="btn btn-secondary float-right">Close</a>
                 </div>
             </div>
-            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}
@@ -37,7 +90,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $(".js-delete-quote").on('click', function(e){
+        $(".js-delete-quote").on('click', function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
             swal({

@@ -1,0 +1,18 @@
+{% set current_path = app.request.get('_route') %}
+
+<ul class="nav nav-tabs card-header-tabs">
+    <li class="nav-item">
+        <a class="nav-link {{ 'create_stamp_contact_details' in current_path ? 'active' }}"
+           href="{{ path('create_stamp_contact_details', {'identifier' : enquiry.identifier}) }}"><i class="fas fa-check"></i> Contact Details</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ 'create_stamp_items' in current_path ? 'active' }}"
+           href="{{ path('create_stamp_items', {'identifier' : enquiry.identifier}) }}"><i class="fas fa-check"></i> Custom Items</a>
+    </li>
+    {% if enquiry.stampQuoteSketches|length > 0 %}
+    <li class="nav-item">
+        <a class="nav-link {{ 'create_stamp_summary' in current_path ? 'active' }}"
+           href="{{ path('create_stamp_summary', {'identifier' : enquiry.identifier}) }}"><i class="fas fa-check"></i> Summary</a>
+    </li>
+    {% endif %}
+</ul>

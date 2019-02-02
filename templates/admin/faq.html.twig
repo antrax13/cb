@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <h1 class="card-header">
+                    Add New Frequently Asked Question
+                </h1>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+
+                            {{ form_widget(form) }}
+                        </div>
+                        <div class="col-md-3" style="border-left: 1px solid #CCCCCC;">
+                            <small>
+                                <ul class="section-nav list-unstyled">
+                                    {% for category in faq %}
+                                        <li>{{ category.value }}
+                                            {% if category.faqQuestions|length > 0 %}
+                                                <ul>
+                                                    {% for question in category.faqQuestions %}
+                                                        <li class="toc-entry toc-h3"><a href="{{ path('admin_faq_edit', {'id':question.id}) }}">{{ question.question }}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-plus-circle"></i> Create FAQ Question</button>
+                    <a href="{{ path('customers') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+

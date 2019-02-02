@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <div class="card-header">
+                    {% include 'quote/partials/_tabs.html.twig' %}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-success">
+                                    <div>
+                                        <h6 class="my-0">Quote Reference</h6>
+                                        <small class="text-muted">#CBQ00{{ quote.id }}</small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-success">
+                                    <div>
+                                        <h6 class="my-0">Customer</h6>
+                                        <small class="text-muted">{{ quote.customer.email }}
+                                        </small>
+                                        <br/>
+                                        <small class="text-muted">{{ quote.customer.name }}
+                                        </small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div>
+                                        <h6 class="my-0">Status</h6>
+                                        <small class="text-muted">{{ quote.status }}</small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div>
+                                        <h6 class="my-0">Quote Generated Date</h6>
+                                        <small class="text-muted">{{ quote.generatedAt|date('d/m/Y H:i') }}</small>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card inner-card">
+                                {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+                                <div class="card-header">
+                                    Quote Details
+                                </div>
+                                <div class="card-body">
+                                    {{ form_widget(form) }}
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-md btn-success"><i class="fas fa-save"></i> Update
+                                        Details
+                                    </button>
+                                    <a href="{{ asset('images/fedex.png') }}" target="_blank"
+                                       class="btn btn-md btn-primary">
+                                        <i class="fas fa-shipping-fast"></i> Delivery Options
+                                    </a>
+                                    <a href="{{ path('quote_show', {'id' : quote.id}) }}"
+                                       class="btn btn-info btn float-right">Cancel</a>
+                                </div>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

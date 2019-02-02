@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {% if quote.invoice %}
+                <div class="card">
+                    <div class="card-header">
+                        {% include 'quote/partials/_tabs.html.twig' %}
+                    </div>
+                    <div class="card-body">
+                        <iframe src="{{ path('generate_invoice_pdf', {'id':quote.invoice.id}) }}" width="100%"
+                                height="940px"></iframe>
+
+                        <small class="text-muted">Internet Explorer wont load PDF please use different
+                            browser.
+                        </small>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('invoices_show', {'id' : quote.invoice.id}) }}" class="btn btn-primary">Invoice</a>
+                    </div>
+                </div>
+            {% else %}
+                {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+                <div class="card">
+                    <div class="card-header">
+                        {% include 'quote/partials/_tabs.html.twig' %}
+                    </div>
+                    <div class="card-body">
+                        {{ form_row(form.quote) }}
+                        {{ form_row(form.vat) }}
+                        {{ form_row(form.billingAddressFirst) }}
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(form.billingAddress) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.shippingAddress) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(form.invoicedPhone) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.shippingPhone) }}
+                            </div>
+                        </div>
+                        {{ form_row(form.invoicedVat) }}
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Create Quote</button>
+                        <a href="{{ path('quotes') }}" class="btn btn-secondary float-right">Close</a>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

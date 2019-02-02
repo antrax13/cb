@@ -1,0 +1,167 @@
+<table style="font-size: 10px;">
+    <tr>
+        <td style="width: 200px;"><strong>Scotka Ltd.</strong><br/>
+            42 Queens Road<br/>
+            Aberdeen<br/>
+            AB15 4YE<br/>
+            United Kingdom
+        </td>
+        <td style="text-align: left; width: 130px;"><strong>Company Number</strong><br/>
+            <strong>VAT Number</strong><br/>
+            <strong>EROI</strong><br/>
+            <strong>Telephone</strong><br/>
+            <strong>E-mail</strong><br/>
+        </td>
+        <td style="width: 170px;">SC423842<br/>
+            135 4803 22<br/>
+            GB135480322000<br/>
+            07519 103 863<br/>
+            vladimir@scotka.com
+        </td>
+    </tr>
+</table>
+<hr/>
+<h4>Banking Details</h4>
+<table style="font-size: 10px;">
+    <tr>
+        <td style="width: 200px;"><strong>Bank</strong><br/>
+            <strong>Branch Sort Code</strong><br/>
+            <strong>Account Number</strong><br/>
+            <strong>IBAN</strong><br/>
+            <strong>BIC</strong><br/>
+            <strong>Bank Address</strong><br/>
+        </td>
+        <td style="width: 310px;">HSBC<br/>
+            40-01-25<br/>
+            71349619<br/>
+            GB23HBUK40012571349619<br/>
+            HBUKGB4115T<br/>
+            95-99 Union Street, Aberdeen AB11 6BD, United Kingdom
+        </td>
+    </tr>
+</table>
+<hr/>
+<h4>Invoiced Company Details</h4>
+<table style="font-size: 10px;">
+    <tr>
+        <td style="width: 200px;"><strong>{{ invoice.billingAddressFirst }}</strong><br/>
+            {{ invoice.billingAddress|nl2br }}<br/>
+        </td>
+        <td style="text-align: left; width: 130px;">{{ invoice.invoicedPhone ? '<strong>Telephone</strong>' : '' }}<br/>
+            {{ invoice.invoicedVat ? '<strong>VAT Number</strong>' : '' }}
+        </td>
+        <td style="width: 170px;">{{ invoice.invoicedPhone ? invoice.invoicedPhone : '' }}<br/>
+            {{ invoice.invoicedVat ? invoice.invoicedVat : '' }}
+        </td>
+    </tr>
+</table>
+<hr/>
+
+{% if invoice.shippingAddress %}<h4>Shipping Address</h4>
+    <table style="font-size: 10px;">
+        <tr>
+            <td style="width: 200px;">{{ invoice.shippingAddress|nl2br }}<br />
+            </td>
+            <td style="text-align: left; width: 130px;">{{ invoice.shippingPhone ? '<strong>Telephone</strong>' : '' }}
+            </td>
+            <td style="width: 170px;">{{ invoice.shippingPhone ? invoice.shippingPhone : '' }}
+            </td>
+        </tr>
+    </table>
+    <hr/>
+{% endif %}
+
+<h4>Order Details</h4>
+{% if invoice.invoiceItems|length > 0 %}
+    <table border="1" cellpadding="2" style="padding-top: 10px;">
+
+        <thead>
+        <tr style="background-color: #797979; color: #fff; font-weight: bold; font-size: 10px; line-height: 12px; vertical-align: middle;">
+            <th style="width: 250px;">Item</th>
+            <th style="width: 50px; text-align: center;">Qty</th>
+            <th style="width: 50px; text-align: center;">Price per Item</th>
+            <th style="width: 50px; text-align: center;">Subtotal</th>
+            <th style="width: 50px;">VAT
+                <small class="text-muted">{{ invoice.vat }}%</small>
+            </th>
+            <th style="width: 60px; text-align: center;">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set invoiceTotal = 0 %}
+        {% set vatTotal = 0 %}
+
+        {% for item in invoice.invoiceItems %}
+
+            {% set itemSubtotal = item.qty * item.price %}
+            {% if item.isPaypalItem %}
+                {% set itemVat = 0 %}
+            {% else %}
+                {% set itemVat = item.qty * item.price * invoice.vat / 100 %}
+            {% endif %}
+            {% set invoiceTotal = invoiceTotal + itemSubtotal %}
+            {% set vatTotal = vatTotal + itemVat %}
+
+            <tr style="font-size: 8px;">
+                <td style="width: 250px;">{{ item.name }}</td>
+                <td style="width: 50px; text-align: center;">{{ item.qty }}</td>
+                <td style="width: 50px; text-align: right;">£{{ item.price }}</td>
+                <td style="width: 50px; text-align: right;">£{{ itemSubtotal|number_format(2) }}</td>
+                <td style="width: 50px; text-align: right;">£{{ itemVat|number_format(2) }}</td>
+                <td style="width: 60px; text-align: right;">
+                    £{{ (itemSubtotal + itemVat)|number_format(2) }}</td>
+            </tr>
+        {% endfor %}
+        <tr style="font-weight: bold; font-size: 10px;">
+            <td colspan="3">Invoiced Total</td>
+            <td style="text-align: right;"><strong>£{{ invoiceTotal|number_format(2) }}</strong></td>
+            <td style="text-align: right;"><strong>£{{ vatTotal|number_format(2) }}</strong></td>
+            <td style="text-align: right;">
+                <strong>£{{ (invoiceTotal + vatTotal)|number_format(2) }}</strong>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br/>
+    <br/>
+    <table>
+        <tr>
+            <td style="width: 342px;"></td>
+            <td style="width: 162px;">
+                <table border="1" cellpadding="2" style="font-size: 10px;">
+                    <tr>
+                        <td style="width: 100px; text-align: right;">Invoiced Amount</td>
+                        <td style="width: 60px; text-align: right;">
+                            <strong>£{{ invoiceTotal|number_format(2) }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">VAT</td>
+                        <td style="text-align: right;"><strong>£{{ vatTotal|number_format(2) }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Invoiced Total</td>
+                        <td style="text-align: right;">
+                            <strong>£{{ (invoiceTotal + vatTotal)|number_format(2) }}</strong></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% else %}
+    No Items
+{% endif %}
+<br/>
+<hr/>
+<table>
+    <tr>
+        <td></td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td style="width: 342px;"><b>Date</b>: {{ 'now'|date('d.m.Y') }}</td>
+        <td>
+            <img width="100" src="http://peterkosak.com/scotkapodpis.png"/>
+        </td>
+    </tr>
+</table>

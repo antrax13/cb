@@ -1,0 +1,16 @@
+{% set current_path = app.request.get('_route') %}
+
+<ul class="nav nav-tabs card-header-tabs">
+    <li class="nav-item">
+        <a class="nav-link  {{ 'invoices_show' in current_path ? 'active' }}" href="{{ path('invoices_show', {'id': invoice.id}) }}"><i class="fas fa-file-invoice-dollar"></i> {{ invoice.reference }} Details</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link  {{ 'invoices_items' == current_path ? 'active' }}" href="{{ path('invoices_items', {'id': invoice.id}) }}"><i class="fas fa-clipboard-list"></i> Items</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link  {{ 'invoices_review_items' in current_path ? 'active' }}" href="{{ path('invoices_review_items', {'id': invoice.id}) }}"><i class="fas fa-check-double"></i> Review Items <span class="badge badge-secondary">{{ invoice.invoiceItems|length }}</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link  {{ 'invoices_preview' in current_path ? 'active' }}" href="{{ path('invoices_preview', {'id': invoice.id}) }}"><i class="fas fa-print"></i> Preview</a>
+    </li>
+</ul>

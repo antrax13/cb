@@ -3,8 +3,8 @@
     <thead>
     <tr>
         <td width="100"><h4 style="color: #00aae7;">Customer</h4></td>
-        <td width="150">{{ quote.customer.name }}</td>
-        <td width="150"><h4 style="color: #00aae7;">Quote No</h4></td>
+        <td width="220">{{ quote.customer.name }}</td>
+        <td width="100"><h4 style="color: #00aae7;">Quote No</h4></td>
         <td>#CBQ00{{ quote.id }}</td>
     </tr>
     <tr>
@@ -18,55 +18,84 @@
 
 <!-- REQUEST DETAILS -->
 <h3>Thank you for your query</h3>
-<p style="font-size: 12px;">
-Purpose of this document is to provide more details regarding your query.
-Please check all information on this document.
-We are happy to answer further questions or comments that you might have. Don't hesitate to contact us on
-<a href="mailto:info@cocktailbrandalism.com" target="_top">info@cocktailbrandalism.com</a>.
+<p style="font-size: 12px;">Purpose of this document is to provide more details regarding your query.
+    Please check all information on this document.
+    We are happy to answer further questions or comments that you might have. Don't hesitate to contact us on
+    <a href="mailto:info@cocktailbrandalism.com" target="_top">info@cocktailbrandalism.com</a>.
 </p>
 <h4 style="color: #00aae7;">Request</h4>
-{{ quote.request }}
+{{ quote.request|nl2br }}
 
 <!-- RESPOND DETAILS-->
 <h4 style="color: #00aae7;">Notes</h4>
-{{ quote.answer ? quote.answer : 'N/A' }}
+{{ quote.answer ? quote.answer|nl2br : 'N/A' }}
 
 <!-- STAMPS & LOGOS -->
-<h4 style=" color: #00aae7;">Stamp Details</h4>
-<table>
+<h4 style=" color: #00aae7;">Item Details</h4>
+<table cellpadding="5">
     <tbody>
+    {% set handleSection = false %}
     {% if quote.brandSketchesNotRemoved|length > 0 %}
-        {% set pictureCount = 0 %}
         {% for sketch in quote.brandSketchesNotRemoved %}
-
-            {% if pictureCount % 2 == 0 %}
-                <tr nobr="true">
-                <td style="font-size: 10px; text-align: center;">
-                    <img src="{{ asset('uploads/sketches/'~sketch.file) }}" style="width: 200px;"><br/>
-                    <strong>Price:</strong> £{{ sketch.price }}<br/>
-                    <strong>Weight:</strong> {{ sketch.weight }}<br/>
-                    <strong>Stamp Type:</strong> {{ sketch.stampType.value }}<br/>
-                    <strong>Stamp Dimensions:</strong> {{ sketch.dimension }}<br/>
-                    {% if sketch.note %}<strong>Note:</strong> {{ sketch.note }}{% endif %}
-                </td>
-            {% else %}
-                <td style="font-size: 10px; text-align: center;">
-                    <img src="{{ asset('uploads/sketches/'~sketch.file) }}" style="width: 200px;"><br/>
-                    <strong>Price:</strong> £{{ sketch.price }}<br/>
-                    <strong>Weight:</strong> {{ sketch.weight }}<br/>
-                    <strong>Stamp Type:</strong> {{ sketch.stampType.value }}<br/>
-                    <strong>Stamp Dimensions:</strong> {{ sketch.dimension }}<br/>
-                    {% if sketch.note %}<strong>Note:</strong> {{ sketch.note }}{% endif %}
-                </td>
-                </tr>
+            {% if sketch.stampType.value == 'Ice Stamp' %}
+                {% set handleSection = true %}
             {% endif %}
 
-            {% set pictureCount = pictureCount + 1 %}
-
+            <tr nobr="true">
+                <td style="font-size: 10px; text-align: center; border: 1px solid #DDDDDD;">
+                    <img src="{{ asset('/uploads/sketches/'~sketch.file) }}" style="width: 200px; margin-top:10px;">
+                </td>
+                <td style="border: 1px solid #DDDDDD;">
+                    <table>
+                        <tr>
+                            <td style="font-weight: bold;">Item No</td>
+                            <td>#{{ '%05d'|format(sketch.id) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Logo Description</td>
+                            <td>{{ sketch.name }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Qty</td>
+                            <td>{{ sketch.qty }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Item Type</td>
+                            <td style="font-weight: bold; color: green;">{{ sketch.stampType }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Price</td>
+                            <td style="font-weight: bold; color: green;">£{{ sketch.price }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Weight</td>
+                            <td>{{ sketch.weight }}kg</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Stamp Shape</td>
+                            <td>{{ sketch.stampShape.value }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Stamp Dimensions</td>
+                            <td>{{ sketch.dimension }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Handle</td>
+                            <td>{{ sketch.handle }}</td>
+                        </tr>
+                        {% if sketch.note %}
+                        <tr>
+                            <td style="font-weight: bold;">Note</td>
+                            <td>{{ sketch.note|nl2br }}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td colspan="2" style="font-weight: bold; font-size: 8px;"><br /><br />Quoted Price & Weight info per 1 unit excluding VAT & shipping costs.</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
         {% endfor %}
-        {% if quote.brandSketchesNotRemoved|length % 2 != 0 %}
-            <td class="tdValue"></td></tr>
-        {% endif %}
     {% else %}
         <tr>
             <td>
@@ -78,32 +107,43 @@ We are happy to answer further questions or comments that you might have. Don't 
 </table>
 
 <!-- SHIPPING INFORMATION -->
-<h4 style="color: #00aae7;">
-Shipping {{ quote.shippingTo ? 'to '~quote.shippingTo : 'destination to be confirmed' }}</h4>
-{{ quote.shipping ? quote.shipping.description|raw : 'To be confirmed with customer.' }}
+<table>
+    <tr nobr="true">
+        <td>
+            <h4 style="color: #00aae7;">Shipping {{ quote.shippingCountry ? 'to '~quote.shippingCountry.name : 'destination to be confirmed' }}</h4>
+            {{ quote.shipping ? quote.shipping.description|raw : 'To be confirmed with customer.' }}
+        </td>
+    </tr>
+</table>
 
 <!-- PAYMENT INFORMATION -->
 <h4 style="color: #00aae7;">Payment Options</h4>
 {{ paymentOption.description|raw }}
 
+<!-- MANUFACTURING INFORMATION -->
+<h4 style="color: #00aae7;">Manufacturing Time</h4>
+{{ manufacturing.description|raw }}
+
 <!-- HANDLE OPTIONS -->
 <br/><br/>
-<table>
+{% if handleSection %}
+<table width="100%">
     <thead>
     <tr>
-        <td colspan="2"><h4 style="color: #00aae7;">Handle Options</h4></td>
+        <td>
+            <h4 style="color: #00aae7;">Handle Options</h4>
+        Select Shape & Colour of your Ice Stamp Handle.
+        </td>
     </tr>
     <tr>
-        <td><img src="{{ asset('images/shapes.jpg') }}" style="width: 250px;"></td>
-        <td><img src="{{ asset('images/handles.png') }}" style="width: 250px;"></td>
+        <td><img src="{{ asset('images/handles.png') }}" style="width: 400px;"></td>
     </tr>
     </thead>
 </table>
+{% endif %}
 
 <!-- Thank you message -->
 <h1 style="text-align: center; color: #00aae7;">We are looking forward to hear from you.</h1>
-
-
 
 
 

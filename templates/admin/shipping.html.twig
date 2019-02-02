@@ -13,33 +13,21 @@
                 </h1>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="card border-success">
-                                <div class="card-header text-white bg-success">
-                                    Create New Shipping Text
-                                </div>
-                                <div class="card-body">
-                                    {{ form_row(form.name) }}
-                                    {{ form_row(form.description, {'attr' : {'rows': 10}}) }}
-                                </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Shipping Option Text
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             {% if shippings|length > 0 %}
                                 <div class="card">
+                                    <div class="card-header">
+                                        Current Values
+                                    </div>
                                     <div class="card-body">
-                                        <div class="alert alert-info">If you need to modify data please contact your System Administrator.</div>
+                                        <div class="alert alert-info">If you need to modify data please contact your System Administrator to "Add new shipping option" scroll down.</div>
                                         <table class="table table-striped">
                                             <thead>
                                             <tr class="bg-info">
                                                 <td>#</td>
                                                 <td>Name</td>
-                                                <td>Description</td>
-                                                <td>Raw Description </td>
+                                                <td>HTML</td>
+                                                <td>Preview </td>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -60,6 +48,23 @@
                                     No shipping information found.
                                 </div>
                             {% endif %}
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <div class="card border-success">
+                                <div class="card-header text-white bg-success">
+                                    Create New Shipping Text
+                                </div>
+                                <div class="card-body">
+                                    {{ form_row(form.name) }}
+                                    {{ form_row(form.description, {'attr' : {'rows': 3}}) }}
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Shipping Option Text
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

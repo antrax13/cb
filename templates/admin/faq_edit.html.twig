@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <h1 class="card-header">
+                    Edit Frequently Asked Question
+                </h1>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+
+                            {{ form_widget(form) }}
+                            <div class="alert alert-info">
+                                <h1>Preview</h1>
+                                <hr />
+                                <h1>{{ faqQuestion.question }}</h1>
+                                <p class="lead">{{ faqQuestion.answer|raw }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="border-left: 1px solid #CCCCCC;">
+                            <small>
+                                <ul class="section-nav list-unstyled">
+                                    {% for category in faq %}
+                                        <li>{{ category.value }}
+                                            {% if category.faqQuestions|length > 0 %}
+                                                <ul>
+                                                    {% for question in category.faqQuestions %}
+                                                        <li class="toc-entry toc-h3"><a
+                                                                    href="{{ path('admin_faq_edit', {'id':question.id}) }}">{{ question.question }}</a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Update FAQ Question
+                    </button>
+                    <a href="{{ path('admin_faq_delete', {'id': faqQuestion.id}) }}"
+                       class="btn btn-danger js-delete-question"><i class="fas fa-trash"></i> Delete Question From
+                        FAQ</a>
+
+
+                    <a href="{{ path('admin_faq') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(".js-delete-question").on('click', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-check"></i>  Yes, delete question!',
+                allowOutsideClick: false,
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = url;
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

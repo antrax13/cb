@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <span class="nav-link active">Contact Details</span>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            {{ form_widget(form) }}
+        </div>
+        <div class="card-footer">
+
+            <button type="submit" class="btn btn-md btn-success">Next Step</button>
+            <a href="#" class="btn btn-md btn-outline-secondary float-right">Cancel</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -20,7 +20,6 @@ class CustomerController extends AbstractController
         $breadcrumbs = ['Customers'];
         $customers = $repository->findAll();
 
-        dump($customers);
         $array = [];
         foreach($customers as $customer){
             $array[] = [
@@ -30,8 +29,6 @@ class CustomerController extends AbstractController
                 'quotes' => count($customer->getQuotesNotRemoved()),
             ];
         }
-
-        dump($array);
 
         return $this->render('customer/index.html.twig', [
             'title' => 'Customers',

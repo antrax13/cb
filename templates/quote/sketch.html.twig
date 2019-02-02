@@ -5,126 +5,210 @@
 {% block body %}
     <div class="row">
         <div class="col-md-12">
-            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
             <div class="card">
                 <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('quote_show', {'id': quote.id}) }}"><i
-                                        class="fas fa-file"></i> Quote</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#"><span
-                                        class="badge badge-info">{{ quote.brandSketchesNotRemoved|length }}</span>
-                                Sketch</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('quote_preview', {'id': quote.id}) }}"><i
-                                        class="fas fa-print"></i> Preview & Generate PDF</a>
-                        </li>
-                    </ul>
+                    {% include 'quote/partials/_tabs.html.twig' %}
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3">
-                            <div class="card border-success">
-                                <div class="card-header text-white bg-success">
-                                    Upload New Sketch
-                                    <a href="{{ asset('images/fedex.png') }}" target="_blank" class="btn btn-sm float-right btn-primary">
-                                        <i class="fas fa-shipping-fast"></i>
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    {{ form_row(form.file) }}
-                                    {{ form_row(form.price) }}
-                                    {{ form_row(form.weight) }}
-                                    {{ form_row(form.dimension) }}
-                                    {{ form_row(form.stampType) }}
-                                    {{ form_row(form.note) }}
-                                </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Add New
-                                        Sketch
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="card">
-                                <div class="card-header">
-                                    Sketches
-                                </div>
-                                <div class="card-body">
-                                    {% if quote.brandSketches|length > 0 %}
-                                        <div class="row">
-                                            {% for sketch in quote.brandSketchesNotRemoved %}
-                                                <div class="col-md-4">
-                                                    <div class="card mb-4 shadow-sm">
-                                                        <div class="card-img-top my-card-img-top">
-                                                            <img class="sketch-img"
-                                                                 src="{{ asset('uploads/sketches/'~sketch.file) }}"
-                                                                 alt="{{ sketch.file }}"
-                                                                 style="width: 100%;"
-                                                            >
-                                                        </div>
+                        <div class="col-md-12">
+                            {% if quote.brandSketches|length > 0 %}
+                                <div class="row">
+                                    {% for sketch in quote.brandSketches %}
 
-                                                        <div class="card-body">
+                                        <div class="col-md-6">
+                                            <div class="card inner-card">
+                                                <div class="card-header">
+                                                    <div class="d-flex">
+                                                        <strong>#{{ '%05d'|format(sketch.id) }} {{ sketch.name }}</strong>
+                                                        {% if sketch.isRemoved %}
+                                                            <a href="{{ path('undo_delete_sketch', {'id': sketch.id}) }}"
+                                                               class="btn btn-sm btn-outline-info ml-auto">
+                                                                <i class="fas fa-undo"></i> Undo Removal
+                                                            </a>
+                                                        {% else %}
+                                                            <div class="btn-group ml-auto">
+                                                                <a href="{{ path('edit_sketch', {'id': sketch.id}) }}"
+                                                                   class="btn btn-sm btn-outline-info">
+                                                                    <i class="fas fa-edit"></i> Edit
+                                                                </a>
+                                                                <a href="{{ path('delete_sketch', {'id': sketch.id}) }}"
+                                                                   class="btn btn-sm btn-outline-danger js-delete-sketch">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </a>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <img
+                                                                    src="{{ asset('/uploads/sketches/'~sketch.file) }}"
+                                                                    alt="{{ sketch.file }}"
+                                                                    style="width: 100%;"
+                                                            >
+                                                            <br/>
+                                                            <small class="text-muted">{{ sketch.size }}</small>
+                                                        </div>
+                                                        <div class="col-md-8">
                                                             <p class="card-text">
                                                             <div class="row">
-                                                                <dt class="col-6">Price</dt>
-                                                                <dd class="col-6">£{{ sketch.price }}</dd>
-                                                            </div>
-                                                            <div class="row">
-                                                                <dt class="col-6">Weight</dt>
-                                                                <dd class="col-6">{{ sketch.weight }}</dd>
+                                                                <dt class="col-6"><strong
+                                                                            class="d-inline-block mb-2 text-{{ sketch.isRemoved ? 'danger':'success' }}">ItemNo</strong>
+                                                                </dt>
+                                                                <dd class="col-6">
+                                                                    <strong
+                                                                            class="d-inline-block mb-2 text-{{ sketch.isRemoved ? 'danger':'success' }}">#{{ '%05d'|format(sketch.id) }}</strong> {{ sketch.isRemoved ? '<small class="text-danger">Removed</small>':'' }}
+                                                                </dd>
                                                             </div>
                                                             <div class="row">
                                                                 <dt class="col-6">Stamp Type</dt>
                                                                 <dd class="col-6">{{ sketch.stampType }}</dd>
                                                             </div>
                                                             <div class="row">
+                                                                <dt class="col-6">Price</dt>
+                                                                <dd class="col-6">£{{ sketch.price }}</dd>
+                                                            </div>
+                                                            {% if sketch.qty %}
+                                                                <div class="row">
+                                                                    <dt class="col-6">Qty</dt>
+                                                                    <dd class="col-6">{{ sketch.qty }}</dd>
+                                                                </div>
+                                                            {% endif %}
+                                                            <div class="row">
+                                                                <dt class="col-6">Weight</dt>
+                                                                <dd class="col-6">{{ sketch.weight }}kg</dd>
+                                                            </div>
+                                                            <div class="row">
                                                                 <dt class="col-6">Dimensions</dt>
                                                                 <dd class="col-6">{{ sketch.dimension }}</dd>
                                                             </div>
-                                                            {% if sketch.note %}
                                                             <div class="row">
-                                                                <dt class="col-6">Note</dt>
-                                                                <dd class="col-6">{{ sketch.note }}</dd>
+                                                                <dt class="col-6">Stamp Shape</dt>
+                                                                <dd class="col-6">{{ sketch.stampShape }}</dd>
                                                             </div>
+                                                            {% if sketch.handle %}
+                                                                <div class="row">
+                                                                    <dt class="col-6">Handle</dt>
+                                                                    <dd class="col-6">{{ sketch.handle }}</dd>
+                                                                </div>
+                                                            {% endif %}
+                                                            {% if sketch.note %}
+                                                                <div class="row">
+                                                                    <dt class="col-6">Note</dt>
+                                                                    <dd class="col-6">{{ sketch.note }}</dd>
+                                                                </div>
                                                             {% endif %}
                                                             </p>
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <div class="btn-group">
-                                                                    <a href="{{ path('delete_sketch', {'id': sketch.id}) }}"
-                                                                       class="btn btn-sm btn-outline-danger js-delete-sketch">
-                                                                        <i class="fas fa-trash"></i> Delete
-                                                                    </a>
-                                                                </div>
-                                                                <small class="text-muted">{{ sketch.size }}</small>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            {% endfor %}
+                                            </div>
+                                            <br />
                                         </div>
-                                    {% else %}
-                                        <div class="alert alert-info">
-                                            No sketches found.
-                                        </div>
-                                    {% endif %}
+                                    {% endfor %}
                                 </div>
-                            </div>
+
+                            {% else %}
+                                <div class="alert alert-info">
+                                    No sketches found.
+                                </div>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
                 <div class="card-footer">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addNewModal"><i class="fas fa-plus-circle"></i> Add New
+                        Sketch
+                    </button>
                     <a href="{{ path('quote_show', {'id': quote.id}) }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalPriceExamples" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Prices Examples</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <iframe src="{{ asset('images/prices.pdf') }}#view=FitH" width="100%" height="440px"></iframe>
+                    <small class="text-muted">Internet Explorer wont load PDF please use different browser.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addNewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="modal-content">
+                <div class="modal-header text-white bg-success">
+                    <h5 class="modal-title" id="updateInvoiceItemTitle">Add New Sketch</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.file) }}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form_row(form.stampType) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(form.stampShape) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form_row(form.price) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(form.weight) }}
+                                </div>
+                            </div>
+                            {{ form_row(form.dimension) }}
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ form_row(form.qty) }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form_row(form.handle) }}
+                                </div>
+                            </div>
+                            <img src="{{ asset('images/handles.png') }}" class="img-fluid"/>
+                            {{ form_row(form.note) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Add New
+                        Sketch
+                    </button>
+                    <a href="{{ asset('images/prices.pdf') }}" target="_blank" class="btn btn-md btn-primary" ><i class="fas fa-pound-sign"></i> Price Examples</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
             {{ form_end(form) }}
         </div>
     </div>
-
 
 {% endblock %}
 
@@ -149,6 +233,17 @@
                 }
             });
         });
+
+        $('.custom-file-input').on('change',function(){
+            var fileName = document.getElementById("brand_sketch_form_file").files[0].name;
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+
+            // $(this).next('.ice_stamp_custom_form_file').val(fileName);
+        })
+
+        {% if not form.vars.valid %}
+        $('#addNewModal').modal('toggle');
+        {% endif %}
     </script>
 
 {% endblock %}

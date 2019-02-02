@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    {% include 'invoice/partials/_tabs.html.twig' %}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-success">
+                                    <div>
+                                        <h6 class="my-0">Reference</h6>
+                                        <small class="text-muted">{{ invoice.reference }}</small>
+                                    </div>
+                                </li>
+                                {% if invoice.quote %}
+                                    <li class="list-group-item list-group-item-success">
+                                        <div>
+                                            <h6 class="my-0">Quote</h6>
+                                            <small class="text-muted">
+                                                <a href="{{ path('quote_preview', {'id': invoice.quote.id}) }}">
+                                                    {{ invoice.quote.id ? '#CBQ00'~invoice.quote.id: '' }}
+                                                </a>
+                                            </small>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                                <li class="list-group-item">
+                                    <div>
+                                        <h6 class="my-0">Status</h6>
+                                        <small class="text-muted">{{ invoice.status }}</small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div>
+                                        <h6 class="my-0">Invoice Created Date</h6>
+                                        <small class="text-muted">{{ invoice.generatedAt|date('d/m/Y H:i') }}</small>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card inner-card">
+                                <div class="card-header">
+                                    Invoice Details
+                                </div>
+                                <div class="card-body">
+                                    <div class="alert alert-info">
+                                        {% if invoice.quote %}
+                                            <div class="row">
+                                                <dt class="col-3">Quote</dt>
+                                                <dd class="col-9">#CBQ00{{ invoice.quote.id }}</dd>
+                                            </div>
+                                        {% endif %}
+                                        <div class="row">
+                                            <dt class="col-3">VAT</dt>
+                                            <dd class="col-9">{{ invoice.vat }}%</dd>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="alert alert-info">
+                                                <h5>Invoiced Company</h5>
+                                                <hr/>
+                                                <div class="row">
+                                                    <dt class="col-6">Company Name</dt>
+                                                    <dd class="col-6">{{ invoice.billingAddressFirst }}</dd>
+                                                </div>
+                                                <div class="row">
+                                                    <dt class="col-6">Address</dt>
+                                                    <dd class="col-6">{{ invoice.billingAddress|nl2br }}</dd>
+                                                </div>
+                                                <div class="row">
+                                                    <dt class="col-6">Phone</dt>
+                                                    <dd class="col-6">{{ invoice.invoicedPhone }}</dd>
+                                                </div>
+                                                <div class="row">
+                                                    <dt class="col-6">Invoiced Company VAT</dt>
+                                                    <dd class="col-6">{{ invoice.invoicedVat }}</dd>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="alert alert-info">
+                                                <h5>Shipping</h5>
+                                                <hr/>
+                                                <div class="row">
+                                                    <dt class="col-6">Address</dt>
+                                                    <dd class="col-6">{{ invoice.shippingAddress|nl2br }}</dd>
+                                                </div>
+                                                <div class="row">
+                                                    <dt class="col-6">Phone</dt>
+                                                    <dd class="col-6">{{ invoice.shippingPhone }}</dd>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="{{ path('invoices_show_edit', {'id' : invoice.id }) }}"
+                                       class="btn btn-sm btn-info ml-auto">
+                                        <i class="fas fa-edit"></i> Edit Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ path('invoices') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

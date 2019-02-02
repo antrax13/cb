@@ -1,0 +1,218 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    {% include 'invoice/partials/_tabs.html.twig' %}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card inner-card">
+                                <div class="card-header">
+                                    Sketches
+                                    <div class="btn-group btn-group-sm float-right" role="group"
+                                         aria-label="Grid Buttons">
+                                        <button type="button" class="btn btn-outline-secondary" id="clear"><i
+                                                    class="fas fa-times"></i> Clear Filters
+                                        </button>
+                                        <button type="button" class="btn btn-outline-success" id="export"><i
+                                                    class="fas fa-download"></i> Export
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <small>Select Sketches to be included on this invoice (qty & price can be edited on
+                                        next tab)
+                                    </small>
+                                    <div id="jqxGrid"></div>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="#" id="js-add-sketches" class="btn btn-outline-success"><i
+                                                class="fas fa-plus-circle"></i> Add Selected Items
+                                    </a>
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addAdhocModal"><i
+                                                class="fas fa-plus-circle"></i> Add Adhoc
+                                        Item
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card-footer">
+                    <a href="{{ path('invoices') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addAdhocModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="modal-content">
+                <div class="modal-header text-white bg-success">
+                    <h5 class="modal-title" id="updateInvoiceItemTitle">Add Adhoc Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ form_widget(form) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Add Adhoc
+                        Item
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="application/javascript" src="{{ asset('vendor/jqwidgets/jqx-all.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            var getLocalization = function () {
+                var localizationobj = {};
+                localizationobj.currencysymbol = "£";
+                localizationobj.decimalseparator = ".";
+                localizationobj.thousandsseparator = ",";
+                return localizationobj;
+            }
+
+
+            var data = {{ sketches|json_encode|raw }};
+            var source = {
+                localdata: data,
+                datafields: [
+                    {name: 'id', type: 'integer'},
+                    {name: 'quote', type: 'string'},
+                    {name: 'customer_email', type: 'string'},
+                    {name: 'type', type: 'string'},
+                    {name: 'logo_description', type: 'string'},
+                    {name: 'shape', type: 'string'},
+                    {name: 'price', type: 'number'},
+                    {name: 'qty', type: 'number'},
+                    {name: 'weight', type: 'string'},
+                    {name: 'size', type: 'string'},
+                    {name: 'handle', type: 'string'},
+                ],
+                datatype: "json",
+                sortcolumn: 'id',
+                sortdirection: 'desc'
+            };
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            {% if invoice.quote %}
+            var quoteColumnFilter = function () {
+                var filtergroup = new $.jqx.filter();
+                var filter_or_operator = 1;
+                var filtervalue = '{{ invoice.quote }}';
+                var filtercondition = 'equal';
+                var filter = filtergroup.createfilter('stringfilter', filtervalue, filtercondition);
+                filtergroup.addfilter(filter_or_operator, filter);
+                return filtergroup;
+            }();
+            {% endif %}
+
+            $("#jqxGrid").jqxGrid({
+                theme: 'light',
+                width: '100%',
+                source: dataAdapter,
+                showfilterrow: true,
+                filterable: true,
+                sortable: true,
+                pageable: false,
+                showcolumnlines: false,
+                selectionmode: 'checkbox',
+                localization: getLocalization(),
+                columns: [
+                    {text: 'Sketch', columntype: 'integer', datafield: 'id', width: '5%'},
+                    {
+                        text: 'Quote',
+                        datafield: 'quote',
+                        width: '7%', {{ invoice.quote ? 'filter: quoteColumnFilter' : '' }} },
+                    {text: 'Email', datafield: 'customer_email', columntype: 'string', width: '16%'},
+                    {text: 'Type', datafield: 'type', filtertype: 'checkedlist', width: '8%'},
+                    {text: 'Logo Description', datafield: 'logo_description'},
+                    {text: 'Shape', datafield: 'shape', filtertype: 'checkedlist', width: '8%'},
+                    {text: 'Price', datafield: 'price', filtertype: 'number', width: '6%', cellsalign: 'right', cellsformat: 'c2'},
+                    {text: 'Qty', datafield: 'qty', width: '4%', cellsalign: 'center'},
+                    {text: 'Weight (kg)', datafield: 'weight', width: '6%'},
+                    {text: 'Size', datafield: 'size', width: '12%'},
+                    {text: 'Handle', datafield: 'handle', width: '7%'},
+                ]
+            });
+
+            $('#clear').click(function () {
+                $("#jqxGrid").jqxGrid('clearfilters');
+            });
+
+            $('#export').click(function () {
+                $('#jqxGrid').jqxGrid('exportdata', 'xls', 'All Sketches {{ 'now'|date('d-m-Y') }}');
+            });
+
+            $('#js-add-sketches').click(function (e) {
+                e.preventDefault();
+                var rows = $('#jqxGrid').jqxGrid('getboundrows');
+                var selectedRows = $('#jqxGrid').jqxGrid('selectedrowindexes');
+
+                if (selectedRows.length == 0) {
+                    swal({
+                        title: 'You need to select rows.',
+                        type: 'warning',
+                    });
+                } else {
+                    var addedSketches = [];
+                    for (var i in selectedRows) {
+                        var data = $("#jqxGrid").jqxGrid('getrowdata', selectedRows[i]);
+                        addedSketches.push(data.id);
+                    }
+                    var stringSketches = addedSketches.join(',');
+
+                    var url = '{{ path('invoices_add_items',{'id': invoice.id, 'sketchString': 'value' }) }}';
+                    var urlReplace = url.replace('value', stringSketches);
+
+
+                    swal({
+                        title: 'Do you want to add selected row(s) to this invoice?',
+                        html: 'Number of row selected: ' + selectedRows.length + '<br />',
+                        showCancelButton: true,
+                        confirmButtonText: '<i class="fas fa-check"></i> Yes',
+                        allowOutsideClick: false,
+                    }).then(function (result) {
+                        if (result.value) {
+                            window.location.href = urlReplace;
+                        }
+                    });
+                }
+            });
+
+            {% if not form.vars.valid %}
+            $('#addAdhocModal').modal('toggle');
+            {% endif %}
+
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/jqwidgets/styles/jqx.base.css') }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('vendor/jqwidgets/styles/jqx.light.css') }}" type="text/css"/>
+{% endblock %}

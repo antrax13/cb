@@ -12,6 +12,11 @@
                 </h1>
                 <div class="card-body">
                     {{ form_row(form.description, {'attr' : {'rows': 10}}) }}
+                    <div class="alert alert-info">
+                        <h1>Preview</h1>
+                        <hr />
+                        {{ data.description|raw }}
+                    </div>
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Payment Option Text</button>

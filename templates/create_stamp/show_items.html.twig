@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            {% include 'create_stamp/partials/_tabs.html.twig' %}
+        </div>
+        <div class="card-body">
+            <h1 class="display-4">Select type of stamp you would like to create</h1>
+            <p class="lead">If you would like different options, sizes, handle</p>
+            <div class="row no-top-border-card">
+                <div class="col-lg-12">
+                    <div class="card-deck">
+                        <div class="card">
+                            <img src="{{ asset('images/stamp.jpg') }}" class="card-img-top" alt="Ice Stamp"
+                                 style="border-top: 1px solid rgba(0,0,0,.125)">
+                            <div class="card-body">
+                                <h5 class="card-title">Ice Stamp</h5>
+                                <p class="card-text">Napkins, coaster, branded glasses or mixing sticks... we are all
+                                    familiar with them but
+                                    have you seen stamp on ice?<br />
+                                    That's right, ice stamp is a great tool to promote your
+                                    brand, venue, event etc.<br />
+                                    They come with different shapes, sizes, handles. </p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="{{ path('create_stamp_items_ice_stamp', {'identifier' : enquiry.identifier}) }}" class="btn btn-success btn-md btn-block">Create Ice Stamp</a>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img src="{{ asset('images/burningplate.jpg') }}" class="card-img-top" alt="..."
+                                 style="border-top: 1px solid rgba(0,0,0,.125)">
+                            <div class="card-body">
+                                <h5 class="card-title">Burning Plate</h5>
+                                <p class="card-text">Burning plates are becoming more popular in Gastro industry.
+                                    Branding Irons are used to heat your custom plate and burn the mark onto your
+                                    delicious food. Used by professionals chefs to promote your name, brand, venue
+                                    etc.</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-success btn-md btn-block">Create Burning Plate</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img src="{{ asset('images/heatstamp.jpg') }}" class="card-img-top" alt="..."
+                                 style="border-top: 1px solid rgba(0,0,0,.125)">
+                            <div class="card-body">
+                                <h5 class="card-title">Heat Stamp</h5>
+                                <p class="card-text">Heat stamp is something between Branding Iron & Ice Stamp. Heat
+                                    stamps are using external heat source like torches. Stamps are often used behind the
+                                    bars when making cocktails to mark orange and lemon peels or leaves of other exotic
+                                    fruits (pineapple etc).</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-success btn-md btn-block">Create Heat Stamp</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="#" class="btn btn-md btn-outline-secondary float-right">Cancel</a>
+        </div>
+    </div>
+{% endblock %}

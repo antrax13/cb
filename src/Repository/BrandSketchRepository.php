@@ -19,22 +19,19 @@ class BrandSketchRepository extends ServiceEntityRepository
         parent::__construct($registry, BrandSketch::class);
     }
 
-    // /**
-    //  * @return BrandSketch[] Returns an array of BrandSketch objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return BrandSketch[] Returns an array of BrandSketch objects
+      */
+    public function findAllNotRemoved()
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('b.isRemoved = 0')
             ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?BrandSketch
