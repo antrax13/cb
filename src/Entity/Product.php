@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Product
 {
@@ -18,6 +20,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -28,6 +31,7 @@ class Product
 
     /**
      * @ORM\Column(type="decimal", precision=8, scale=2)
+     * @Assert\NotBlank()
      */
     private $price;
 
@@ -39,8 +43,34 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="product")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private $category;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive = true;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $createdBy;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $updatedBy;
 
     public function getId(): ?int
     {
@@ -105,5 +135,76 @@ class Product
         $this->category = $category;
 
         return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?string
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(string $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getUpdatedBy(): ?string
+    {
+        return $this->updatedBy;
+    }
+
+    public function setUpdatedBy(string $updatedBy): self
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function updateDates()
+    {
+        $this->setUpdatedAt(new \DateTime());
+        if(is_null($this->createdAt)){
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }
