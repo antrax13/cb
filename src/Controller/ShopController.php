@@ -35,13 +35,12 @@ class ShopController extends AbstractController
      */
     public function showCategoryProducts(Category $category)
     {
-        $products = $category->getProduct();
-        $breadcrumbs = ['Shop', 'Categories'];
+        $breadcrumbs = ['Shop', $category->getName()];
 
         return $this->render('shop/categories.html.twig', [
             'breadcrumbs' => $breadcrumbs,
-            'title' => explode(' | ', $breadcrumbs),
-            'products' => $products,
+            'title' => implode(' | ', $breadcrumbs),
+            'category' => $category,
         ]);
     }
 
@@ -75,7 +74,7 @@ class ShopController extends AbstractController
     }
 
     /**
-     * @Route("/shop/{product}", name="show_product_details")
+     * @Route("/shop/product/{product}", name="show_product_details")
      */
     public function showProduct(Product $product)
     {
@@ -83,7 +82,7 @@ class ShopController extends AbstractController
 
         return $this->render('shop/product/show.html.twig', [
             'breadcrumbs' => $breadcrumbs,
-            'title' => explode(' | ', $breadcrumbs),
+            'title' => implode(' | ', $breadcrumbs),
             'product' => $product,
         ]);
     }

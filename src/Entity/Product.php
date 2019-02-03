@@ -72,6 +72,11 @@ class Product
      */
     private $updatedBy;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $intro;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -206,5 +211,17 @@ class Product
         if(is_null($this->createdAt)){
             $this->setCreatedAt(new \DateTime());
         }
+    }
+
+    public function getIntro(): ?string
+    {
+        return $this->intro;
+    }
+
+    public function setIntro(string $intro): self
+    {
+        $this->intro = $intro;
+
+        return $this;
     }
 }

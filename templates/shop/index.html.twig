@@ -3,28 +3,63 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <div class="row no-top-border-card">
-        {% for category in categories %}
-            <div class="col-md-3">
-                <div class="card" style="margin-bottom: 10px;">
-                    <div class="card-header">
+    <div class="row">
+        <div class="col-md-3">
+            <ul class="list-group">
+                {% for category in categories %}
+                    <a href="{{ path('shop_category', {'category': category.id}) }}"
+                       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                         {{ category.name }}
-                    </div>
-                    <div class="card-body">
-
-                    </div>
-                    <div class="card-footer">
-                        <a href="{{ path('shop_category', {'category' : category.id}) }}"
-                           class="btn btn-primary btn-md btn-block">Read More</a>
+                        <span class="badge badge-primary badge-pill">{{ category.product|length }}</span>
+                    </a>
+                {% endfor %}
+            </ul>
+            <br />
+            <ul class="list-group">
+                <a href="#"
+                   class="list-group-item list-group-item-action list-group-item-success">
+                    <i class="fas fa-plus-circle"></i> Create Category
+                </a>
+                <a href="#"
+                   class="list-group-item list-group-item-action list-group-item-success">
+                    <i class="fas fa-plus-circle"></i> Create Product
+                </a>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            {% for category in categories %}
+                <div class="row ">
+                    {% for product in category.product %}
+                        <div class="col-md-4">
+                            <div class="card" style="margin-bottom: 10px;">
+                                <img class="card-img-top" src="{{ asset('/images/products/'~product.image) }}"
+                                     alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <p class="card-text">This is a wider card with supporting text below as a natural
+                                        lead-in to additional content. This content is a little bit longer.</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">Last updated 3 mins ago</small>
+                                    </p>
+                                    <a href="{{ path('show_product_details', {'product': product.id}) }}" class="btn btn-primary btn-block">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-md-12">
+                            <div class="alert alert-info">
+                                No products in {{ category.name }} have been found.
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        No categories have been found.
                     </div>
                 </div>
-            </div>
-        {% else %}
-            <div class="col-md-12">
-                <div class="alert alert-info">
-                    No categories have been found.
-                </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
