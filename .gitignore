@@ -15,3 +15,9 @@
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
+
+/public/images/custom-products
+/public/images/gallery
+/public/images/products
+/public/uploads/sketches
+
