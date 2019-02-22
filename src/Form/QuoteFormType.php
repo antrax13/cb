@@ -27,10 +27,6 @@ class QuoteFormType extends AbstractType
                 'class' => Country::class,
                 'placeholder' => 'Please choose',
             ])
-            ->add('shipping', EntityType::class, [
-                'class' => Shipping::class,
-                'placeholder' => 'Please choose'
-            ])
             ->add('status', ChoiceType::class,[
                 'placeholder' => 'Please choose',
                 'choices' => [

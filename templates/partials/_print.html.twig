@@ -84,13 +84,15 @@
                             <td>{{ sketch.handle }}</td>
                         </tr>
                         {% if sketch.note %}
-                        <tr>
-                            <td style="font-weight: bold;">Note</td>
-                            <td>{{ sketch.note|nl2br }}</td>
-                        </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Note</td>
+                                <td>{{ sketch.note|nl2br }}</td>
+                            </tr>
                         {% endif %}
                         <tr>
-                            <td colspan="2" style="font-weight: bold; font-size: 8px;"><br /><br />Quoted Price & Weight info per 1 unit excluding VAT & shipping costs.</td>
+                            <td colspan="2" style="font-weight: bold; font-size: 8px;"><br/><br/>Quoted Price & Weight
+                                info per 1 unit excluding VAT & shipping costs.
+                            </td>
                         </tr>
                     </table>
                 </td>
@@ -110,8 +112,20 @@
 <table>
     <tr nobr="true">
         <td>
-            <h4 style="color: #00aae7;">Shipping {{ quote.shippingCountry ? 'to '~quote.shippingCountry.name : 'destination to be confirmed' }}</h4>
-            {{ quote.shipping ? quote.shipping.description|raw : 'To be confirmed with customer.' }}
+            <h4 style="color: #00aae7;">Shipping {{ shipping.shippingCountry ? 'to '~shipping.shippingCountry.name : 'destination to be confirmed' }}</h4>
+            {% if shipping.shippingCountry %}
+                <p>FedEx - very reliable {{ shipping.shippingCountry.fedexDeliveryDay }} day(s) delivery service to {{ shipping.shippingCountry.name }}.</p>
+                <p>Estimated weight for all items on this quote: <span style="font-weight: bold;">{{ totalWeight|number_format(2) }}kg</span></p>
+                <ul>
+                    {% for key, item in shipping.shippingWeights %}
+                        <li>Estimated price for <span style="font-weight: bold;">{{ key }}kg</span> parcel is <span style="font-weight: bold;">£{{ item.0|number_format(2) }}</span></li>
+                    {% else %}
+                        <li>Shipping costs will be specified on the invoice.</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                To be confirmed with customer to estimate shipping costs.
+            {% endif %}
         </td>
     </tr>
 </table>
@@ -127,19 +141,19 @@
 <!-- HANDLE OPTIONS -->
 <br/><br/>
 {% if handleSection %}
-<table width="100%">
-    <thead>
-    <tr>
-        <td>
-            <h4 style="color: #00aae7;">Handle Options</h4>
-        Select Shape & Colour of your Ice Stamp Handle.
-        </td>
-    </tr>
-    <tr>
-        <td><img src="{{ asset('images/handles.png') }}" style="width: 400px;"></td>
-    </tr>
-    </thead>
-</table>
+    <table width="100%">
+        <thead>
+        <tr>
+            <td>
+                <h4 style="color: #00aae7;">Handle Options</h4>
+                Select Shape & Colour of your Ice Stamp Handle.
+            </td>
+        </tr>
+        <tr>
+            <td><img src="{{ asset('images/handles.png') }}" style="width: 400px;"></td>
+        </tr>
+        </thead>
+    </table>
 {% endif %}
 
 <!-- Thank you message -->

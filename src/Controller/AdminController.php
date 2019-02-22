@@ -10,53 +10,16 @@ use App\Repository\ManufacturingTextRepository;
 use App\Repository\PaymentOptionTextRepository;
 use App\Repository\ShippingRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ROLE_ADMIN")
+ */
 class AdminController extends AbstractController
 {
-    /**
-     * @Route("/admin/shipping", name="admin_shipping")
-     */
-    public function shipping(Request $request, ObjectManager $manager, ShippingRepository $repo)
-    {
-        $breadcrumbs = ['Admin', 'Shipping Options'];
-
-        $shipping = new Shipping();
-        $form = $this->createForm(ShippingOptionType::class, $shipping);
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $shipping = $form->getData();
-            $manager->persist($shipping);
-            $manager->flush();
-
-            $this->addFlash('success', 'Shipping option has been added.');
-
-            return $this->redirectToRoute('admin_shipping');
-
-        }
-
-        $records = $repo->findAll();
-        $shippings = [];
-        foreach($records as $shipping){
-            $shippings[] = [
-                'id' => $shipping->getId(),
-                'name' => $shipping->getName(),
-                'description' => $shipping->getDescription(),
-            ];
-        }
-
-        return $this->render('admin/shipping.html.twig', [
-            'title' => $breadcrumbs[1],
-            'breadcrumbs' => $breadcrumbs,
-            'shippings' => $shippings,
-            'form' => $form->createView()
-        ]);
-    }
-
     /**
      * @Route("/admin/payment", name="admin_payment")
      */

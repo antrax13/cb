@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -41,6 +42,27 @@ class Product
     private $image;
 
     /**
+     * @Assert\File(mimeTypesMessage="Please upload a valid Image")
+     */
+    private $image2;
+
+    /**
+     * @return mixed
+     */
+    public function getImage2()
+    {
+        return $this->image2;
+    }
+
+    /**
+     * @param mixed $image2
+     */
+    public function setImage2($image2): void
+    {
+        $this->image2 = $image2;
+    }
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="product")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank()
@@ -50,7 +72,7 @@ class Product
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isActive = true;
+    private $isActive = false;
 
     /**
      * @ORM\Column(type="datetime")
@@ -64,18 +86,27 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Gedmo\Blameable(on="create")
      */
     private $createdBy;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Gedmo\Blameable(on="update")
      */
     private $updatedBy;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $intro;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Gedmo\Slug(fields={"name"})
+     */
+    private $slug;
 
     public function getId(): ?int
     {
@@ -218,9 +249,21 @@ class Product
         return $this->intro;
     }
 
-    public function setIntro(string $intro): self
+    public function setIntro(?string $intro): self
     {
         $this->intro = $intro;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

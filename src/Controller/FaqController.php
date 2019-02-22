@@ -6,6 +6,7 @@ use App\Entity\FaqQuestion;
 use App\Form\Admin\CreateFaqFormType;
 use App\Repository\FaqCategoryRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,6 +29,7 @@ class FaqController extends AbstractController
 
     /**
      * @Route("/admin/faq", name="admin_faq")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function adminFaq(Request $request, ObjectManager $manager, FaqCategoryRepository $repository)
     {
@@ -56,6 +58,7 @@ class FaqController extends AbstractController
 
     /**
      * @Route("/admin/faq/{id}", name="admin_faq_edit")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function adminFaqEdit(FaqQuestion $faqQuestion, Request $request, ObjectManager $manager, FaqCategoryRepository $repository)
     {
@@ -84,6 +87,7 @@ class FaqController extends AbstractController
 
     /**
      * @Route("/admin/faq/{id}/delete", name="admin_faq_delete")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function adminFaqDelete(FaqQuestion $faqQuestion, ObjectManager $manager)
     {

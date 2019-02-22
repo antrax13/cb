@@ -6,24 +6,28 @@
     <h1 class="display-4">{{ category.name }}</h1>
     <div class="row">
         {% for product in category.product %}
-            <div class="col-md-4">
-                <div class="card" style="margin-bottom: 10px;">
-                    <img class="card-img-top" src="{{ asset('/images/products/'~product.image) }}"
-                         alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural
-                            lead-in to additional content. This content is a little bit longer.</p>
-                        <p class="card-text">
-                            <small class="text-muted">Last updated 3 mins ago</small>
-                        </p>
-                        <a href="{{ path('show_product_details', {'product': product.id}) }}" class="btn btn-primary btn-block">Details</a>
+            {% if product.isActive %}
+                <div class="col-md-4">
+                    <div class="card" style="margin-bottom: 10px;">
+                        <img class="card-img-top" src="{{ asset('/images/products/'~product.image) }}"
+                             alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.intro }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">Last updated 3 mins ago</small>
+                            </p>
+                            <a href="{{ path('shop_show_product_details', {'slug': product.slug}) }}"
+                               class="btn btn-primary btn-block">Details</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         {% else %}
-            <div class="alert alert-info">
-                No products in {{ category.name }} have been found.
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    No products in {{ category.name }} have been found.
+                </div>
             </div>
         {% endfor %}
     </div>

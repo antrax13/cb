@@ -26,6 +26,16 @@ class Country
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="string", length=5, nullable=true)
+     */
+    private $fedexCode;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $fedexDeliveryDay;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,5 +68,29 @@ class Country
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function getFedexCode(): ?string
+    {
+        return $this->fedexCode;
+    }
+
+    public function setFedexCode(?string $fedexCode): self
+    {
+        $this->fedexCode = $fedexCode;
+
+        return $this;
+    }
+
+    public function getFedexDeliveryDay(): ?int
+    {
+        return $this->fedexDeliveryDay;
+    }
+
+    public function setFedexDeliveryDay(?int $fedexDeliveryDay): self
+    {
+        $this->fedexDeliveryDay = $fedexDeliveryDay;
+
+        return $this;
     }
 }

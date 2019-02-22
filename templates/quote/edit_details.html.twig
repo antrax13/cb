@@ -42,6 +42,12 @@
                                         <small class="text-muted">{{ quote.generatedAt|date('d/m/Y H:i') }}</small>
                                     </div>
                                 </li>
+                                <li class="list-group-item {{ quote.shippingCountry ? '' : 'list-group-item-danger' }}">
+                                    <div>
+                                        <h6 class="my-0">Shipping Country</h6>
+                                        <small class="text-muted">{{ quote.shippingCountry.name ?? 'Not Known' }}</small>
+                                    </div>
+                                </li>
                             </ul>
 
                         </div>

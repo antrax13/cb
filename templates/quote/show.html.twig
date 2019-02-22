@@ -24,7 +24,7 @@
                                         <h6 class="my-0">Customer</h6>
                                         <small class="text-muted">{{ quote.customer.email }}
                                         </small>
-                                        <br />
+                                        <br/>
                                         <small class="text-muted">{{ quote.customer.name }}
                                         </small>
                                     </div>
@@ -39,6 +39,12 @@
                                     <div>
                                         <h6 class="my-0">Quote Generated Date</h6>
                                         <small class="text-muted">{{ quote.generatedAt|date('d/m/Y H:i') }}</small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item {{ quote.shippingCountry ? 'list-group-item-success' : 'list-group-item-danger' }}">
+                                    <div>
+                                        <h6 class="my-0">Shipping Country</h6>
+                                        <small class="text-muted">{{ quote.shippingCountry.name ?? 'Not Known' }}</small>
                                     </div>
                                 </li>
                             </ul>
@@ -59,21 +65,29 @@
                                             <dt class="col-3">Answer</dt>
                                             <dd class="col-9">{{ quote.answer|nl2br }}</dd>
                                         </div>
-                                        <hr />
+                                        <hr/>
                                         <div class="row">
                                             <dt class="col-3">Shipping Country</dt>
                                             <dd class="col-9">{{ quote.shippingCountry.name|default('Not Known') }}</dd>
                                         </div>
                                         <div class="row">
-                                            <dt class="col-3">Shipping Code</dt>
-                                            <dd class="col-9">{{ quote.shipping ?? 'Not Known'  }}</dd>
+                                            <dt class="col-3">Shipping Time</dt>
+                                            <dd class="col-9">
+                                                {% if quote.shippingCountry %}
+                                                    {{ quote.shippingCountry.fedexDeliveryDay~' day(s)' }}
+                                                {% else %}
+                                                    Not known
+                                                {% endif %}
+                                            </dd>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="{{ path('quote_show_edit', {'id': quote.id}) }}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit Details</a>
+                                    <a href="{{ path('quote_show_edit', {'id': quote.id}) }}"
+                                       class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit Details</a>
                                     <a href="{{ path('delete_quote', {'id': quote.id}) }}"
-                                       class="btn btn-sm btn-outline-danger js-delete-quote"><i class="fas fa-trash"></i> Delete Quote</a>
+                                       class="btn btn-sm btn-outline-danger js-delete-quote"><i
+                                                class="fas fa-trash"></i> Delete Quote</a>
                                 </div>
                             </div>
                         </div>

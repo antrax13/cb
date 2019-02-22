@@ -6,6 +6,9 @@
 parameters:
     locale: 'en'
     sketch_dir: '%kernel.project_dir%/public/uploads/sketches'
+    product_dir: '%kernel.project_dir%/public/images/products'
+    custom_product_dir: '%kernel.project_dir%/public/images/custom-products'
+    gallery_dir: '%kernel.project_dir%/public/images/gallery'
 
 services:
     # default configuration for services in *this* file

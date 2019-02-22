@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <h1 class="display-4">{{ title }}</h1>
+    <p class="lead">
+        Our products are all over the world and this is just a small taste of our work. You can see ice stamps, spheric stamps, vax stamps, branding & burning irons, wooden muddlers, custom press makers, custom stamps, bar stencils in this gallery. More work from
+        CocktailBrandalism can be seen on <a href="https://www.facebook.com/CocktailBrandalism" title="CocktailBrandalism on facebook">facebook</a>,
+        <a href="https://www.instagram.com/cocktailbrandalism/" title="CocktailBrandalism on instagram">instagram</a>
+        or <a href="https://www.youtube.com/channel/UCZLus1e8f1o9FOIixlsk_IQ" title="CocktailBrandalism on youtube">youtube</a>.
+    </p>
+    <div class="row mb-4">
+        {% for image in images %}
+            <div class="col-3">
+                <a class="d-block mb-4" data-fancybox="gallery" href="{{ asset('images/gallery/'~image.file) }}"
+                   data-caption="{{ image.title }}" title="{{ image.title }}">
+                    <img src="{{ asset('images/gallery/'~image.file) }}" class="img-fluid gallery-img" alt="{{ image.title }}"/>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css"/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
+{% endblock %}

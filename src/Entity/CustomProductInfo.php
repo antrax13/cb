@@ -3,12 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CustomProductInfoRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class CustomProductInfo
 {
+    
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -25,6 +29,12 @@ class CustomProductInfo
      * @ORM\Column(type="string", length=255)
      */
     private $image;
+
+    /**
+     * @Assert\File(mimeTypesMessage="Please upload a valid Image")
+     */
+    private $image2;
+
 
     /**
      * @ORM\Column(type="text")
@@ -51,6 +61,29 @@ class CustomProductInfo
      */
     private $fetchOrder;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Slug(fields={"type"})
+     */
+    private $slug;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $createdBy;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $updatedBy;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isFeatured;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,12 +101,12 @@ class CustomProductInfo
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImage()
     {
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage($image): self
     {
         $this->image = $image;
 
@@ -139,4 +172,80 @@ class CustomProductInfo
 
         return $this;
     }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function updateDates()
+    {
+        $this->setUpdatedAt(new \DateTime());
+        if(is_null($this->createdAt)){
+            $this->setCreatedAt(new \DateTime());
+        }
+    }
+
+    public function getCreatedBy(): ?string
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(string $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getUpdatedBy(): ?string
+    {
+        return $this->updatedBy;
+    }
+
+    public function setUpdatedBy(string $updatedBy): self
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage2()
+    {
+        return $this->image2;
+    }
+
+    /**
+     * @param mixed $image2
+     */
+    public function setImage2($image2): void
+    {
+        $this->image2 = $image2;
+    }
+
+    public function getIsFeatured(): ?bool
+    {
+        return $this->isFeatured;
+    }
+
+    public function setIsFeatured(bool $isFeatured): self
+    {
+        $this->isFeatured = $isFeatured;
+
+        return $this;
+    }
+
 }

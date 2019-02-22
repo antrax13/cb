@@ -10,83 +10,81 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item {{ 'create_stamp' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('create_stamp') }}">
-                    <i class="fas fa-plus-circle fa-2x"></i>
-                    <p>Create Stamp</p></a>
-            </li>
-            <li class="nav-item {{ '123' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('create_stamp') }}">
-                    <i class="fas fa-stamp fa-2x"></i>
-                    <p>Stamps</p></a>
-            </li>
             <li class="nav-item {{ 'shop' in current_path ? 'active' }}">
                 <a class="nav-link" href="{{ path('shop') }}">
                     <i class="fas fa-shopping-basket fa-2x"></i>
                     <p>Shop</p></a>
             </li>
-
-            <li class="nav-item {{ '123' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('create_stamp') }}">
-                    <i class="fas fa-globe-americas fa-2x"></i>
-                    <p>Our Work</p></a>
+            {% if not is_granted('ROLE_ADMIN') %}
+                <li class="nav-item {{ 'create_stamp' in current_path ? 'active' }}">
+                    <a class="nav-link" href="{{ path('create_stamp') }}">
+                        <i class="fas fa-plus-circle fa-2x"></i>
+                        <p>Create Stamp</p></a>
+                </li>
+                <li class="nav-item {{ 'our_products' in current_path ? 'active' }}">
+                    <a class="nav-link" href="{{ path('our_products') }}">
+                        <i class="fas fa-stamp fa-2x"></i>
+                        <p>What we do</p></a>
+                </li>
+            {% endif %}
+            <li class="nav-item {{ 'gallery' in current_path ? 'active' }}">
+                <a class="nav-link" href="{{ path('gallery') }}">
+                    <i class="fas fa-images fa-2x"></i>
+                    <p>Gallery</p></a>
             </li>
+            {% if not is_granted('ROLE_ADMIN') %}
 
-            <li class="nav-item {{ 'contact' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('contact') }}">
-                    <i class="fas fa-envelope fa-2x"></i>
-                    <p>Contact</p></a>
-            </li>
-
-
-            <li class="nav-item {{ '123' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('our_products') }}">
-                    <i class="fas fa-comments fa-2x"></i>
-                    <p>Our Products</p></a>
-            </li>
-
-
-
+                <li class="nav-item {{ 'contact' in current_path ? 'active' }}">
+                    <a class="nav-link" href="{{ path('contact') }}">
+                        <i class="fas fa-envelope fa-2x"></i>
+                        <p>Contact</p></a>
+                </li>
+            {% endif %}
             <li class="nav-item {{ 'front_end_faq' in current_path ? 'active' }}">
                 <a class="nav-link" href="{{ path('front_end_faq') }}">
                     <i class="fas fa-question-circle fa-2x"></i>
                     <p>FAQ</p></a>
             </li>
-            <li class="nav-item {{ 'customer' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('customers') }}">
-                    <i class="fas fa-users fa-2x"></i>
-                    <p>Customers</p>
-                    <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item {{ 'quote' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('quotes') }}"><i class="fas fa-file-alt fa-2x"></i>
-                    <p>Quotes</p></a>
-            </li>
-            <li class="nav-item {{ 'invoices' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('invoices') }}"><i class="fas fa-file-invoice-dollar fa-2x"></i>
-                    <p>Invoices</p></a>
-            </li>
-            <div class="navWrapper">
-                <li class="nav-item dropdown {{ 'admin' in current_path ? 'active' }}">
-                    <a class="nav-link" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-cogs fa-2x"></i>
-                        <p>Settings</p></a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="border: 1px solid #dee2e6; margin: 0 -1px 0; border-radius: 0;">
-                        <a class="dropdown-item" href="{{ path('admin_shipping') }}">Shipping Text</a>
-                        <a class="dropdown-item" href="{{ path('admin_payment') }}">Payment Text</a>
-                        <a class="dropdown-item" href="{{ path('admin_manufacturing') }}">Manufacturing Text</a>
-                        <a class="dropdown-item" href="{{ path('admin_faq') }}">FAQ Management</a>
-                    </div>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item {{ 'customer' in current_path ? 'active' }}">
+                    <a class="nav-link" href="{{ path('customers') }}">
+                        <i class="fas fa-users fa-2x"></i>
+                        <p>Customers</p>
+                        <span class="sr-only">(current)</span></a>
                 </li>
-            </div>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_logout') }}">
-                    <i class="fas fa-sign-out-alt fa-2x"></i>
-                    <p>Logout</p>
-                </a>
-            </li>
+                <li class="nav-item {{ 'quote' in current_path ? 'active' }}">
+                    <a class="nav-link" href="{{ path('quotes') }}"><i class="fas fa-file-alt fa-2x"></i>
+                        <p>Quotes</p></a>
+                </li>
+                <li class="nav-item {{ 'invoices' in current_path ? 'active' }}">
+                    <a class="nav-link" href="{{ path('invoices') }}"><i class="fas fa-file-invoice-dollar fa-2x"></i>
+                        <p>Invoices</p></a>
+                </li>
+                <div class="navWrapper">
+                    <li class="nav-item dropdown {{ 'admin' in current_path ? 'active' }}">
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-cogs fa-2x"></i>
+                            <p>Settings</p></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown"
+                             style="border: 1px solid #dee2e6; margin: 0 -1px 0; border-radius: 0;">
+                            <a class="dropdown-item" href="{{ path('admin_payment') }}">Payment Text</a>
+                            <a class="dropdown-item" href="{{ path('admin_manufacturing') }}">Manufacturing Text</a>
+                            <a class="dropdown-item" href="{{ path('admin_faq') }}">FAQ Management</a>
+                            <a class="dropdown-item" href="{{ path('admin_product_category') }}">Product Category Management</a>
+                            <a class="dropdown-item" href="{{ path('admin_custom_products') }}">Custom Products</a>
+                            <a class="dropdown-item" href="{{ path('admin_gallery') }}">Photo Gallery Management</a>
+                        </div>
+                    </li>
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_logout') }}">
+                        <i class="fas fa-sign-out-alt fa-2x"></i>
+                        <p>Logout</p>
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

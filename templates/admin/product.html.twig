@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <h1 class="card-header">
+            <i class="fas fa-file-alt"></i> Products
+            <div class="btn-group btn-group-sm float-right" role="group" aria-label="Grid Buttons">
+                <button type="button" class="btn btn-outline-secondary" id="clear"><i class="fas fa-times"></i> Clear Filters</button>
+                <button type="button" class="btn btn-outline-success" id="export"><i class="fas fa-download"></i> Export</button>
+            </div>
+        </h1>
+        <div class="card-body">
+            <span class="text-muted">
+                <small class="text-info">Double click on row for more details.</small>
+            </span>
+            <div id="jqxGrid"></div>
+        </div>
+        <div class="card-footer">
+            <a href="{{ path('admin_product_new') }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Create New Product</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('vendor/jqwidgets/jqx-all.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            var getLocalization = function () {
+                var localizationobj = {};
+                localizationobj.currencysymbol = "£";
+                localizationobj.decimalseparator = ".";
+                localizationobj.thousandsseparator = ",";
+                return localizationobj;
+            };
+
+            var cellsrenderer = function (row, datafield, value) {
+                if (value == true) {
+                    return '<i class="fas fa-check-circle" title="Active (Visible)" style="color: green; vertical-align: bottom; line-height: 34px; font-size: 18px; text-align: center; width: 100%;"></i>';
+                } else {
+                    return '<i class="fas fa-times-circle" title="Removed (Hidden)" style="color: red; vertical-align: bottom; line-height: 34px; font-size: 18px; text-align: center; width: 100%;"></i>';
+                }
+            };
+
+
+            var data = {{ records|json_encode|raw }};
+            var source = {
+                localdata: data,
+                datafields: [
+                    {name: 'id', type: 'integer'},
+                    {name: 'is_active', type: 'bool'},
+                    {name: 'name', type: 'string'},
+                    {name: 'category', type: 'string'},
+                    {name: 'price', type: 'number'},
+                    {name: 'updated_at', type: 'date'},
+                    {name: 'updated_by', type: 'string'},
+                ],
+                datatype: "json"
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            $("#jqxGrid").jqxGrid({
+                theme: 'light',
+                width: '100%',
+                source: dataAdapter,
+                showfilterrow: true,
+                filterable: true,
+                sortable: false,
+                pageable: false,
+                showcolumnlines: false,
+                localization: getLocalization(),
+                columns: [
+                    {text: '#', columntype: 'integer', datafield: 'id', width: '10%', hidden: true},
+                    {text: 'Active', columntype: 'string', datafield: 'is_active', width: '10%', cellsrenderer: cellsrenderer, filtertype: 'checkedlist'},
+                    {text: 'Name', datafield: 'name', width: '25%'},
+                    {text: 'Category', datafield: 'category', columntype: 'string', width: '25%', filtertype: 'checkedlist'},
+                    {text: 'Price', datafield: 'price', filtertype: 'number', width: '10%', cellsalign: 'right', cellsformat: 'c2'},
+                    {text: 'Updated By', datafield: 'updated_by', filtertype: 'checkedlist', width: '10%'},
+                    {text: 'Updated', datafield: 'updated_at', filtertype: 'range', width: '20%', cellsformat: 'dd/MM/yyyy'},
+                ]
+            });
+
+            $('#clear').click(function () {
+                $("#jqxGrid").jqxGrid('clearfilters');
+            });
+
+            $('#export').click(function () {
+                $('#jqxGrid').jqxGrid('exportdata', 'xls', 'All Products {{ 'now'|date('d-m-Y') }}');
+            });
+
+            $('#jqxGrid').on('rowclick',function(e){
+                var data = $(this).jqxGrid('getrowdatabyid', e.args.rowindex);
+                var url = '{{ path('admin_product_edit_details',{'product': 'value' }) }}';
+                var urlReplaced = url.replace('value', data.id);
+                window.location.href = urlReplaced;
+            });
+
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/jqwidgets/styles/jqx.base.css') }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('vendor/jqwidgets/styles/jqx.light.css') }}" type="text/css"/>
+{% endblock %}
+
+

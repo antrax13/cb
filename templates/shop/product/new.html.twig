@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <h1 class="card-header">
+                    Create New Product
+                </h1>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.image2) }}
+                            {{ form_row(form.price) }}
+                            {{ form_row(form.category) }}
+                            {{ form_row(form.intro) }}
+                            {{ form_row(form.isActive) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.description) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Create Product</button>
+                    <a href="{{ path('admin_product') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.custom-file-input').on('change',function(){
+            var fileName = document.getElementById("product_image2").files[0].name;
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+
+            // $(this).next('.ice_stamp_custom_form_file').val(fileName);
+        })
+    </script>
+{% endblock %}

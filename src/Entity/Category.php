@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -43,18 +44,26 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Gedmo\Blameable(on="create")
      */
     private $createdBy;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Gedmo\Blameable(on="update")
      */
     private $updatedBy;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isActive = true;
+    private $isActive = false;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Gedmo\Slug(fields={"name"})
+     */
+    private $slug;
 
     public function __construct()
     {
@@ -184,5 +193,17 @@ class Category
         if(is_null($this->createdAt)){
             $this->setCreatedAt(new \DateTime());
         }
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

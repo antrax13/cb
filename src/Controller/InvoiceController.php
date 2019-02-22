@@ -14,11 +14,15 @@ use App\Repository\BrandSketchRepository;
 use App\Repository\InvoiceItemRepository;
 use App\Repository\InvoiceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @IsGranted("ROLE_ADMIN")
+ */
 class InvoiceController extends AbstractController
 {
     /**

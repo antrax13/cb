@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Invoice;
 use App\Entity\Quote;
+use App\Repository\FedexDeliveryRepository;
 use App\Repository\ManufacturingTextRepository;
 use App\Repository\PaymentOptionTextRepository;
 use App\Service\InvoicePDF;
@@ -12,17 +13,22 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use jonasarts\Bundle\TCPDFBundle\TCPDF\TCPDF;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ROLE_ADMIN")
+ */
 class PreviewController extends AbstractController
 {
     /**
      * @Route("/quote/{id}/preview-and-generate-pdf", name="quote_preview")
      */
-    public function showAction(Quote $quote, PaymentOptionTextRepository $paymentRepository, ManufacturingTextRepository $manufacturingRepository){
-        if($quote->getIsRemoved()){
-            $this->addFlash('danger','Quote has been removed. Contact Administrator to update Quote: '.$quote->getId().' manually.');
+    public function showAction(Quote $quote, PaymentOptionTextRepository $paymentRepository, ManufacturingTextRepository $manufacturingRepository)
+    {
+        if ($quote->getIsRemoved()) {
+            $this->addFlash('danger', 'Quote has been removed. Contact Administrator to update Quote: ' . $quote->getId() . ' manually.');
             return $this->redirectToRoute('quotes');
         }
 
@@ -30,7 +36,7 @@ class PreviewController extends AbstractController
 
         $manufacturing = $manufacturingRepository->find(1);
 
-        $breadcrumbs = ['Quote', '#CBQ00'.$quote->getId(), 'Quote Preview'];
+        $breadcrumbs = ['Quote', '#CBQ00' . $quote->getId(), 'Quote Preview'];
 
 
         return $this->render('quote/preview.html.twig', [
@@ -45,11 +51,43 @@ class PreviewController extends AbstractController
     /**
      * @Route("/generate-quote/{id}", name="generate_pdf")
      */
-    public function generatePDF(Quote $quote, PaymentOptionTextRepository $paymentRepository,ManufacturingTextRepository $manufacturingRepository, ObjectManager $manager)
+    public function generatePDF(Quote $quote, PaymentOptionTextRepository $paymentRepository, ManufacturingTextRepository $manufacturingRepository, FedexDeliveryRepository $fedexDeliveryRepository, ObjectManager $manager)
     {
         $payment = $paymentRepository->find(1);
 
         $manufacturing = $manufacturingRepository->find(1);
+
+        $shippingCodes = [];
+
+        $totalWeight = 0;
+        if($quote->getBrandSketchesNotRemoved()){
+            foreach($quote->getBrandSketchesNotRemoved() as $item){
+                $totalWeight+= ($item->getQty() * $item->getWeight());
+//                dump($totalWeight);
+            }
+        }
+
+//        dd($totalWeight);
+
+        if ($quote->getShippingCountry()) {
+            $shippingObjs = $fedexDeliveryRepository->findAll();
+            $shippingCode = $quote->getShippingCountry()->getFedexCode();
+            $method = 'getCode' . $shippingCode;
+            $weightSet = false;
+            foreach ($shippingObjs as $shippingOption) {
+                if($totalWeight < $shippingOption->getWeight() && $weightSet == false) {
+                    $shippingCodes[$shippingOption->getWeight()] = [
+                        $shippingOption->$method()
+                    ];
+                    $weightSet = true;
+                }
+            }
+        }
+
+        $shipping = [
+            'shippingCountry' => $quote->getShippingCountry(),
+            'shippingWeights' => $shippingCodes
+        ];
 
         $quote->setGeneratedAt(new \DateTime('now'));
         $quote->setStatus('PDF Generated');
@@ -58,9 +96,9 @@ class PreviewController extends AbstractController
         $pdfNameKeywords = [];
 
         $pdfKeywords = [$quote->getCustomer()->getName(), $quote->getCustomer()->getEmail()];
-        if(count($quote->getBrandSketchesNotRemoved()) > 0){
-            foreach($quote->getBrandSketchesNotRemoved() as $sketch){
-                if($sketch->getName()) {
+        if (count($quote->getBrandSketchesNotRemoved()) > 0) {
+            foreach ($quote->getBrandSketchesNotRemoved() as $sketch) {
+                if ($sketch->getName()) {
                     $pdfKeywords[] = $sketch->getName();
                     $pdfNameKeywords[] = $sketch->getName();
                 }
@@ -74,7 +112,7 @@ class PreviewController extends AbstractController
 // set document information
         $pdf->SetCreator('Peter Kosak');
         $pdf->SetAuthor('Peter Kosak');
-        $pdf->SetTitle('Cocktail Brandalism  #CBQ00'.$quote->getId());
+        $pdf->SetTitle('#CBQ00' . $quote->getId() . '-Cocktail Brandalism');
         $pdf->SetSubject('Quote');
         $pdf->SetKeywords($keywords);
 
@@ -104,16 +142,18 @@ class PreviewController extends AbstractController
 
         $pdfHtml = $this->renderView('partials/_print.html.twig', [
             'quote' => $quote,
+            'shipping' => $shipping,
             'paymentOption' => $payment,
-            'manufacturing' => $manufacturing
+            'manufacturing' => $manufacturing,
+            'totalWeight' => $totalWeight
         ]);
 
         $html = <<<EOF
 $pdfHtml
 EOF;
 
-        $pdf->writeHTML($html, true, false, true, false,'');
-        $pdf->Output('CocktailBrandalism-#CBQ00'.$quote->getId().'-'.implode(' ', array_unique($pdfNameKeywords)).'.pdf', 'I');
+        $pdf->writeHTML($html, true, false, true, false, '');
+        $pdf->Output('#CBQ00' . $quote->getId() . '-' . implode(' ', array_unique($pdfNameKeywords)) . '-CocktailBrandalism.pdf', 'I');
     }
 
     /**
@@ -130,7 +170,7 @@ EOF;
 // set document information
         $pdf->SetCreator('Peter Kosak');
         $pdf->SetAuthor('Peter Kosak');
-        $pdf->SetTitle('Cocktail Brandalism Invoice'.$invoice->getReference());
+        $pdf->SetTitle('Cocktail Brandalism Invoice' . $invoice->getReference());
         $pdf->SetSubject('Proforma Invoice');
         $pdf->SetKeywords('Cocktail Brandalism');
 
@@ -165,7 +205,7 @@ EOF;
 $pdfHtml
 EOF;
 
-        $pdf->writeHTML($html, true, false, true, false,'');
-        $pdf->Output('CocktailBrandalism-ProformaInvoice'.$invoice->getReference().'.pdf', 'I');
+        $pdf->writeHTML($html, true, false, true, false, '');
+        $pdf->Output('CocktailBrandalism-ProformaInvoice' . $invoice->getReference() . '.pdf', 'I');
     }
 }

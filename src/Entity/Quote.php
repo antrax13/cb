@@ -48,12 +48,6 @@ class Quote
      */
     private $isRemoved = false;
 
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Shipping")
-     */
-    private $shipping;
-
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -170,18 +164,6 @@ class Quote
     public function setIsRemoved(bool $isRemoved): self
     {
         $this->isRemoved = $isRemoved;
-
-        return $this;
-    }
-
-    public function getShipping(): ?Shipping
-    {
-        return $this->shipping;
-    }
-
-    public function setShipping(?Shipping $shipping): self
-    {
-        $this->shipping = $shipping;
 
         return $this;
     }

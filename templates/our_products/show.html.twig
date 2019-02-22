@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <img class="img-fluid" src="{{ asset('images/custom-products/'~product.image) }}" style="border: 1px solid #DDDDDD;">
+                </div>
+                <div class="col-md-6">
+                    <div class="alert alert-info" style="height: 100%;">
+                        <h1 class="display-4">{{ product.type }}</h1>
+                        <p class="lead">
+                            {{ product.intro }}
+                        </p>
+                        <p>
+                        </p>
+                        <p style="margin-bottom: 40px;">
+                            {{ product.details|raw }}
+                        </p>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

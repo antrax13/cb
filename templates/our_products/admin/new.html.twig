@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <h1 class="card-header">
+                    Create Custom Product Info
+                </h1>
+                <div class="card-body">
+                    {{ form_widget(form) }}
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Create Custom Product</button>
+                    <a href="{{ path('admin_custom_products') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.custom-file-input').on('change',function(){
+            var fileName = document.getElementById("custom_product_info_image").files[0].name;
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+
+            // $(this).next('.ice_stamp_custom_form_file').val(fileName);
+        })
+    </script>
+{% endblock %}

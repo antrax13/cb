@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card">
+                <h1 class="card-header">
+                    Update Category
+                </h1>
+                <div class="card-body">
+                    {{ form_widget(form) }}
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Changes</button>
+                    <a href="{{ path('shop') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Associated Products with this Category
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr class="table-secondary">
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Active</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td>{{ product.id }}</td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.isActive ? '<span class="text-success">Yes</span>' : '<span class="text-danger">No</span>' }}</td>
+                                <td class="float-right"><a href="{{ path('admin_product_edit_details', {'product': product.id}) }}"
+                                       class="btn btn-sm btn-info"><i class="far fa-edit"></i></a></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center">No products</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -239,7 +239,7 @@
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
 
             // $(this).next('.ice_stamp_custom_form_file').val(fileName);
-        })
+        });
 
         {% if not form.vars.valid %}
         $('#addNewModal').modal('toggle');
