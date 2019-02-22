@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="images/custom-products/{{ asset(randomCustomPhoto.image) }}" class="d-block w-100" alt="{{ randomCustomPhoto.type }}"
+                        <img src="images/custom-products/{{ randomCustomPhoto.image }}" class="d-block w-100" alt="{{ randomCustomPhoto.type }}"
                              style="">
                         <div class="carousel-item-wrapper d-none d-sm-block text-center">
                             <h2>{{ randomCustomPhoto.type }}</h2>
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="{{ asset('images/gallery/'~randomGallery.file) }}" class="d-block w-100" alt="{{ randomGallery.title }}"
+                        <img src="images/gallery/{{ randomGallery.file }}" class="d-block w-100" alt="{{ randomGallery.title }}"
                              style="">
                         <div class="carousel-item-wrapper d-none d-sm-block text-center">
                             <h2>{{ randomGallery.title }}</h2>
@@ -89,7 +89,7 @@
                             <div class="our-product-wrapper">
                                 <a href="{{ path('our_products_show', {'slug': custom.slug}) }}" title="{{ custom.type }}"
                                    class="our-product">
-                                    <img src="images/custom-products/{{ asset(custom.image) }}" class="card-img-top"
+                                    <img src="images/custom-products/{{ custom.image }}" class="card-img-top"
                                          alt="{{ custom.type }}">
                                 </a>
                             </div>
