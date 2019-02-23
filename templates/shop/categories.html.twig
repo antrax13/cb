@@ -7,9 +7,9 @@
     <div class="row">
         {% for product in category.product %}
             {% if product.isActive %}
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <div class="card" style="margin-bottom: 10px;">
-                        <img class="card-img-top" src="{{ asset('/images/products/'~product.image) }}"
+                        <img class="card-img-top" src="{{ asset('images/products/'~product.image) }}"
                              alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">{{ product.name }}</h5>
