@@ -14,6 +14,7 @@
                     <div class="alert alert-secondary">
                         {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
                         {{ form_widget(form) }}
+                        <div class="g-recaptcha" data-sitekey="6LfL8ZMUAAAAAKiPnLFlj9XZ0P7RrLktoGk0uBgb"></div>
                         <button type="submit" class="btn btn-md btn-outline-success">Send Enquiry</button>
                         {{ form_end(form) }}
                     </div>
@@ -35,4 +36,8 @@
     </div>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
 
