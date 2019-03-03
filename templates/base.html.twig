@@ -33,65 +33,7 @@
     </div>
 </main>
 <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <h3>Information</h3>
-                <p>
-                    info@cocktailbrandalism.com<br />
-                    download stamp leaflet
-                </p>
-            </div>
-            <div class="col-lg-3">
-                <h3>Quick Links</h3>
-                <p>
-                    <a href="{{ path('shop') }}">shop</a><br />
-                    <a href="{{ path('create_stamp') }}">create custom product</a><br />
-                    <a href="{{ path('gallery') }}">gallery</a><br />
-                    <a href="{{ path('contact') }}">contacts</a><br />
-                    <a href="{{ path('front_end_faq') }}">faq</a>
-                </p>
-            </div>
-            <div class="col-lg-3">
-                <h3>Shop Categories</h3>
-            </div>
-            <div class="col-lg-3">
-                <h3>Custom Items</h3>
-            </div>
-        </div>
-        <hr />
-        <div class="row">
-            <div class="col-md-12 text-center">
-                Copyright &COPY; {{ 'now'|date('Y') }} | Product of <a href="http://www.cocktailbrandalism.com" title="Cocktail Brandalism">Cocktail Brandalism</a><br />
-                <ul class="list-inline" style="margin-top: 10px; margin-bottom: 20px;">
-                    <li class="list-inline-item" style="margin: 0 20px;">
-                        <a href="https://www.facebook.com/CocktailBrandalism/" target="_blank" class="link-media-footer">
-                            <span class="fa-stack">
-                              <i class="far fa-circle fa-stack-2x"></i>
-                              <i class="fab fa-facebook-f fa-stack-1x"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item" style="margin: 0 20px;">
-                        <a href="https://www.youtube.com/channel/UCZLus1e8f1o9FOIixlsk_IQ" target="_blank" class="link-media-footer">
-                            <span class="fa-stack">
-                              <i class="far fa-circle fa-stack-2x"></i>
-                              <i class="fab fa-youtube fa-stack-1x"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item" style="margin: 0 20px;">
-                        <a href="https://www.instagram.com/cocktailbrandalism/" target="_blank" class="link-media-footer">
-                            <span class="fa-stack">
-                              <i class="far fa-circle fa-stack-2x"></i>
-                              <i class="fab fa-instagram fa-stack-1x"></i>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    {% include 'partials/_footer.html.twig' %}
 </footer>
 {% block javascripts %}
     <script

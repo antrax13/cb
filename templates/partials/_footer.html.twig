@@ -1,0 +1,76 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <h3>Information</h3>
+            <p>
+                info@cocktailbrandalism.com<br/>
+                <i class="fas fa-file-download"></i>
+                <a href="{{ asset('images/CBP.pdf') }}" title="cocktail brandalism leaflet">download stamp leaflet</a> <small class="text-muted">[3.7MB]</small>
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <h3>Quick Links</h3>
+            <p>
+                <a href="{{ path('shop') }}">shop</a><br/>
+                <a href="{{ path('create_stamp') }}">create custom product</a><br/>
+                <a href="{{ path('gallery') }}">gallery</a><br/>
+                <a href="{{ path('contact') }}">contacts</a><br/>
+                <a href="{{ path('front_end_faq') }}">faq</a>
+            </p>
+        </div>
+        <div class="col-lg-3">
+            <h3>Shop Categories</h3>
+            {% for category in get_shop_categories() %}
+                <a href="{{ path('shop_category', {'slug' : category.slug}) }}"
+                   title="{{ category.name }}">{{ category.name }}</a><br/>
+            {% else %}
+                <a href="{{ path('shop') }}" title="cocktail brandalism shop">Visit our shop</a>
+            {% endfor %}
+        </div>
+        <div class="col-lg-3">
+            <h3>Custom Items</h3>
+            {% for custom_product in get_custom_products() %}
+                <a href="{{ path('our_products_show', {'slug': custom_product.slug}) }}"
+                   title="{{ custom_product.type }}">{{ custom_product.type }}</a><br/>
+            {% else %}
+                <a href="{{ path('our_products') }}" title="cocktail brandalism - custom product page">Check our custom
+                    product page</a>
+            {% endfor %}
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            Copyright &COPY; {{ 'now'|date('Y') }} | Product of <a href="http://www.cocktailbrandalism.com"
+                                                                   title="Cocktail Brandalism">Cocktail
+                Brandalism</a><br/>
+            <ul class="list-inline" style="margin-top: 10px; margin-bottom: 20px;">
+                <li class="list-inline-item" style="margin: 0 20px;">
+                    <a href="https://www.facebook.com/CocktailBrandalism/" target="_blank" class="link-media-footer">
+                            <span class="fa-stack">
+                              <i class="far fa-circle fa-stack-2x"></i>
+                              <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </span>
+                    </a>
+                </li>
+                <li class="list-inline-item" style="margin: 0 20px;">
+                    <a href="https://www.youtube.com/channel/UCZLus1e8f1o9FOIixlsk_IQ" target="_blank"
+                       class="link-media-footer">
+                            <span class="fa-stack">
+                              <i class="far fa-circle fa-stack-2x"></i>
+                              <i class="fab fa-youtube fa-stack-1x"></i>
+                            </span>
+                    </a>
+                </li>
+                <li class="list-inline-item" style="margin: 0 20px;">
+                    <a href="https://www.instagram.com/cocktailbrandalism/" target="_blank" class="link-media-footer">
+                            <span class="fa-stack">
+                              <i class="far fa-circle fa-stack-2x"></i>
+                              <i class="fab fa-instagram fa-stack-1x"></i>
+                            </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

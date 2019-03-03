@@ -19,8 +19,29 @@ class FooterExtension extends \Twig_Extension
 
     public function __construct(CustomProductInfoRepository $customProductInfoRepository, CategoryRepository $categoryRepository)
     {
-
         $this->customProductInfoRepository = $customProductInfoRepository;
         $this->categoryRepository = $categoryRepository;
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction('get_shop_categories', array($this, 'get_shop_categories')),
+            new \Twig_SimpleFunction('get_custom_products', array($this, 'get_custom_products')),
+        ];
+    }
+
+    public function get_shop_categories()
+    {
+        return $this->categoryRepository->findBy([
+            'isActive' => true
+        ]);
+    }
+
+    public function get_custom_products()
+    {
+        return $this->customProductInfoRepository->findBy([
+            'isFeatured' => true
+        ]);
     }
 }
