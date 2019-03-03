@@ -13,6 +13,13 @@
         <td><h4 style="color: #00aae7;">Date</h4></td>
         <td>{{ 'now'|date('d/m/Y') }}</td>
     </tr>
+    {% if quote.deadlineDate %}
+    <tr>
+        <td colspan="2"></td>
+        <td><h4 style="color: #00aae7;">Deadline Date</h4></td>
+        <td>{{ quote.deadlineDate|date('d/m/Y') }}</td>
+    </tr>
+    {% endif %}
     </thead>
 </table>
 

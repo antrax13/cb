@@ -65,6 +65,10 @@
                                             <dt class="col-3">Answer</dt>
                                             <dd class="col-9">{{ quote.answer|nl2br }}</dd>
                                         </div>
+                                        <div class="row">
+                                            <dt class="col-3">Deadline Date</dt>
+                                            <dd class="col-9">{{ quote.deadlineDate ? quote.deadlineDate|date('d/m/Y') : 'Not set' }}</dd>
+                                        </div>
                                         <hr/>
                                         <div class="row">
                                             <dt class="col-3">Shipping Country</dt>

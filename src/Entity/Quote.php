@@ -69,6 +69,11 @@ class Quote
      */
     private $shippingCountry;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deadlineDate;
+
     public function __construct()
     {
         $this->brandSketches = new ArrayCollection();
@@ -223,6 +228,18 @@ class Quote
     public function setShippingCountry(?Country $shippingCountry): self
     {
         $this->shippingCountry = $shippingCountry;
+
+        return $this;
+    }
+
+    public function getDeadlineDate(): ?\DateTimeInterface
+    {
+        return $this->deadlineDate;
+    }
+
+    public function setDeadlineDate(?\DateTimeInterface $deadlineDate): self
+    {
+        $this->deadlineDate = $deadlineDate;
 
         return $this;
     }
