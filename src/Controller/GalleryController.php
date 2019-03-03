@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\GalleryPhoto;
 use App\Form\Admin\GalleryPhotoNewType;
 use App\Repository\GalleryPhotoRepository;
+use App\Service\UploaderHelper;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,7 +53,7 @@ class GalleryController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      * @Route("/admin/gallery/new", name="admin_gallery_new")
      */
-    public function newAction(Request $request, ObjectManager $manager)
+    public function newAction(Request $request, ObjectManager $manager, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Admin', 'Gallery', 'New'];
 
@@ -64,14 +65,7 @@ class GalleryController extends AbstractController
             /** @var UploadedFile $file */
             $file = $form->get('file')->getData();
             if($file){
-                $fileExtension = $file->guessExtension();
-                $fileName = md5(uniqid()) . '.' . $fileExtension;
-
-                // moves the file to the directory where tags are stored
-                $file->move(
-                    $this->getParameter('gallery_dir'),
-                    $fileName
-                );
+                $fileName = $uploaderHelper->uploadFile($file,$this->getParameter('gallery_dir'));
                 $galleryPhoto->setFile($fileName);
             }
 

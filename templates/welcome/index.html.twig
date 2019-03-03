@@ -20,36 +20,35 @@
                         <img src="{{ asset('images/products/a.jpg') }}" class="d-block w-100" alt="..."
                              style="">
                         <div class="carousel-item-wrapper d-none d-sm-block text-center">
-                            <h2>Slide label</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <a href="{{ path('gallery') }}" class="btn btn-lg btn-success btn-lg">Visit Gallery</a>
+                            <h2>Custom Stamps</h2>
+                            <p>We have over 4yrs of experience with producing of your custom ice, wax & heat stamps. You can create your custom stamp here with easy steps.</p>
+                            <a href="{{ path('create_stamp') }}" class="btn btn-sm btn-success btn-lg">Create Custom Stamp</a>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img src="{{ asset('images/products/b.jpg') }}" class="d-block w-100" alt="..."
                              style="">
                         <div class="carousel-item-wrapper d-none d-sm-block text-center">
-                            <h2>Slide label</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <a href="{{ path('gallery') }}" class="btn btn-lg btn-success btn-lg">Visit Gallery</a>
+                            <h2>Check our shop</h2>
+                            <p>We have some custom handmade muddlers & custom ice stamps ready in our shop.</p>
+                            <a href="{{ path('shop') }}" class="btn btn-sm btn-success btn-lg">Start shopping</a>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img src="{{ asset('images/products/c.jpg') }}" class="d-block w-100" alt="..."
                              style="">
                         <div class="carousel-item-wrapper d-none d-sm-block text-center">
-                            <h2>Slide label</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <a href="{{ path('gallery') }}" class="btn btn-lg btn-success btn-lg">Visit Gallery</a>
+                            <h2>Custom Barrels</h2>
+                            <p>We are providing wide range of custom products so please feel free to contact us.</p>
+                            <a href="{{ path('contact') }}" class="btn btn-sm btn-success btn-lg">Contact us</a>
                         </div>
                     </div>
                     <div class="carousel-item">
                         <img src="{{ asset('images/products/d.jpg') }}" class="d-block w-100" alt="..."
                              style="">
                         <div class="carousel-item-wrapper d-none d-sm-block text-center">
-                            <h2>Slide label</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <a href="{{ path('gallery') }}" class="btn btn-lg btn-success btn-lg">Visit Gallery</a>
+                            <h2>Custom Handmade Handles from solid wood</h2>
+                            <p>Each custom handle is unique piece of work, feel free to contact us to get one</p>
                         </div>
                     </div>
                     <div class="carousel-item">
@@ -58,7 +57,7 @@
                         <div class="carousel-item-wrapper d-none d-sm-block text-center">
                             <h2>{{ randomCustomPhoto.type }}</h2>
                             <p>Check other custom items we are making.</p>
-                            <a href="{{ path('our_products_show', {'slug': randomCustomPhoto.slug}) }}" class="btn btn-lg btn-success">Visit Custom Work</a>
+                            <a href="{{ path('our_products_show', {'slug': randomCustomPhoto.slug}) }}" class="btn btn-sm btn-success">Visit Custom Work</a>
                         </div>
                     </div>
                     <div class="carousel-item">
@@ -67,7 +66,7 @@
                         <div class="carousel-item-wrapper d-none d-sm-block text-center">
                             <h2>{{ randomGallery.title }}</h2>
                             <p>More pictures of our work can be found in our gallery section.</p>
-                            <a href="{{ path('gallery') }}" class="btn btn-lg btn-success">Visit Gallery</a>
+                            <a href="{{ path('gallery') }}" class="btn btn-sm btn-success">Visit Gallery</a>
                         </div>
                     </div>
                 </div>
@@ -95,7 +94,7 @@
                             </div>
                             <div class="card-body" style="display: block;">
                                 <h5 class="card-title">{{ custom.type }}</h5>
-                                <p class="card-text">{{ custom.intro }}</p>
+                                <p class="card-text" style="margin-bottom: 3rem;">{{ custom.intro }}</p>
                                 <a href="{{ path('our_products_show', {'slug': custom.slug}) }}"
                                    class="btn btn-primary btn-md" style="position: absolute; bottom: 20px; right: 20px;">Read More</a>
                             </div>

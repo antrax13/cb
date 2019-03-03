@@ -75,7 +75,7 @@ class PreviewController extends AbstractController
             $method = 'getCode' . $shippingCode;
             $weightSet = false;
             foreach ($shippingObjs as $shippingOption) {
-                if($totalWeight < $shippingOption->getWeight() && $weightSet == false) {
+                if($totalWeight <= $shippingOption->getWeight() && $weightSet == false) {
                     $shippingCodes[$shippingOption->getWeight()] = [
                         $shippingOption->$method()
                     ];

@@ -3,14 +3,17 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <h1 class="display-4">What we do?</h1>
-    <p class="lead">The placeholder text, beginning with the line “Lorem ipsum dolor sit amet, consectetur adipiscing
-        elit”, looks like Latin because in its youth, centuries ago, it was Latin.
-
-        Richard McClintock, a Latin scholar from Hampden-Sydney College, is credited with discovering the source behind
-        the ubiquitous filler text. In seeing a sample of lorem ipsum, his interest was piqued by consectetur—a genuine,
-        albeit rare, Latin word. Consulting a Latin dictionary led McClintock to a passage from De Finibus Bonorum et
-        Malorum (“On the Extremes of Good and Evil”), a first-century B.C. text from the Roman philosopher Cicero.</p>
+    <h1 class="display-4">What we do</h1>
+    <p class="lead">
+        CocktailBrandalism offers large variety of custom products that are often required during the process of making cocktails.<br/>
+        Some of our tools are being used in conjuction with ice like ice stamps, sphere stamps or ice press makers to brand your ice
+        blocks and ice balls. <br/>
+        Another group of our custom tools is bar & restaurant equipments like branding irons, bar stencils & muddlers.
+        Below is our compilation of most popular custom products that we have been producing in last
+        couple of years.<br/>
+        If you haven't found item that you were looking for then feel free to
+        <a href="{{ path('contact') }}">contact us</a> and we will do our best to make it happen.
+    </p>
     <div class="row">
         {% for item in items %}
             <div class="col-md-3">
@@ -24,7 +27,7 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ item.type }}</h5>
-                        <p class="card-text">{{ item.intro }}</p>
+                        <p class="card-text" style="min-height: 120px;">{{ item.intro }}</p>
                         <a href="{{ path('our_products_show', {'slug': item.slug}) }}"
                            class="btn btn-primary btn-sm btn-block">Read More</a>
                     </div>

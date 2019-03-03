@@ -17,6 +17,7 @@ use App\Repository\HandleShapeRepository;
 use App\Repository\StampQuoteRepository;
 use App\Repository\StampShapeRepository;
 use App\Repository\StampTypeRepository;
+use App\Service\UploaderHelper;
 use Couchbase\Document;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
@@ -107,7 +108,7 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/{identifier}/items/ice-stamp", name="create_stamp_items_ice_stamp")
      */
-    public function createIceStamp(Request $request, StampQuote $enquiry, HandleShapeRepository $shapeRepository, HandleColorRepository $colorRepository, ObjectManager $manager, StampShapeRepository $stampShapeRepository, StampTypeRepository $stampTypeRepository)
+    public function createIceStamp(Request $request, StampQuote $enquiry, HandleShapeRepository $shapeRepository, HandleColorRepository $colorRepository, ObjectManager $manager, StampShapeRepository $stampShapeRepository, StampTypeRepository $stampTypeRepository, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Create Your Stamp', 'Items', 'Ice Stamp'];
 
@@ -142,17 +143,13 @@ class CreateStampController extends AbstractController
 
             /** @var UploadedFile $file */
             $file = $form->get('file')->getData();
+            $fileName = $uploaderHelper->uploadFile($file,$this->getParameter('sketch_dir'));
+
             $fileExtension = $file->guessExtension();
-            $fileName = md5(uniqid()) . '.' . $fileExtension;
             $fileOriginal = $file->getClientOriginalName();
 
             $fileSize = number_format($file->getSize() / 1048576, 2) . 'MB';
 
-            // moves the file to the directory where tags are stored
-            $file->move(
-                $this->getParameter('sketch_dir'),
-                $fileName
-            );
 
             $sketch = new StampQuoteSketch();
             $sketch->setStampQuote($enquiry);

@@ -80,7 +80,7 @@ class CustomProductInfo
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isFeatured;
+    private $isFeatured = false;
 
 
 

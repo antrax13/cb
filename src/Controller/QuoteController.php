@@ -11,7 +11,9 @@ use App\Form\QuoteFormType;
 use App\Form\SketchEditType;
 use App\Repository\InvoiceRepository;
 use App\Repository\QuoteRepository;
+use App\Service\UploaderHelper;
 use Doctrine\Common\Persistence\ObjectManager;
+use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -37,6 +39,7 @@ class QuoteController extends AbstractController
             $array[] = [
                 'id' => $quote->getId(),
                 'quote_id' =>  '#CBQ00'.$quote->getId(),
+                'quote_shipping_country' => $quote->getShippingCountry() ? $quote->getShippingCountry()->getName() : 'Not Known',
                 'request' => $quote->getRequest(),
                 'customer' => $quote->getCustomer()->getEmail(),
                 'sketches' => count($quote->getBrandSketchesNotRemoved()),
@@ -139,7 +142,7 @@ class QuoteController extends AbstractController
     /**
      * @Route("/quote/{id}/sketch", name="quote_sketch_show")
      */
-    public function showQuoteSketches(Request $request, Quote $quote, ObjectManager $manager)
+    public function showQuoteSketches(Request $request, Quote $quote, ObjectManager $manager, UploaderHelper $uploaderHelper)
     {
         if($quote->getIsRemoved()){
             $this->addFlash('danger','Quote has been removed. Contact Administrator to update Quote: '.$quote->getId().' manually.');
@@ -160,11 +163,9 @@ class QuoteController extends AbstractController
             $fileOriginal = $file->getClientOriginalName();
             $fileSize = number_format($file->getSize() / 1048576, 2) . 'MB';
 
-            // moves the file to the directory where tags are stored
-            $file->move(
-                $this->getParameter('sketch_dir'),
-                $fileName
-            );
+            $fileName = $uploaderHelper->uploadFile($file, $this->getParameter('sketch_dir'));
+
+
 
             $sketch->setQuote($quote);
             $sketch->setOriginalFile($fileOriginal);
@@ -243,7 +244,7 @@ class QuoteController extends AbstractController
     /**
      * @Route("/sketch/{id}/edit", name="edit_sketch")
      */
-    public function editSketch(Request $request, BrandSketch $sketch, ObjectManager $manager)
+    public function editSketch(Request $request, BrandSketch $sketch, ObjectManager $manager, UploaderHelper $uploaderHelper)
     {
 
         $breadcrumbs = ['Sketch', $sketch->getId(), 'Edit'];
@@ -257,15 +258,9 @@ class QuoteController extends AbstractController
             $file = $form->get('newFile')->getData();
             if($file){
                 $fileExtension = $file->guessExtension();
-                $fileName = md5(uniqid()) . '.' . $fileExtension;
                 $fileOriginal = $file->getClientOriginalName();
                 $fileSize = number_format($file->getSize() / 1048576, 2) . 'MB';
-
-                // moves the file to the directory where tags are stored
-                $file->move(
-                    $this->getParameter('sketch_dir'),
-                    $fileName
-                );
+                $fileName = $uploaderHelper->uploadFile($file, $this->getParameter('sketch_dir'));
 
                 $sketch->setOriginalFile($fileOriginal);
                 $sketch->setSize($fileSize);

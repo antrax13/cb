@@ -1,5 +1,6 @@
 {% set current_path = app.request.get('_route') %}
-<nav class="navbar navbar-expand-md navbar-light bg-light cb-navbar" style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">
+<nav class="navbar navbar-expand-md navbar-light bg-light cb-navbar"
+     style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">
     <a class="navbar-brand" href="{{ path('welcome') }}">
         <img src="{{ asset('images/logo.svg') }}" height="60">
     </a>
@@ -10,12 +11,12 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item {{ 'shop' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('shop') }}">
-                    <i class="fas fa-shopping-basket fa-2x"></i>
-                    <p>Shop</p></a>
-            </li>
             {% if not is_granted('ROLE_ADMIN') %}
+                <li class="nav-item {{ 'shop' in current_path ? 'active' }}">
+                    <a class="nav-link" href="{{ path('shop') }}">
+                        <i class="fas fa-shopping-basket fa-2x"></i>
+                        <p>Shop</p></a>
+                </li>
                 <li class="nav-item {{ 'create_stamp' in current_path ? 'active' }}">
                     <a class="nav-link" href="{{ path('create_stamp') }}">
                         <i class="fas fa-plus-circle fa-2x"></i>
@@ -26,40 +27,41 @@
                         <i class="fas fa-stamp fa-2x"></i>
                         <p>What we do</p></a>
                 </li>
-            {% endif %}
-            <li class="nav-item {{ 'gallery' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('gallery') }}">
-                    <i class="fas fa-images fa-2x"></i>
-                    <p>Gallery</p></a>
-            </li>
-            {% if not is_granted('ROLE_ADMIN') %}
-
+                <li class="nav-item {{ 'gallery' in current_path ? 'active' }}">
+                    <a class="nav-link" href="{{ path('gallery') }}">
+                        <i class="fas fa-images fa-2x"></i>
+                        <p>Gallery</p></a>
+                </li>
                 <li class="nav-item {{ 'contact' in current_path ? 'active' }}">
                     <a class="nav-link" href="{{ path('contact') }}">
                         <i class="fas fa-envelope fa-2x"></i>
                         <p>Contact</p></a>
                 </li>
+                <li class="nav-item {{ 'front_end_faq' in current_path ? 'active' }}">
+                    <a class="nav-link" href="{{ path('front_end_faq') }}">
+                        <i class="fas fa-question-circle fa-2x"></i>
+                        <p>FAQ</p></a>
+                </li>
             {% endif %}
-            <li class="nav-item {{ 'front_end_faq' in current_path ? 'active' }}">
-                <a class="nav-link" href="{{ path('front_end_faq') }}">
-                    <i class="fas fa-question-circle fa-2x"></i>
-                    <p>FAQ</p></a>
-            </li>
             {% if is_granted('ROLE_ADMIN') %}
-                <li class="nav-item {{ 'customer' in current_path ? 'active' }}">
-                    <a class="nav-link" href="{{ path('customers') }}">
-                        <i class="fas fa-users fa-2x"></i>
-                        <p>Customers</p>
-                        <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item {{ 'quote' in current_path ? 'active' }}">
-                    <a class="nav-link" href="{{ path('quotes') }}"><i class="fas fa-file-alt fa-2x"></i>
-                        <p>Quotes</p></a>
-                </li>
-                <li class="nav-item {{ 'invoices' in current_path ? 'active' }}">
-                    <a class="nav-link" href="{{ path('invoices') }}"><i class="fas fa-file-invoice-dollar fa-2x"></i>
-                        <p>Invoices</p></a>
-                </li>
+                <div class="navWrapper">
+                    <li class="nav-item dropdown
+                        {{ 'quote' in current_path or 'customer' in current_path or 'sketches' in current_path or 'invoice' in current_path ? 'active' }}">
+                            <a class="nav-link" href="#" id="navbarDropdown1" role="button"
+                               data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-alt fa-2x"></i>
+                            <p>Custom Quotes</p></a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown1"
+                             style="border: 1px solid #dee2e6; margin: 0 -1px 0; border-radius: 0;">
+                            <a class="dropdown-item" href="{{ path('customers') }}"><i class="fas fa-users" style="width: 20px;"></i> Customers</a>
+                            <a class="dropdown-item" href="{{ path('quotes') }}"><i class="fas fa-file-alt" style="width: 20px;"></i> Quotes</a>
+                            <a class="dropdown-item" href="{{ path('sketches') }}"><i class="far fa-images" style="width: 20px;"></i> Sketches</a>
+                            <a class="dropdown-item" href="{{ path('invoices') }}"><i class="fas fa-file-invoice-dollar" style="width: 20px;"></i> Invoices</a>
+                        </div>
+                    </li>
+                </div>
+
+
                 <div class="navWrapper">
                     <li class="nav-item dropdown {{ 'admin' in current_path ? 'active' }}">
                         <a class="nav-link" href="#" id="navbarDropdown" role="button"
@@ -72,7 +74,8 @@
                             <a class="dropdown-item" href="{{ path('admin_payment') }}">Payment Text</a>
                             <a class="dropdown-item" href="{{ path('admin_manufacturing') }}">Manufacturing Text</a>
                             <a class="dropdown-item" href="{{ path('admin_faq') }}">FAQ Management</a>
-                            <a class="dropdown-item" href="{{ path('admin_product_category') }}">Product Category Management</a>
+                            <a class="dropdown-item" href="{{ path('admin_product_category') }}">Product Category
+                                Management</a>
                             <a class="dropdown-item" href="{{ path('admin_custom_products') }}">Custom Products</a>
                             <a class="dropdown-item" href="{{ path('admin_gallery') }}">Photo Gallery Management</a>
                         </div>

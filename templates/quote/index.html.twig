@@ -4,17 +4,13 @@
 
 {% block body %}
     <div class="card">
-        <h1 class="card-header">
-            <i class="fas fa-file-alt"></i> {{ title }}
-            <div class="btn-group btn-group-sm float-right" role="group" aria-label="Grid Buttons">
-                <button type="button" class="btn btn-outline-secondary" id="clear"><i class="fas fa-times"></i> Clear Filters</button>
-                <button type="button" class="btn btn-outline-success" id="export"><i class="fas fa-download"></i> Export</button>
-            </div>
-        </h1>
+        <div class="card-header">
+            {% include 'partials/_admin_tabs.html.twig' %}
+        </div>
         <div class="card-body">
-            <span class="text-muted">
+            <small class="text-muted">
                 Double click on row for more details.
-            </span>
+            </small>
             <div id="jqxGrid"></div>
         </div>
         <div class="card-footer">
@@ -34,6 +30,7 @@
                 datafields: [
                     {name: 'id', type: 'integer'},
                     {name: 'quote_id', type: 'string'},
+                    {name: 'quote_shipping_country', type: 'string'},
                     {name: 'request', type: 'string'},
                     {name: 'customer', type: 'string'},
                     {name: 'sketches', type: 'number'},
@@ -55,10 +52,11 @@
                 columns: [
                     {text: '#', columntype: 'integer', datafield: 'id', width: '10%', hidden: true},
                     {text: '#', columntype: 'string', datafield: 'quote_id', width: '10%'},
+                    {text: 'Country', columntype: 'string', datafield: 'quote_shipping_country', width: '10%'},
                     {text: 'Request', datafield: 'request', width: '25%'},
                     {text: 'Email of Customer', datafield: 'customer', columntype: 'string', width: '25%'},
                     {text: 'Sketches', datafield: 'sketches', filtertype: 'number', width: '10%'},
-                    {text: 'Generated At', datafield: 'generated_at', filtertype: 'range', width: '20%', cellsformat: 'dd/MM/yyyy'},
+                    {text: 'Generated At', datafield: 'generated_at', filtertype: 'range', width: '10%', cellsformat: 'dd/MM/yyyy'},
                     {text: 'Status', datafield: 'status', filtertype: 'checkedlist', width: '10%'},
                 ]
             });

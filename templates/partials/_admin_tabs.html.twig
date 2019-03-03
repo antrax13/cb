@@ -1,0 +1,21 @@
+{% set current_path = app.request.get('_route') %}
+<ul class="nav nav-tabs card-header-tabs">
+    <li class="nav-item">
+        <a class="nav-link {{ 'customers' in current_path ? 'active' }}" href="{{ path('customers') }}"><i class="fas fa-users"></i> Customers</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ 'quotes' in current_path ? 'active' }}" href="{{ path('quotes') }}"><i class="fas fa-file-alt"></i> Quotes</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ 'sketches' in current_path ? 'active' }}" href="{{ path('sketches') }}"><i class="far fa-images"></i> Sketches</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ 'invoices' in current_path ? 'active' }}" href="{{ path('invoices') }}"><i class="fas fa-file-invoice-dollar"></i> Invoices</a>
+    </li>
+    <li class="nav-item ml-auto">
+        <div class="btn-group btn-group-sm float-right" role="group" aria-label="Grid Buttons">
+            <button type="button" class="btn btn-outline-secondary" id="clear"><i class="fas fa-times"></i> Clear Filters</button>
+            <button type="button" class="btn btn-outline-success" id="export"><i class="fas fa-download"></i> Export</button>
+        </div>
+    </li>
+</ul>

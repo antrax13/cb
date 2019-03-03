@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ContactFormType;
+use App\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,14 +13,18 @@ class ContactController extends AbstractController
     /**
      * @Route("/contact", name="contact")
      */
-    public function index(Request $request)
+    public function index(Request $request, Mailer $mailer)
     {
         $breadcrumbs = ['Contact'];
         $form = $this->createForm(ContactFormType::class);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid() && $this->captchaverify($request->get('g-recaptcha-response'))){
-            $this->addFlash('success','Thank you. Message has been sent. We will answer your enquire as soon as posible.');
+            $this->addFlash('success','Thank you. Message has been sent. <strong>Please check your junk/spam folder</strong>. We will answer your enquire as soon as possible.');
+            $contactFormData = $form->getData();
+
+            $mailer->sendContactUs($contactFormData);
+
             return $this->redirectToRoute('contact');
         }
 

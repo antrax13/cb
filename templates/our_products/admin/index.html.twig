@@ -34,6 +34,7 @@
                 datafields: [
                     {name: 'id', type: 'integer'},
                     {name: 'type', type: 'string'},
+                    {name: 'fetch_order', type: 'number'},
                     {name: 'intro', type: 'string'},
                 ],
                 datatype: "json"
@@ -49,9 +50,10 @@
                 pageable: false,
                 showcolumnlines: false,
                 columns: [
-                    {text: '#', columntype: 'integer', datafield: 'id', width: '10%', hidden: false},
-                    {text: 'Type', columntype: 'string', datafield: 'type', width: '20%'},
-                    {text: 'Intro', datafield: 'intro'},
+                    {text: '#', columntype: 'integer', datafield: 'id', width: '10%', hidden: true},
+                    {text: 'Type', columntype: 'string', datafield: 'type', filtertype: 'checkedlist', width: '15%'},
+                    {text: 'Order', datafield: 'fetch_order', filtertype: 'number', width: '5%'},
+                    {text: 'Intro', datafield: 'intro', width: '80%'},
                 ]
             });
 

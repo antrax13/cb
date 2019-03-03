@@ -5,9 +5,15 @@
 {% block body %}
     <div class="jumbotron text-center">
         <h1 class="display-4 text-center">Create Your Own Custom Stamp</h1>
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+        <p class="lead">
+            You will be able to submit your stamp picture and we will come back to you with a price quote. Each logo is unique so we would not be able to estimate prices without additional information.
+        </p>
         <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-        <a class="btn btn-outline-primary btn-lg" href="{{ path('create_stamp_contact_details_new') }}" role="button">Start now</a>
+        <p>
+            Follow easy steps to create your custom stamp(s). Have your logo, brand prepared in high resolution or vector graphic.<br />
+            If you are looking for something really specific don't hesitate and <a href="{{ path('contact') }}">contact us</a>.
+        </p>
+        <a class="btn btn-outline-success btn-lg" href="{{ path('create_stamp_contact_details_new') }}" role="button">Create Your Custom Stamp now</a>
     </div>
 {% endblock %}
+

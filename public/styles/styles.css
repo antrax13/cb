@@ -55,7 +55,7 @@ body {
 .footer {
     margin-top: 20px;
     width: 100%;
-    height: 100px; /* Set the fixed height of the footer here */
+    height: 100%; /* Set the fixed height of the footer here */
     /*line-height: 100px; !* Vertically center the text there *!*/
     padding-top: 20px;
     border-top: 1px solid rgba(0, 0, 0, .125);

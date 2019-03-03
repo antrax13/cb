@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\Shop\ProductType;
 use App\Repository\ProductRepository;
+use App\Service\UploaderHelper;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +21,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/admin/product/new", name="admin_product_new")
      */
-    public function newProduct(Request $request, ObjectManager $manager)
+    public function newProduct(Request $request, ObjectManager $manager, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Shop','Product','New'];
 
@@ -33,14 +34,7 @@ class ProductController extends AbstractController
             /** @var UploadedFile $file */
             $file = $form->get('image2')->getData();
             if($file){
-                $fileExtension = $file->guessExtension();
-                $fileName = md5(uniqid()) . '.' . $fileExtension;
-
-                // moves the file to the directory where tags are stored
-                $file->move(
-                    $this->getParameter('product_dir'),
-                    $fileName
-                );
+                $fileName = $uploaderHelper->uploadFile($file, $this->getParameter('product_dir'));
                 $product->setImage($fileName);
             }
 
@@ -61,7 +55,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/admin/product/{product}/edit", name="admin_product_edit_details")
      */
-    public function editProduct(Product $product, Request $request, ObjectManager $manager)
+    public function editProduct(Product $product, Request $request, ObjectManager $manager, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Shop', $product->getName(), 'Edit'];
 
@@ -73,14 +67,7 @@ class ProductController extends AbstractController
             /** @var UploadedFile $file */
             $file = $form->get('image2')->getData();
             if($file){
-                $fileExtension = $file->guessExtension();
-                $fileName = md5(uniqid()) . '.' . $fileExtension;
-
-                // moves the file to the directory where tags are stored
-                $file->move(
-                    $this->getParameter('product_dir'),
-                    $fileName
-                );
+                $fileName = $uploaderHelper->uploadFile($file, $this->getParameter('product_dir'));
                 $product->setImage($fileName);
             }
 

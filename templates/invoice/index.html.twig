@@ -4,13 +4,9 @@
 
 {% block body %}
     <div class="card">
-        <h1 class="card-header">
-            <i class="fas fa-file-invoice-dollar"></i> {{ title }}
-            <div class="btn-group btn-group-sm float-right" role="group" aria-label="Grid Buttons">
-                <button type="button" class="btn btn-outline-secondary" id="clear"><i class="fas fa-times"></i> Clear Filters</button>
-                <button type="button" class="btn btn-outline-success" id="export"><i class="fas fa-download"></i> Export</button>
-            </div>
-        </h1>
+        <div class="card-header">
+            {% include 'partials/_admin_tabs.html.twig' %}
+        </div>
         <div class="card-body">
             <small class="text-muted">
                 Double click on row for more details.
@@ -19,7 +15,6 @@
         </div>
         <div class="card-footer">
             <a href="{{ path('invoices_new') }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Create New Invoice</a>
-
         </div>
     </div>
 {% endblock %}
