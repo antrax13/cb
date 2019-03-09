@@ -71,6 +71,25 @@
                                         </div>
                                         <hr/>
                                         <div class="row">
+                                            <dt class="col-3">Shipping Details</dt>
+                                            <dd class="col-3">
+                                                {% if quote.shippingDetails %}
+                                                    {{ quote.shippingDetails|nl2br }}
+                                                {% else %}
+                                                    <i class="fas fa-exclamation-circle text-danger"></i> Not Known
+                                                {% endif %}
+                                            </dd>
+                                            <dt class="col-3">Billing Details</dt>
+                                            <dd class="col-3">
+                                                {% if quote.billingDetails %}
+                                                    {{ quote.billingDetails|nl2br }}
+                                                {% else %}
+                                                    <i class="fas fa-exclamation-circle text-danger"></i> Not Known
+                                                {% endif %}
+                                            </dd>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
                                             <dt class="col-3">Shipping Country</dt>
                                             <dd class="col-9">{{ quote.shippingCountry.name|default('Not Known') }}</dd>
                                         </div>

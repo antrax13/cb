@@ -15,11 +15,16 @@
                     </div>
                 {% endif %}
                 <h1 class="display-4">Ice Stamp</h1>
-                <p class="lead">Please provide the following details for your custom Ice Stamp.<br/>Default stamp
-                    details: depth <b>2mm</b>, <b>square shape</b> with size of <b>40mm</b>.<br/> If you have any
-                    questions please contact us on <b>info@cocktailbrandalism.com</b></p>
+                <p class="lead">Please provide the following details for your custom Ice Stamp.<br/>
+                    Technical Details:
+                    <ul>
+                        <li>Engraving depth: Default <b>2mm</b></li>
+                        <li>Lead free brass</li>
+                        <li>Wooden Handle: Default 1A</li>
+                    </ul>
+                    If you have any questions please contact us on <b>info@cocktailbrandalism.com</b></p>
                 <hr/>
-                <h1>Upload the file</h1>
+                <h1>Upload your file</h1>
                 <p class="lead">Upload your logo, not all logos are suitable for ice stamp. We might contact you in this
                     case to work with you to make it possible.</p>
                 {% if not form.vars.valid %}
@@ -51,11 +56,15 @@
                 {% endif %}
                 <label class="control-label lead" style="margin-right: 47px;">Enter Quantity</label>
                 <div class="form-check-inline">
-                    <input type="text" class="form-control" name="ice_stamp_custom_form[qty]" value="{{ form.vars.submitted and form.vars.data.qty ? form.vars.data.qty : '' }}">
+                    <input type="number" class="form-control" name="ice_stamp_custom_form[qty]" value="{{ form.vars.submitted and form.vars.data.qty ? form.vars.data.qty : '' }}">
                 </div>
                 <hr/>
                 <h1>Shape of the Stamp & Size details</h1>
                 <p class="lead">Please select shape of the ice stamp.</p>
+                <p>
+                    Please note that our standard sizes are <b>40mm(1.6") and 50mm(2")</b> for circle(diameter)/square/rectangle. Bigger size will increase the final price.<br />
+                    <b>Sphere stamp</b> size is calculated based on <b>ball diameter and 100 degree angle</b> and usually will increase the price by <b>£50-60</b> compare to flat/normal ice stamp.
+                </p>
                 <div class="row ">
                     <div class="item-selection-custom text-center">
                         <div data-stamp-shape="Square" class="custom-shape-stamp-wrapper square
@@ -163,7 +172,7 @@
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="sizeSquare"
                                            name="ice_stamp_custom_form[sizeSquare]" value="{{ form.vars.submitted and form.vars.data.sizeSquare ? form.vars.data.sizeSquare : '' }}">
-                                    <small class="form-text text-muted">include units</small>
+                                    <small class="form-text text-muted">include units, our standard sizes 40mm(1.6") and 50mm (2")</small>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +182,7 @@
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="sizeRectangleA"
                                            name="ice_stamp_custom_form[sizeRectangleA]" value="{{ form.vars.submitted and form.vars.data.sizeRectangleA ? form.vars.data.sizeRectangleA : '' }}">
-                                    <small class="form-text text-muted">include units</small>
+                                    <small class="form-text text-muted">include units, our standard sizes 40mm(1.6") and 50mm (2"), minimum size 16mm</small>
 
                                 </div>
                             </div>
@@ -182,7 +191,7 @@
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="sizeRectangleB"
                                            name="ice_stamp_custom_form[sizeRectangleB]" value="{{ form.vars.submitted and form.vars.data.sizeRectangleB ? form.vars.data.sizeRectangleB : '' }}">
-                                    <small class="form-text text-muted">include units</small>
+                                    <small class="form-text text-muted">include units, our standard sizes 40mm(1.6") and 50mm (2"), minimum size 16mm</small>
 
                                 </div>
                             </div>
@@ -193,7 +202,7 @@
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="sizeCircle"
                                            name="ice_stamp_custom_form[sizeCircle]" value="{{ form.vars.submitted and form.vars.data.sizeCircle ? form.vars.data.sizeCircle : '' }}">
-                                    <small class="form-text text-muted">include units</small>
+                                    <small class="form-text text-muted">include units, our standard sizes 40mm(1.6") and 50mm (2") for diameter</small>
 
                                 </div>
                             </div>
@@ -225,7 +234,7 @@
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="diameterIceBall"
                                            name="ice_stamp_custom_form[diameterIceBall]" value="{{ form.vars.submitted and form.vars.data.diameterIceBall ? form.vars.data.diameterIceBall : '' }}">
-                                    <small class="form-text text-muted">include units</small>
+                                    <small class="form-text text-muted">include units in order to calculate stamp dimensions</small>
 
                                 </div>
                             </div>

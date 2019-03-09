@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+        <div class="card-header">
+            {% include 'create_stamp/partials/_tabs.html.twig' %}
+        </div>
+        <div class="card-body">
+            {{ form_widget(form) }}
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-md btn-success"><i class="fas fa-save"></i> Save Details</button>
+            <a href="{{ path('create_stamp_contact_details_show', {'identifier' : enquiry.identifier}) }}" class="btn btn-md btn-outline-secondary float-right">Cancel</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

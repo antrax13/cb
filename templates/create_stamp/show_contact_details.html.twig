@@ -23,8 +23,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <button type="submit" class="btn btn-md btn-info"><i class="fas fa-edit"></i> Edit Details</button>
-            <a href="#" class="btn btn-md btn-outline-secondary float-right">Cancel</a>
+            <a href="{{ path('create_stamp_contact_details_edit', {'identifier': enquiry.identifier}) }}" class="btn btn-md btn-info"><i class="fas fa-edit"></i> Edit Details</a>
         </div>
     </div>
 {% endblock %}

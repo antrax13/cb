@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+            <div class="card-header">
+                {% include 'create_stamp/partials/_tabs.html.twig' %}
+            </div>
+            <div class="card-body">
+                {% if not form.vars.valid %}
+                    <div class="alert alert-danger">
+                        There was a problem to submit your form. Please scroll down for more information.
+                    </div>
+                {% endif %}
+                <h1 class="display-4">Heat Stamp</h1>
+                <p class="lead">Please provide the following details for your custom Heat Stamp.<br/>
+                    Technical Details:
+                <ul>
+                    <li>Engraving depth: Default <b>4mm</b></li>
+                    <li>Lead free brass</li>
+                    <li>Metal Handle</li>
+                </ul>
+                If you have any questions please contact us on <b>info@cocktailbrandalism.com</b></p>
+                <hr/>
+                <h1>Upload your file</h1>
+                <p class="lead">Upload your logo, not all logos are suitable for heat stamp. We might contact you in this
+                    case to work with you to make it possible.</p>
+                {{ form_row(form.file) }}
+                <hr/>
+                <h1>Quantity</h1>
+                <p class="lead">Each logo is unique therefor we are not able to reduce the price of single heat stamp however
+                    with higher volume (usually 10+) of the same heat stamp we can push the price lower.</p>
+                {{ form_row(form.qty) }}
+                <hr/>
+                <h1>Shape of the Heat Stamp & Size details</h1>
+                <p class="lead">
+                    We will suggest the best shape to create a heat stamp based on your logo.
+                </p>
+                Our standard shapes are:
+                <ul>
+                    <li>Circle</li>
+                    <li>Square</li>
+                    <li>Rectangle</li>
+                </ul>
+                <b>Minimum size we can do is 16mm</b>.
+                    {{ form_row(form.customSizeNote) }}
+                <hr />
+                <h1>Additional Comment</h1>
+                {{ form_row(form.comment) }}
+            </div>
+            <div class="card-footer">
+                <button type="button" id="js-create-visible" class="btn btn-success btn-md"><i class="fas fa-save"></i> Save
+                    Heat Stamp
+                </button>
+                <button type="submit" id="js-create-real" class="btn btn-success btn-md d-none"><i class="fas fa-save"></i>
+                    Save Heat Stamp
+                </button>
+                <a href="{{ path('create_stamp_items', {'identifier' : enquiry.identifier}) }}"
+                   class="btn btn-md btn-outline-secondary float-right">Close</a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.custom-file-input').on('change',function(){
+            var fileName = document.getElementById("heat_stamp_custom_form_file").files[0].name;
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+        $('#js-create-visible').on('click', function(e){
+            e.preventDefault();
+            swal({
+                title: 'Are all details correct?',
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fas fa-check"></i>  Yes',
+                allowOutsideClick: false,
+            }).then((result) => {
+                if (result.value) {
+                    $('#js-create-real').click();
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

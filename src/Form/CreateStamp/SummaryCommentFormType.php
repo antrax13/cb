@@ -25,6 +25,7 @@ class SummaryCommentFormType extends AbstractType
             'label' => false,
             'attr' => [
                 'rows' => 4,
+                'readonly' => true,
             ]
         ]);
     }

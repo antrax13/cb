@@ -8,8 +8,8 @@
             {% include 'create_stamp/partials/_tabs.html.twig' %}
         </div>
         <div class="card-body">
-            <h1 class="display-4">Select type of stamp you would like to create</h1>
-            <p class="lead">If you would like different options, sizes, handle</p>
+            <h1 class="display-4">Select type of item you would like to create</h1>
+            <p class="lead">If you would like to get a quote for something more specific please drop us an <a href="{{ path('contact') }}">email or contact us</a>. </p>
             <div class="row no-top-border-card">
                 <div class="col-lg-12">
                     <div class="card-deck">
@@ -18,12 +18,7 @@
                                  style="border-top: 1px solid rgba(0,0,0,.125)">
                             <div class="card-body">
                                 <h5 class="card-title">Ice Stamp</h5>
-                                <p class="card-text">Napkins, coaster, branded glasses or mixing sticks... we are all
-                                    familiar with them but
-                                    have you seen stamp on ice?<br />
-                                    That's right, ice stamp is a great tool to promote your
-                                    brand, venue, event etc.<br />
-                                    They come with different shapes, sizes, handles. </p>
+                                <p class="card-text">From this option you will be able to submit all information that we require in order to create quote and manufacture an ice stamp.</p>
                             </div>
                             <div class="card-footer">
                                 <a href="{{ path('create_stamp_items_ice_stamp', {'identifier' : enquiry.identifier}) }}" class="btn btn-success btn-md btn-block">Create Ice Stamp</a>
@@ -33,14 +28,13 @@
                             <img src="{{ asset('images/burningplate.jpg') }}" class="card-img-top" alt="..."
                                  style="border-top: 1px solid rgba(0,0,0,.125)">
                             <div class="card-body">
-                                <h5 class="card-title">Burning Plate</h5>
-                                <p class="card-text">Burning plates are becoming more popular in Gastro industry.
-                                    Branding Irons are used to heat your custom plate and burn the mark onto your
-                                    delicious food. Used by professionals chefs to promote your name, brand, venue
-                                    etc.</p>
+                                <h5 class="card-title">Branding Irons</h5>
+                                <p class="card-text">
+                                    You will simply just use electricity to heat burning plate (your logo) and burn the mark onto your
+                                    delicious food or orange/lemon peels. It is often used by professionals chefs to promote their name, brand or venue.</p>
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-success btn-md btn-block">Create Burning Plate</button>
+                                <a href="{{ path('create_stamp_items_branding_iron', {'identifier': enquiry.identifier}) }}" class="btn btn-success btn-md btn-block">Create Branding Iron</a>
                             </div>
                         </div>
                         <div class="card">
@@ -48,13 +42,12 @@
                                  style="border-top: 1px solid rgba(0,0,0,.125)">
                             <div class="card-body">
                                 <h5 class="card-title">Heat Stamp</h5>
-                                <p class="card-text">Heat stamp is something between Branding Iron & Ice Stamp. Heat
-                                    stamps are using external heat source like torches. Stamps are often used behind the
-                                    bars when making cocktails to mark orange and lemon peels or leaves of other exotic
-                                    fruits (pineapple etc).</p>
+                                <p class="card-text">Heat
+                                    stamps are using external heat source like torches to heat up stamp. Mark orange, lemon peels or leaves of other exotic
+                                    fruits like pineapple, bambus. Some bartenders are also using heat stamp for ice branding.</p>
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-success btn-md btn-block">Create Heat Stamp</button>
+                                <a href="{{ path('create_stamp_items_heat_stamp', {'identifier': enquiry.identifier}) }}" class="btn btn-success btn-md btn-block">Create Heat Stamp</a>
                             </div>
                         </div>
                     </div>

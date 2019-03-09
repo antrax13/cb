@@ -74,6 +74,16 @@ class Quote
      */
     private $deadlineDate;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $billingDetails;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $shippingDetails;
+
     public function __construct()
     {
         $this->brandSketches = new ArrayCollection();
@@ -240,6 +250,30 @@ class Quote
     public function setDeadlineDate(?\DateTimeInterface $deadlineDate): self
     {
         $this->deadlineDate = $deadlineDate;
+
+        return $this;
+    }
+
+    public function getBillingDetails(): ?string
+    {
+        return $this->billingDetails;
+    }
+
+    public function setBillingDetails(?string $billingDetails): self
+    {
+        $this->billingDetails = $billingDetails;
+
+        return $this;
+    }
+
+    public function getShippingDetails(): ?string
+    {
+        return $this->shippingDetails;
+    }
+
+    public function setShippingDetails(?string $shippingDetails): self
+    {
+        $this->shippingDetails = $shippingDetails;
 
         return $this;
     }

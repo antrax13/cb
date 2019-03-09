@@ -11,7 +11,20 @@
                     {{ title }}
                 </h1>
                 <div class="card-body">
-                    {{ form_widget(form) }}
+                    {{ form_row(form.customer) }}
+                    {{ form_row(form.request) }}
+                    {{ form_row(form.answer) }}
+                    {{ form_row(form.deadlineDate) }}
+                    {{ form_row(form.shippingCountry) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.shippingDetails) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.billingDetails) }}
+                        </div>
+                    </div>
+                    {{ form_row(form.status) }}
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Create Quote</button>

@@ -1,0 +1,41 @@
+{# templates/emails/registration.html.twig #}
+<h3>Thank you for submitting your enquiry to CocktailBrandalism.com</h3>
+
+Thank you <b>{{ enquiry.name }}</b>,<br />
+    you have received this email because you were submit following requests:
+    <br/>
+    {% if enquiry.stampQuoteSketches|length > 0 %}
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Qty</th>
+            <th>Item Type</th>
+            <th>Stamp Shape</th>
+            <th>Stamp Size</th>
+            <th>Handle</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in enquiry.stampQuoteSketches %}
+            <tr>
+                <td>{{ item.qty }}</td>
+                <td>{{ item.stampType.value ?? '' }}</td>
+                <td>{{ item.stampShape.value ?? '' }} {{ item.isSphere ? '<span class="badge badge-primary">Sphere</span>' : '' }}</td>
+                <td>{{ item.sizeNote }}</td>
+                <td>
+                    {{ item.handleShape.value ?? '' ~item.handleColor.value ?? '' }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+<br/><br/>
+We will do our best to prepare a quote for you and send it to <b>{{ enquiry.email }}</b> as soon as it will be ready.
+<br />
+In the meantime do not hesitate and check our website
+<a href="http://www.cocktailbrandalism.com">www.cocktailbrandalism.com</a>.
+<br/><br/><br/>
+<small>Do not respond to this email.</small>
+
+

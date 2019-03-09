@@ -17,7 +17,7 @@ class ContactDetailsFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fullName', null, [
+            ->add('name', null, [
                 'label' => 'Your full name',
                 'constraints' => [
                     new NotBlank(),

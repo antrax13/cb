@@ -14,11 +14,11 @@
         <td>{{ 'now'|date('d/m/Y') }}</td>
     </tr>
     {% if quote.deadlineDate %}
-    <tr>
-        <td colspan="2"></td>
-        <td><h4 style="color: #00aae7;">Deadline Date</h4></td>
-        <td>{{ quote.deadlineDate|date('d/m/Y') }}</td>
-    </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td><h4 style="color: #e73f4d;">Deadline Date</h4></td>
+            <td style="color: #E73F4D;"><b>{{ quote.deadlineDate|date('d/m/Y') }}</b></td>
+        </tr>
     {% endif %}
     </thead>
 </table>
@@ -115,23 +115,61 @@
     </tbody>
 </table>
 
+<!-- HANDLE OPTIONS -->
+{% if handleSection %}
+    <table width="100%">
+        <thead>
+        <tr>
+            <td>
+                <h4 style="color: #00aae7;">Handle Options</h4>
+                Select shape & colour of your Ice Stamp Handle please. <small>Ignore if you have already selected.</small>
+            </td>
+        </tr>
+        <tr>
+            <td><img src="{{ asset('images/handles.png') }}" style="width: 400px;"></td>
+        </tr>
+        </thead>
+    </table>
+{% endif %}
+
 <!-- SHIPPING INFORMATION -->
 <table>
     <tr nobr="true">
-        <td>
+        <td colspan="2">
             <h4 style="color: #00aae7;">Shipping {{ shipping.shippingCountry ? 'to '~shipping.shippingCountry.name : 'destination to be confirmed' }}</h4>
             {% if shipping.shippingCountry %}
-                <p>FedEx - very reliable {{ shipping.shippingCountry.fedexDeliveryDay }} day(s) delivery service to {{ shipping.shippingCountry.name }}.</p>
-                <p>Estimated weight for all items on this quote: <span style="font-weight: bold;">{{ totalWeight|number_format(2) }}kg</span></p>
+                <p>FedEx - very reliable {{ shipping.shippingCountry.fedexDeliveryDay }} day(s) delivery service
+                    to {{ shipping.shippingCountry.name }}.</p>
+                <p>Estimated weight for all items on this quote: <span
+                            style="font-weight: bold;">{{ totalWeight|number_format(2) }}kg</span></p>
                 <ul>
                     {% for key, item in shipping.shippingWeights %}
-                        <li>Estimated price for <span style="font-weight: bold;">{{ key }}kg</span> parcel is <span style="font-weight: bold;">£{{ item.0|number_format(2) }}</span></li>
+                        <li>Estimated price for <span style="font-weight: bold;">{{ key }}kg</span> parcel is <span
+                                    style="font-weight: bold;">£{{ item.0|number_format(2) }}</span></li>
                     {% else %}
                         <li>Shipping costs will be specified on the invoice.</li>
                     {% endfor %}
                 </ul>
             {% else %}
                 To be confirmed with customer to estimate shipping costs.
+            {% endif %}
+        </td>
+    </tr>
+    <tr nobr="true">
+        <td>
+            <h4 style="color: #00aae7;">Shipping Details</h4>
+            {% if quote.shippingDetails %}
+                {{ quote.shippingDetails|nl2br }}
+            {% else %}
+                <span style="color: #E73F4D;">Awaiting Shipping Details/Address & Phone Number information</span>
+            {% endif %}
+        </td>
+        <td>
+            <h4 style="color: #00aae7;">Billing Details</h4>
+            {% if quote.billingDetails %}
+                {{ quote.billingDetails|nl2br }}
+            {% else %}
+                <span style="color: #E73F4D;">Awaiting Billing Details/Address & VAT number (if applicable) information</span>
             {% endif %}
         </td>
     </tr>
@@ -145,26 +183,9 @@
 <h4 style="color: #00aae7;">Manufacturing Time</h4>
 {{ manufacturing.description|raw }}
 
-<!-- HANDLE OPTIONS -->
-<br/><br/>
-{% if handleSection %}
-    <table width="100%">
-        <thead>
-        <tr>
-            <td>
-                <h4 style="color: #00aae7;">Handle Options</h4>
-                Select Shape & Colour of your Ice Stamp Handle.
-            </td>
-        </tr>
-        <tr>
-            <td><img src="{{ asset('images/handles.png') }}" style="width: 400px;"></td>
-        </tr>
-        </thead>
-    </table>
-{% endif %}
-
 <!-- Thank you message -->
-<h1 style="text-align: center; color: #00aae7;">We are looking forward to hear from you.</h1>
+<hr />
+<h1 style="text-align: center; font-size: 36px; color: #00aae7; margin-top: 100px;">We are looking forward to hear from you.</h1>
 
 
 

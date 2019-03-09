@@ -4,14 +4,13 @@
 
 {% block body %}
     <div class="card">
-        {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
         <div class="card-header">
             {% include 'create_stamp/partials/_tabs.html.twig' %}
         </div>
         <div class="card-body">
             <h1 class="display-4">Summary</h1>
-            <p class="lead">Double check if the details are correct. Once you are happy with summary click on Confirm &
-                Send Button to send your request.</p>
+            <p class="lead">Double check your details are correct. Once you are happy with summary click on Confirm &
+                Send Button to send your request. We will send you an email once we will create a quote.</p>
 
             <div class="alert alert-info">
                 <h2>Contact Details</h2>
@@ -25,7 +24,7 @@
                     <small class="text-muted">{{ enquiry.shippingCountry }}</small>
                 </h5>
                 <hr/>
-                <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit Details</a>
+                <a href="{{ path('create_stamp_contact_details_edit', {'identifier': enquiry.identifier}) }}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Edit Details</a>
             </div>
 
             <div class="alert alert-info">
@@ -70,21 +69,24 @@
             <div class="alert alert-info">
             <h2>Additional Comment</h2>
             <p class="lead">If you have any questions or special requirements feel free to add them</p>
-            {{ form_widget(form) }}
+                {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+                    {{ form_widget(form) }}
+                    <button type="button" class="btn btn-sm btn-info" id="js-save-comment-edit"><i class="fas fa-edit"></i> Edit comment</button>
+                    <button type="submit" class="btn btn-sm btn-success" id="js-save-comment-save" style="display:none;"><i class="fas fa-save"></i>  Save comment</button>
+                {{ form_end(form) }}
             </div>
 
         </div>
         <div class="card-footer">
-            <button type="submit" class="btn btn-md btn-success">Confirm & Send</button>
-            <a href="#" class="btn btn-md btn-outline-secondary float-right">Cancel</a>
+            <a href="{{ path('create_stamp_send_enquiry', {'identifier': enquiry.identifier}) }}" class="btn btn-md btn-success" id="js-confirm-send">Confirm & Send</a>
         </div>
-        {{ form_end(form) }}
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script>
+        var canProgress = true;
         $(".js-delete-sketch").on('click', function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -102,6 +104,41 @@
                     window.location.href = url;
                 }
             });
+        });
+
+        $('#js-save-comment-edit').click(function(){
+            canProgress = false;
+            $(this).hide();
+            $('#summary_comment_form_additionalComment').prop('readonly', false);
+            $('#js-save-comment-save').show();
+        });
+
+        $('#js-confirm-send').click(function(e){
+            e.preventDefault();
+            if(!canProgress){
+                swal({
+                    title: 'Additional comment not saved.',
+                    text: "Did you forget to click on save additional comment?",
+                    type: 'info',
+                    allowOutsideClick: false,
+                });
+            }else{
+                var url = $(this).attr('href');
+                swal({
+                    title: 'All details are correct?',
+                    text: "After this step your enquiry will be sent to us.",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: '<i class="fas fa-check"></i>  Yes, send enquiry',
+                    allowOutsideClick: false,
+                }).then((result) => {
+                    if (result.value) {
+                        window.location.href = url;
+                    }
+                });
+            }
         });
 
         {% if not form.vars.valid %}
