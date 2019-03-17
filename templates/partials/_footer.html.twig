@@ -13,9 +13,10 @@
             <p>
                 <a href="{{ path('shop') }}">shop</a><br/>
                 <a href="{{ path('create_stamp') }}">create custom product</a><br/>
+                <a href="{{ path('our_products') }}" title="cocktail brandalism - custom product page">what we do</a><br />
                 <a href="{{ path('gallery') }}">gallery</a><br/>
                 <a href="{{ path('contact') }}">contacts</a><br/>
-                <a href="{{ path('front_end_faq') }}">faq</a>
+                <a href="{{ path('front_end_faq') }}">faq</a><br />
             </p>
         </div>
         <div class="col-lg-3">
@@ -32,18 +33,15 @@
             {% for custom_product in get_custom_products() %}
                 <a href="{{ path('our_products_show', {'slug': custom_product.slug}) }}"
                    title="{{ custom_product.type }}">{{ custom_product.type }}</a><br/>
-            {% else %}
-                <a href="{{ path('our_products') }}" title="cocktail brandalism - custom product page">Check our custom
-                    product page</a>
             {% endfor %}
+
         </div>
     </div>
     <hr/>
     <div class="row">
         <div class="col-md-12 text-center">
             Copyright &COPY; {{ 'now'|date('Y') }} | Product of <a href="http://www.cocktailbrandalism.com"
-                                                                   title="Cocktail Brandalism">Cocktail
-                Brandalism.com</a><br/>
+                                                                   title="Cocktail Brandalism">CocktailBrandalism.com</a><br/>
             <ul class="list-inline" style="margin-top: 10px; margin-bottom: 20px;">
                 <li class="list-inline-item" style="margin: 0 20px;">
                     <a href="https://www.facebook.com/CocktailBrandalism/" target="_blank" class="link-media-footer" data-toggle="tooltip" data-placement="top" title="CocktailBrandalism.com on Faceboook">

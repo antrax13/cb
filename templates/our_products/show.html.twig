@@ -3,21 +3,19 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <div class="card">
+    <div class="card shadow-sm">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <img class="img-fluid" src="{{ asset('images/custom-products/'~product.image) }}" style="border: 1px solid #DDDDDD;">
                 </div>
                 <div class="col-md-6">
-                    <div class="alert alert-info" style="height: 100%;">
+                    <div class="alert alert-info" style="height: 100%; padding-bottom: 0px;">
                         <h1 class="display-4">{{ product.type }}</h1>
                         <p class="lead">
                             {{ product.intro }}
                         </p>
-                        <p>
-                        </p>
-                        <p style="">
+                        <p style="margin-bottom: 0px;">
                             {{ product.details|raw|nl2br }}
                         </p>
                     </div>

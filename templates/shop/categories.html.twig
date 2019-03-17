@@ -8,8 +8,8 @@
         {% for product in category.product %}
             {% if product.isActive %}
                 <div class="col-md-4 col-sm-6">
-                    <div class="card" style="margin-bottom: 10px;">
-                        <img class="card-img-top" src="{{ asset('images/products/'~product.image) }}"
+                    <div class="card shadow-sm" style="margin-bottom: 10px;">
+                        <img class="card-img-top" src="{{ asset('images/products/'~product.image)|imagine_filter('thumbnail_gallery') }}"
                              alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">{{ product.name }}</h5>

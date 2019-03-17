@@ -14,42 +14,75 @@
                     There was a problem to submit your form. Please scroll down for more information.
                 </div>
             {% endif %}
-            <h1 class="display-4">Branding Iron</h1>
-            <p class="lead">Please provide the following details for your custom Branding Iron.<br/>
-                Technical Details:
-            <ul>
-                <li>Engraving depth: Default <b>4mm</b></li>
-                <li>Lead free brass</li>
-                <li>Another Option</li>
-                <li>Another Option</li>
-                <li>Another Option</li>
-            </ul>
-            If you have any questions please contact us on <b>info@cocktailbrandalism.com</b></p>
-            <hr/>
-            <h1>Upload your file</h1>
-            <p class="lead">Upload your logo, not all logos are suitable for branding iron. We might contact you in this
-                case to work with you to make it possible.</p>
-            {{ form_row(form.file) }}
-            <hr/>
-            <h1>Quantity</h1>
-            <p class="lead">Each logo is unique therefor we are not able to reduce the price of single burning plate
-                (part that will be engraved with your logo) however
-                with higher volume (usually 10+) of the same burning plate (logo) we can push the price lower.</p>
-            {{ form_row(form.qty) }}
-            <hr/>
-            <h1>Select burning plate size</h1>
-            <p class="lead">
-                This is the part where your logo will be engraved. Burning plate is then stick to branding iron so it can be heated up.
-            </p>
-            We currently offer 2 sizes of burning plates:
-            {{ form_row(form.sizeOptions) }}
-            <h1>ALK Rack Option</h1>
-            <p>During the heating up process you should place branding iron on the ALK Rack Stank in order not to burn surroundings.</p>
-            {{ form_row(form.alkRackOption) }}
+            <div class="row">
+                <div class="col-md-9">
+                    <h1 class="display-4">Branding Iron</h1>
+                    <p class="lead">Please provide the following details for your custom Branding Iron.<br/>
+                        Technical Details:
+                    <ul>
+                        <li>Engraving depth: Default <b>4mm</b></li>
+                        <li>Lead free brass</li>
+                        <li>Another Option</li>
+                        <li>Another Option</li>
+                        <li>Another Option</li>
+                    </ul>
+                    If you have any questions please contact us on <b>info@cocktailbrandalism.com</b></p>
+                    <hr/>
+                    <h1>Upload your file</h1>
+                    <p class="lead">Upload your logo, not all logos are suitable for branding iron. We might contact you
+                        in this
+                        case to work with you to make it possible.</p>
+                    {{ form_row(form.file) }}
+                    <hr/>
+                    <h1>Quantity</h1>
+                    <p class="lead">Each logo is unique therefor we are not able to reduce the price of single burning plate
+                        (part that will be engraved with your logo) however
+                        with higher volume (usually 10+) of the same burning plate (logo) we can push the price lower.</p>
+                    {{ form_row(form.qty) }}
+                    <hr/>
+                    <h1>Select burning plate size</h1>
+                    <p class="lead">
+                        This is the part where your logo will be engraved. Burning plate is then stick to branding iron so it
+                        can be heated up.
+                    </p>
+                    We currently offer 2 sizes of burning plates:
+                    {{ form_row(form.sizeOptions) }}
+                    <h1>ALK Rack Option</h1>
+                    <p>During the heating up process you should place branding iron on the ALK Rack Stank in order not to burn
+                        surroundings.</p>
+                    {{ form_row(form.alkRackOption) }}
 
-            <hr/>
-            <h1>Additional Comment</h1>
-            {{ form_row(form.comment) }}
+                    <hr/>
+                    <h1>Additional Comment</h1>
+                    {{ form_row(form.comment) }}
+                </div>
+                <div class="col-md-3 text-center">
+                    <div class="card text-white bg-secondary" style="border-top: none;">
+                        <div class="card-header">
+                            Pictures
+                        </div>
+                        <div class="card-body">
+                            <img class="img-fluid" style="border: 1px solid #ccc;"
+                                 src="{{ asset('images/helpers/sizes.png') }}"
+                                 alt="Card image cap">
+                            <small>Burning Plate - Visualisation on Orange Peel</small>
+                            <img class="img-fluid" style="border: 1px solid #ccc;"
+                                 src="{{ asset('images/helpers/plateCircle.png') }}"
+                                 alt="Card image cap">
+                            <small>Burning Plate - Circle</small>
+                            <img class="img-fluid" style="border: 1px solid #ccc;"
+                                 src="{{ asset('images/helpers/plateRectangle.png') }}"
+                                 alt="Card image cap">
+                            <small>Burning Plate - Rectangle</small>
+                            <img class="img-fluid" style="border: 1px solid #ccc;"
+                                 src="{{ asset('images/helpers/brandingIron.png') }}"
+                                 alt="Card image cap">
+                            <small>Branding Iron + Rack</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
         <div class="card-footer">
             <button type="button" id="js-create-visible" class="btn btn-success btn-md"><i class="fas fa-save"></i> Save

@@ -19,6 +19,7 @@ use App\Repository\HandleShapeRepository;
 use App\Repository\StampQuoteRepository;
 use App\Repository\StampShapeRepository;
 use App\Repository\StampTypeRepository;
+use App\Service\Mailer;
 use App\Service\UploaderHelper;
 use Couchbase\Document;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -418,12 +419,15 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/{identifier}/send", name="create_stamp_send_enquiry")
      */
-    public function sendEnquiry(StampQuote $enquiry, ObjectManager $manager)
+    public function sendEnquiry(StampQuote $enquiry, ObjectManager $manager, Mailer $mailer)
     {
         $enquiry->setStatus('SENT TO US');
         $enquiry->setUpdatedAt(new \DateTime('now'));
         $manager->persist($enquiry);
         $manager->flush();
+
+        $mailer->sendEnquiry($enquiry);
+
 
         $this->addFlash('success', 'Thank you for your enquiry. Your enquiry has been sent to CocktailBrandalism.<br /> We will prepare your quote as soon as possible and email it to ' . $enquiry->getEmail() . ' or we might contact you to clarify your requirement.');
         return $this->redirectToRoute('welcome');

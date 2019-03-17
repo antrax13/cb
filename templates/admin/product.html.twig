@@ -4,13 +4,22 @@
 
 {% block body %}
     <div class="card">
-        <h1 class="card-header">
-            <i class="fas fa-file-alt"></i> Products
-            <div class="btn-group btn-group-sm float-right" role="group" aria-label="Grid Buttons">
-                <button type="button" class="btn btn-outline-secondary" id="clear"><i class="fas fa-times"></i> Clear Filters</button>
-                <button type="button" class="btn btn-outline-success" id="export"><i class="fas fa-download"></i> Export</button>
-            </div>
-        </h1>
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('admin_product_category') }}">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('admin_product') }}">Products</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <div class="btn-group btn-group-sm float-right" role="group" aria-label="Grid Buttons">
+                        <button type="button" class="btn btn-outline-secondary" id="clear"><i class="fas fa-times"></i> Clear Filters</button>
+                        <button type="button" class="btn btn-outline-success" id="export"><i class="fas fa-download"></i> Export</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
         <div class="card-body">
             <span class="text-muted">
                 <small class="text-info">Double click on row for more details.</small>

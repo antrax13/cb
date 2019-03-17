@@ -24,3 +24,7 @@
 /public/uploads/sketches
 /.env
 
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
