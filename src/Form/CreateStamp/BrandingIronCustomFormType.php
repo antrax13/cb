@@ -2,6 +2,8 @@
 
 namespace App\Form\CreateStamp;
 
+use App\Entity\BrandingIronSize;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -38,15 +40,12 @@ class BrandingIronCustomFormType extends AbstractType
                     new GreaterThan(0)
                 ]
             ])
-            ->add('sizeOptions', ChoiceType::class, [
+            ->add('sizeOptions', EntityType::class, [
+                'class' => BrandingIronSize::class,
+                'placeholder' => 'Please choose',
+                'label' => 'Select preferred size',
                 'constraints' => [
                     new NotBlank()
-                ],
-                'label' => false,
-                'placeholder' => 'Please choose',
-                'choices' => [
-                    '50mm (2") x 25mm (1")' => '50mm (2") x 25mm (1")',
-                    '30mm (1.2") x 16mm (0.6")' => '30mm (1.2") x 16mm (0.6")',
                 ]
             ])
             ->add('alkRackOption', ChoiceType::class, [
