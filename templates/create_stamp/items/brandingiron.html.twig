@@ -22,9 +22,6 @@
                     <ul>
                         <li>Engraving depth: Default <b>4mm</b></li>
                         <li>Lead free brass</li>
-                        <li>Another Option</li>
-                        <li>Another Option</li>
-                        <li>Another Option</li>
                     </ul>
                     If you have any questions please contact us on <b>info@cocktailbrandalism.com</b></p>
                     <hr/>
@@ -35,19 +32,23 @@
                     {{ form_row(form.file) }}
                     <hr/>
                     <h1>Quantity</h1>
-                    <p class="lead">Each logo is unique therefor we are not able to reduce the price of single burning plate
+                    <p class="lead">Each logo is unique therefor we are not able to reduce the price of single burning
+                        plate
                         (part that will be engraved with your logo) however
-                        with higher volume (usually 10+) of the same burning plate (logo) we can push the price lower.</p>
+                        with higher volume (usually 10+) of the same burning plate (logo) we can push the price
+                        lower.</p>
                     {{ form_row(form.qty) }}
                     <hr/>
                     <h1>Select burning plate size</h1>
                     <p class="lead">
-                        This is the part where your logo will be engraved. Burning plate is then stick to branding iron so it
+                        This is the part where your logo will be engraved. Burning plate is then stick to branding iron
+                        so it
                         can be heated up.
                     </p>
                     {{ form_row(form.sizeOptions) }}
                     <h1>ALK Rack Option</h1>
-                    <p>During the heating up process you should place branding iron on the ALK Rack Stank in order not to burn
+                    <p>During the heating up process you should place branding iron on the ALK Rack Stank in order not
+                        to burn
                         surroundings.</p>
                     {{ form_row(form.alkRackOption) }}
 
@@ -61,21 +62,37 @@
                             Pictures
                         </div>
                         <div class="card-body">
-                            <img class="img-fluid" style="border: 1px solid #ccc;"
-                                 src="{{ asset('images/helpers/sizes.png') }}"
-                                 alt="Card image cap">
+                            <a data-fancybox="gallery" href="{{ asset('images/helpers/sizes.png') }}"
+                               data-caption="Burning Plate - Visualisation on Orange Peel"
+                               title="Burning Plate - Visualisation on Orange Peel">
+                                <img class="img-fluid" style="border: 1px solid #ccc;"
+                                     src="{{ asset('images/helpers/sizes.png') }}"
+                                     alt="Card image cap">
+                            </a>
                             <small style="margin-bottom: 10px;">Burning Plate - Visualisation on Orange Peel</small>
-                            <img class="img-fluid" style="border: 1px solid #ccc; margin-top: 10px;"
-                                 src="{{ asset('images/helpers/plateCircle.png') }}"
-                                 alt="Card image cap">
+                            <a data-fancybox="gallery" href="{{ asset('images/helpers/plateCircle.png') }}"
+                               data-caption="Burning Plate - Circle"
+                               title="Burning Plate - Circle">
+                                <img class="img-fluid" style="border: 1px solid #ccc; margin-top: 10px;"
+                                     src="{{ asset('images/helpers/plateCircle.png') }}"
+                                     alt="Card image cap">
+                            </a>
                             <small style="margin-bottom: 10px;">Burning Plate - Circle</small>
-                            <img class="img-fluid" style="border: 1px solid #ccc; margin-top: 10px;"
-                                 src="{{ asset('images/helpers/plateRectangle.png') }}"
-                                 alt="Card image cap">
+                            <a data-fancybox="gallery" href="{{ asset('images/helpers/plateRectangle.png') }}"
+                               data-caption="Burning Plate - Rectangle"
+                               title="Burning Plate - Rectangle">
+                                <img class="img-fluid" style="border: 1px solid #ccc; margin-top: 10px;"
+                                     src="{{ asset('images/helpers/plateRectangle.png') }}"
+                                     alt="Card image cap">
+                            </a>
                             <small style="margin-bottom: 10px;">Burning Plate - Rectangle</small>
-                            <img class="img-fluid" style="border: 1px solid #ccc; margin-top: 10px;"
-                                 src="{{ asset('images/helpers/brandingIron.png') }}"
-                                 alt="Card image cap">
+                            <a data-fancybox="gallery" href="{{ asset('images/helpers/brandingIron.png') }}"
+                               data-caption="Branding Iron + Rack"
+                               title="Branding Iron + Rack">
+                                <img class="img-fluid" style="border: 1px solid #ccc; margin-top: 10px;"
+                                     src="{{ asset('images/helpers/brandingIron.png') }}"
+                                     alt="Card image cap">
+                            </a>
                             <small>Branding Iron + Rack</small>
                         </div>
                     </div>
@@ -99,6 +116,8 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
+
     <script>
         $('.custom-file-input').on('change', function () {
             var fileName = document.getElementById("branding_iron_custom_form_file").files[0].name;
@@ -123,4 +142,9 @@
 
         });
     </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css"/>
 {% endblock %}
