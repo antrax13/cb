@@ -37,11 +37,11 @@
                         <i class="fas fa-envelope fa-2x"></i>
                         <p>Contact</p></a>
                 </li>
-                <li class="nav-item {{ 'front_end_faq' in current_path ? 'active' }}">
-                    <a class="nav-link" href="{{ path('front_end_faq') }}">
-                        <i class="fas fa-question-circle fa-2x"></i>
-                        <p>FAQ</p></a>
-                </li>
+                {#<li class="nav-item {{ 'front_end_faq' in current_path ? 'active' }}">#}
+                    {#<a class="nav-link" href="{{ path('front_end_faq') }}">#}
+                        {#<i class="fas fa-question-circle fa-2x"></i>#}
+                        {#<p>FAQ</p></a>#}
+                {#</li>#}
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                 <div class="navWrapper">
