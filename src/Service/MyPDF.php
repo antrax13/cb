@@ -16,7 +16,7 @@ class MyPDF extends TCPDF
     //Page header
     public function Header() {
         // Logo
-        $image_file = 'http://peterkosak.com/cocktailbrandalismlogo.jpg';
+        $image_file = 'http://cocktailbrandalism.com/images/email/cocktailbrandalismlogo.jpg';
 //        $image_file = 'http://cocktailbrandalism.com/images/bg1.jpg';
         $this->Image($image_file, 15, 15, 50, '', 'jpg', '', 'T', false, 300, '', false, false, 0, false, false, false);
         $style = array('width' => 0.1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0,170,231));

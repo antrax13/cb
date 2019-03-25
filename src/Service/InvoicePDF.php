@@ -31,7 +31,7 @@ class InvoicePDF extends TCPDF
 
     //Page header
     public function Header() {
-        $image_file_ltd = 'http://peterkosak.com/scotkaltd.png';
+        $image_file_ltd = 'http://cocktailbrandalism.com/images/email/scotkaltd.png';
         $html = '<table cellspacing="0" cellpadding="1" border="0">
                     <tr>
                         <td rowspan="3" style="font-size: 20px;">PROFORMA INVOICE<br /></td>
