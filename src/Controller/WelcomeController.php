@@ -23,20 +23,23 @@ class WelcomeController extends AbstractController
             'isFeatured' => true,
         ]);
 
-        $noProducts = 4;
         $productsArray = [];
-        $randomNumbers = array_rand($products, $noProducts);
-        foreach($randomNumbers as $number){
-            $productsArray[] = $products[$number];
+        if(count($products) > 0) {
+            $noProducts = 4;
+            $randomNumbers = array_rand($products, $noProducts);
+            foreach ($randomNumbers as $number) {
+                $productsArray[] = $products[$number];
+            }
         }
 
-        $noProductsCustom = 2;
         $productsCustomArray = [];
-        $randomCustomNumbers = array_rand($customItems, $noProductsCustom);
-        foreach($randomCustomNumbers as $number){
-            $productsCustomArray[] = $customItems[$number];
+        if(count($customItems) > 0) {
+            $noProductsCustom = 2;
+            $randomCustomNumbers = array_rand($customItems, $noProductsCustom);
+            foreach ($randomCustomNumbers as $number) {
+                $productsCustomArray[] = $customItems[$number];
+            }
         }
-
         $galleryPhotos = $galleryPhotoRepository->findAll();
 
         $galleryPhoto = $galleryPhotos[rand(0,count($galleryPhotos)-1)];

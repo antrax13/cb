@@ -104,27 +104,27 @@
             </div>
         </div>
     </div>
-    <hr style="margin: 20px 0;"/>
-    <h3 class="display-4 text-center">Featured Products</h3>
-    <p class="lead text-center">Discover more items from us in <a href="{{ path('shop') }}" title="CocktailBrandalism Shop">our
-            shop</a>. If you are looking for something specific or custom made then don't hesitate & <a
-                href="{{ path('contact') }}" title="CocktailBrandalism contacts">contact us</a>. <br />Custom made ice stamps, heat stamps or branding irons can be created <a href="{{ path('create_stamp') }}">here</a>.</p>
-    <div class="row">
-        {% for product in products %}
-            <div class="col-md-3 col-sm-6">
-                <div class="product-grid shadow-sm">
-                    <div class="product-image">
-                        <a href="{{ path('shop_show_product_details', {'slug': product.slug}) }}">
-                            <img class="pic-1 img-fluid" src="{{ asset('images/products/'~product.image)|imagine_filter('thumbnail_gallery') }}">
-                        </a>
-                        <span class="product-new-label">£{{ product.price }}</span>
+    {#<hr style="margin: 20px 0;"/>#}
+    {#<h3 class="display-4 text-center">Featured Products</h3>#}
+    {#<p class="lead text-center">Discover more items from us in <a href="{{ path('shop') }}" title="CocktailBrandalism Shop">our#}
+            {#shop</a>. If you are looking for something specific or custom made then don't hesitate & <a#}
+                {#href="{{ path('contact') }}" title="CocktailBrandalism contacts">contact us</a>. <br />Custom made ice stamps, heat stamps or branding irons can be created <a href="{{ path('create_stamp') }}">here</a>.</p>#}
+    {#<div class="row">#}
+        {#{% for product in products %}#}
+            {#<div class="col-md-3 col-sm-6">#}
+                {#<div class="product-grid shadow-sm">#}
+                    {#<div class="product-image">#}
+                        {#<a href="{{ path('shop_show_product_details', {'slug': product.slug}) }}">#}
+                            {#<img class="pic-1 img-fluid" src="{{ asset('images/products/'~product.image)|imagine_filter('thumbnail_gallery') }}">#}
+                        {#</a>#}
+                        {#<span class="product-new-label">£{{ product.price }}</span>#}
 
-                    </div>
-                    <div class="product-content">
-                        <h3 class="title">{{ product.name }}</h3>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+                    {#</div>#}
+                    {#<div class="product-content">#}
+                        {#<h3 class="title">{{ product.name }}</h3>#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+        {#{% endfor %}#}
+    {#</div>#}
 {% endblock %}
