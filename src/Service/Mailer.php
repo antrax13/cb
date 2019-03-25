@@ -28,10 +28,9 @@ class Mailer
         $body = $this->twig->render('emails/_contact_us.html.twig', [
             'data' => $contactFormData
         ]);
-
         $message = (new \Swift_Message('CocktailBrandalism.com - Thank you for contacting us'))
-            ->setFrom('info@peterkosak.com')
-            ->setTo('pkosak@pim-ltd.com')
+            ->setFrom('support@cocktailbrandalism.com')
+            ->setTo($contactFormData['email'])
             ->setBody($body, 'text/html');
         $this->mailer->send($message);
 
@@ -46,8 +45,8 @@ class Mailer
         ]);
 
         $message = (new \Swift_Message('CocktailBrandalism.com - Thank you submitting your enquiry'))
-            ->setFrom('info@peterkosak.com')
-            ->setTo('pkosak@pim-ltd.com')
+            ->setFrom('support@cocktailbrandalism.com')
+            ->setTo($enquiry->getEmail())
             ->setBody($body, 'text/html');
         $this->mailer->send($message);
 
