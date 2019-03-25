@@ -16,12 +16,12 @@
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 
-/public/images/custom-products
-/public/images/gallery
-/public/images/products
-/public/images/handleColor
-/public/images/handleShape
-/public/uploads/sketches
+/public/images/custom-products/
+/public/images/gallery/
+/public/images/products/
+/public/images/handleColor/
+/public/images/handleShape/
+/public/uploads/sketches/
 /.env
 
 
