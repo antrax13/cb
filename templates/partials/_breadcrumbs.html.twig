@@ -1,6 +1,13 @@
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    <strong>Welcome!</strong> We are slowly adding more content to our new website.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">DID YOU TAKE BACKUP</li>
+        {#<li class="breadcrumb-item">DID YOU TAKE BACKUP</li>#}
         <li class="breadcrumb-item">Home</li>
         {% for breadcrumb in breadcrumbs %}
             <li class="breadcrumb-item" aria-current="page">{{ breadcrumb }}</li>
