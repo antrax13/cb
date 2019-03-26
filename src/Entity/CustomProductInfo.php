@@ -38,10 +38,12 @@ class CustomProductInfo
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $intro;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="text")
      */
     private $details;
