@@ -19,13 +19,17 @@
                         <h1>Price: <span class="text-success">£{{ product.price }}</span></h1>
                         </p>
                         <p style="margin-bottom: 40px;">
-                            {{ product.description|raw }}
+                            {{ product.description|raw }}asd
                         </p>
                         <br />
-                        <div id="js-add-to-cart" class="btn btn-lg btn-success"
-                             style="position: absolute; bottom: 20px; margin-top: 20px;"><i
-                                    class="fas fa-shopping-cart"></i> Add to Cart
-                        </div>
+                        <form action="{{ path('order_add_product_to_cart', {'slug': product.slug}) }}" method="post">
+                            <button class="btn btn-lg btn-success" style="position: absolute; bottom: 20px; margin-top: 20px;"><i
+                                        class="fas fa-shopping-cart"></i> Add to Cart 1</button>
+                        </form>
+                        {#<div id="js-add-to-cart" class="btn btn-lg btn-success"#}
+                             {#style="position: absolute; bottom: 20px; margin-top: 20px;"><i#}
+                                    {#class="fas fa-shopping-cart"></i> Add to Cart#}
+                        {#</div>#}
                     </div>
                 </div>
             </div>

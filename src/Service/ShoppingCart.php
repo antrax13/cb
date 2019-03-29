@@ -12,21 +12,24 @@ namespace App\Service;
 use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ShoppingCart
 {
     const CART_PRODUCTS_KEY = '_shopping_cart.products';
 
     private $session;
-    private $manager;
 
     private $products;
 
-    public function __construct(Session $session, ObjectManager $manager)
+    private $repository;
+
+    public function __construct(SessionInterface $session, ProductRepository $repository)
     {
         $this->session = $session;
-        $this->manager = $manager;
+        $this->repository = $repository;
     }
 
     public function addProduct(Product $product)
@@ -41,11 +44,10 @@ class ShoppingCart
     public function getProducts()
     {
         if($this->products === null){
-            $productRepo = $this->manager->getRepository(ProductRepository::class);
             $ids = $this->session->get(self::CART_PRODUCTS_KEY, []);
             $products = [];
             foreach($ids as $id){
-                $product = $productRepo->find($id);
+                $product = $this->repository->find($id);
                 // if product becomes deleted
                 if($product) {
                     $products[] = $product;
