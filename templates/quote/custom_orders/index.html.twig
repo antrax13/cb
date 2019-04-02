@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            {% include 'partials/_admin_tabs.html.twig' %}
+        </div>
+        <div class="card-body">
+            <small class="text-muted">
+                Double click on row for more details.
+            </small>
+            <div id="jqxGrid"></div>
+        </div>
+        <div class="card-footer">
+            {#<a href="{{ path('quote_new') }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i></a>#}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('vendor/jqwidgets/jqx-all.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            var data = {{ custom_quotes|json_encode|raw }};
+            var source = {
+                localdata: data,
+                datafields: [
+                    {name: 'id', type: 'integer'},
+                    {name: 'name', type: 'string'},
+                    {name: 'email', type: 'string'},
+                    {name: 'country', type: 'string'},
+                    {name: 'sketches', type: 'number'},
+                    {name: 'updated_at', type: 'date'},
+                    {name: 'status', type: 'string'},
+                ],
+                datatype: "json"
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            $("#jqxGrid").jqxGrid({
+                theme: 'light',
+                width: '100%',
+                source: dataAdapter,
+                showfilterrow: true,
+                filterable: true,
+                sortable: false,
+                pageable: false,
+                showcolumnlines: false,
+                columns: [
+                    {text: '#', columntype: 'integer', datafield: 'id', width: '10%', hidden: true},
+                    {text: 'Name', columntype: 'string', datafield: 'name', width: '20%'},
+                    {text: 'Email', columntype: 'string', datafield: 'email', width: '40%'},
+                    {text: 'Country', datafield: 'country', width: '10%'},
+                    {text: 'Sketches', datafield: 'sketches', filtertype: 'number', width: '10%'},
+                    {text: 'Updated At', datafield: 'updated_at', filtertype: 'range', width: '10%', cellsformat: 'dd/MM/yyyy'},
+                    {text: 'Status', datafield: 'status', filtertype: 'checkedlist', width: '10%'},
+                ]
+            });
+
+            $('#clear').click(function () {
+                $("#jqxGrid").jqxGrid('clearfilters');
+            });
+
+            $('#export').click(function () {
+                $('#jqxGrid').jqxGrid('exportdata', 'xls', 'All Submitted Quotes {{ 'now'|date('d-m-Y') }}');
+            });
+
+            $('#jqxGrid').on('rowclick',function(e){
+                var data = $(this).jqxGrid('getrowdatabyid', e.args.rowindex);
+                var url = '{{ path('admin_custom_order_show',{'id': 'value' }) }}';
+                var urlReplaced = url.replace('value', data.id);
+                window.location.href = urlReplaced;
+            });
+
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/jqwidgets/styles/jqx.base.css') }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('vendor/jqwidgets/styles/jqx.light.css') }}" type="text/css"/>
+{% endblock %}
+
+

@@ -12,6 +12,9 @@
     <li class="nav-item">
         <a class="nav-link {{ 'invoices' in current_path ? 'active' }}" href="{{ path('invoices') }}"><i class="fas fa-file-invoice-dollar"></i> Invoices</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link {{ 'admin_custom_orders' == current_path ? 'active' }}" href="{{ path('admin_custom_orders') }}"><i class="fas fa-stamp"></i> Custom Online Stamp Orders</a>
+    </li>
     <li class="nav-item ml-auto">
         <div class="btn-group btn-group-sm float-right" role="group" aria-label="Grid Buttons">
             <button type="button" class="btn btn-outline-secondary" id="clear"><i class="fas fa-times"></i> Clear Filters</button>

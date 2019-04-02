@@ -29,7 +29,8 @@ class BrandingIronCustomFormType extends AbstractType
                             "application/pdf",
                             "image/jpeg",
                             "image/bmp",
-                            "image/png"
+                            "image/png",
+                            "image/svg+xml"
                         ]
                     ])
                 ]

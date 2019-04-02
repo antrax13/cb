@@ -1,0 +1,166 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active"
+                               href="{{ path('admin_custom_order_show', {'id': custom.id}) }}">Custom Stamp Order
+                                #{{ custom.id }} Details</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-success">
+                                    <div>
+                                        <h6 class="my-0">Custom Quote Reference</h6>
+                                        <small class="text-muted">#{{ custom.id }}</small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item list-group-item-success">
+                                    <div>
+                                        <h6 class="my-0">Customer</h6>
+                                        <small class="text-muted">{{ custom.email }}
+                                        </small>
+                                        <br/>
+                                        <small class="text-muted">{{ custom.name }}
+                                        </small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div>
+                                        <h6 class="my-0">Status</h6>
+                                        <small class="text-muted">{{ custom.status }}</small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div>
+                                        <h6 class="my-0">Quote Updated Date</h6>
+                                        <small class="text-muted">{{ custom.updatedAt|date('d/m/Y H:i') }}</small>
+                                    </div>
+                                </li>
+                                <li class="list-group-item {{ custom.shippingCountry ? 'list-group-item-success' : 'list-group-item-danger' }}">
+                                    <div>
+                                        <h6 class="my-0">Shipping Country</h6>
+                                        <small class="text-muted">{{ custom.shippingCountry.name ?? 'Not Known' }}</small>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card inner-card">
+                                <div class="card-header">
+                                    Quote Details
+                                </div>
+                                <div class="card-body">
+                                    <div class="alert alert-info">
+                                        <div class="row">
+                                            <dt class="col-3">Additional Comment</dt>
+                                            <dd class="col-9">{{ custom.additionalComment ? custom.additionalComment|nl2br : 'None' }}</dd>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        {% for sketch in custom.stampQuoteSketches %}
+                                            <div class="col-md-6">
+                                                <div class="alert alert-secondary">
+                                                    <div class="row">
+                                                        <dt class="col-4">Stamp Type</dt>
+                                                        <dd class="col-8">{{ sketch.stampType.value|default('N/A') }}</dd>
+                                                    </div>
+                                                    <div class="row">
+                                                        <dt class="col-4">Qty</dt>
+                                                        <dd class="col-8">{{ sketch.qty }}</dd>
+                                                    </div>
+                                                    <div class="row">
+                                                        <dt class="col-4">File</dt>
+                                                        <dd class="col-8"><a href="{{ asset('uploads/sketches/'~sketch.file) }}" DOWNLOAD><i class="fas fa-download"></i> {{ sketch.originalFile }}</a> <small>{{ sketch.fileSize|default('N/A') }}</small>, <small>{{ sketch.extension|default('N/A') }}</small></dd>
+                                                    </div>
+                                                    <div class="row">
+                                                        <dt class="col-4">Stamp Shape</dt>
+                                                        <dd class="col-8">{{ sketch.stampShape.value|default('N/A') }}</dd>
+                                                    </div>
+                                                    <div class="row">
+                                                        <dt class="col-4">Sphere</dt>
+                                                        <dd class="col-8">{{ sketch.isSphere|default('N/A') }} & {{ sketch.sphereDiameter|default('N/A') }}</dd>
+                                                    </div>
+                                                    <div class="row">
+                                                        <dt class="col-4">Size</dt>
+                                                        <dd class="col-8">
+                                                            Size A: <b>{{ sketch.sizeSideA }}</b><br />
+                                                            Size B: <b>{{ sketch.sizeSideB }}</b><br />
+                                                            Diameter: <b>{{ sketch.sizeDiameter }}</b><br />
+                                                            Custom Note: <b>{{ sketch.sizeCustomNote }}</b><br />
+                                                            Size Note: <b>{{ sketch.sizeNote }}</b>
+                                                        </dd>
+                                                    </div>
+                                                    <div class="row">
+                                                        <dt class="col-4">Comment</dt>
+                                                        <dd class="col-8">{{ sketch.comment }}</dd>
+                                                    </div>
+                                                    <div class="row">
+                                                        <dt class="col-4">Handle</dt>
+                                                        <dd class="col-8">{{ sketch.handleShape.value|default('N/A') }} - {{ sketch.handleColor.value|default('N/A') }}</dd>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-12">
+                                                <div class="alert alert-info">
+                                                    No sketches in this order
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <form action="{{ path('admin_custom_order_create', {'id': custom.id}) }}" method="post">
+                                        <button type="submit" class="btn btn-md btn-info"> Create Quote</button>
+
+                                        <a href="#" class="btn btn-md pull-right btn-warning">Close Quote</a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ path('admin_custom_orders') }}" class="btn btn-secondary float-right">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        // $(".js-delete-quote").on('click', function (e) {
+        //     e.preventDefault();
+        //     var url = $(this).attr('href');
+        //     swal({
+        //         title: 'Are you sure?',
+        //         text: "You won't be able to revert this!",
+        //         type: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#3085d6',
+        //         cancelButtonColor: '#6c757d',
+        //         confirmButtonText: '<i class="fas fa-check"></i>  Yes, delete quote!',
+        //         allowOutsideClick: false,
+        //     }).then((result) => {
+        //         if (result.value) {
+        //             window.location.href = url;
+        //         }
+        //     });
+        // });
+
+    </script>
+{% endblock %}

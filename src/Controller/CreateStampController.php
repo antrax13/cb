@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\BrandSketch;
+use App\Entity\Customer;
 use App\Entity\HandleShape;
+use App\Entity\Quote;
 use App\Entity\StampQuote;
 use App\Entity\StampQuoteSketch;
 use App\Form\CreateStamp\BrandingIronCustomFormType;
@@ -14,6 +17,7 @@ use App\Form\CreateStamp\LogoItemDetailsFormType;
 use App\Form\CreateStamp\StampShapeFormType;
 use App\Form\CreateStamp\StampSizeFormType;
 use App\Form\CreateStamp\SummaryCommentFormType;
+use App\Repository\CustomerRepository;
 use App\Repository\HandleColorRepository;
 use App\Repository\HandleShapeRepository;
 use App\Repository\StampQuoteRepository;
@@ -26,7 +30,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use function PHPSTORM_META\type;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -432,6 +438,131 @@ class CreateStampController extends AbstractController
         $this->addFlash('success', 'Thank you for your enquiry. Your enquiry has been sent to CocktailBrandalism.<br /> We will prepare your quote as soon as possible and email it to ' . $enquiry->getEmail() . ' or we might contact you to clarify your requirement.');
         return $this->redirectToRoute('welcome');
     }
+
+
+    /**
+     * @Route("/admin/custom-orders", name="admin_custom_orders")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function adminCustomStampsList(StampQuoteRepository $repository)
+    {
+        $title = 'Custom Online Stamps';
+        $breadcrumbs = ['Admin', 'Custom Online Stamps'];
+
+        $customs = $repository->findAll();
+        $array = [];
+        foreach($customs as $custom){
+            $array[] = [
+                'id' => $custom->getId(),
+                'name' => $custom->getName(),
+                'email' => $custom->getEmail(),
+                'country' => $custom->getShippingCountry()->getName(),
+                'sketches' => count($custom->getStampQuoteSketches()),
+                'status' => $custom->getStatus(),
+                'updated_at' => $custom->getUpdatedAt()->format('Y-m-d'),
+            ];
+        }
+
+        return $this->render('quote/custom_orders/index.html.twig', [
+            'title' => $title,
+            'breadcrumbs' => $breadcrumbs,
+            'custom_quotes' => $array
+        ]);
+    }
+
+    /**
+     * @Route("/admin/custom-order/{id}", name="admin_custom_order_show")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function adminCustomStampsShow(StampQuote $stampQuote)
+    {
+        $title = 'Custom Online Stamps - Show';
+        $breadcrumbs = ['Admin', 'Custom Online Stamps', 'Show', $stampQuote->getId()];
+
+        return $this->render('quote/custom_orders/show.html.twig', [
+            'title' => $title,
+            'breadcrumbs' => $breadcrumbs,
+            'custom' => $stampQuote
+        ]);
+    }
+
+    /**
+     * @Route("/admin/custom-order/{id}/add", name="admin_custom_order_create", methods="POST")
+     */
+    public function createQuote(StampQuote $stampQuote, ObjectManager $manager, CustomerRepository $customerRepository)
+    {
+        if($stampQuote->getStatus() != 'QUOTE STARTED' && $stampQuote->getStatus() == "SENT TO US") {
+            $customer = $customerRepository->findOneBy([
+                'email' => $stampQuote->getEmail()
+            ]);
+            // order of events matter
+            if (!$customer) {
+                $customer = new Customer();
+                $customer->setName($stampQuote->getName());
+                $customer->setEmail($stampQuote->getEmail());
+                $manager->persist($customer);
+            }
+
+            $quote = new Quote();
+            $quote->setCustomer($customer);
+            $quote->setRequest('From online form');
+            $quote->setAnswer('None');
+            $quote->setShippingCountry($stampQuote->getShippingCountry());
+            $quote->setStatus('Draft');
+            $manager->persist($quote);
+
+            if($stampQuote->getStampQuoteSketches()){
+                foreach($stampQuote->getStampQuoteSketches() as $custom){
+                    $sketch = new BrandSketch();
+                    $sketch->setQuote($quote);
+                    $sketch->setName($custom->getOriginalFile());
+                    $sketch->setPrice(0.01);
+                    $sketch->setQty($custom->getQty());
+                    $sketch->setstampType($custom->getStampType());
+                    $handle = 'N/A';
+                    if($custom->getHandleShape()){
+                        $handle = $custom->getHandleShape()->getValue();
+                        if($custom->getHandleColor()){
+                            $handle.='/'.$custom->getHandleColor()->getValue();
+                        }else{
+                            $handle = 'N/A';
+                        }
+                    }
+
+                    $sizes = [];
+                    $sizes[] = 'Side A: '.$custom->getSizeSideA();
+                    $sizes[] = 'Side B: '.$custom->getSizeSideB();
+                    $sizes[] = 'Diameter: '.$custom->getSizeDiameter();
+                    $sizes[] = 'Sphere: '.$custom->getSphereDiameter();
+                    $sizes[] = 'Size Custom: '.$custom->getSizeCustomNote();
+                    $sizes[] = 'Size Note: '.$custom->getSizeNote();
+
+                    $sketch->setHandle($handle);
+                    $sketch->setWeight(0.01);
+                    $sketch->setDimension(implode(', ',$sizes));
+                    $sketch->setNote(implode(', ',$sizes).','.$stampQuote->getAdditionalComment());
+                    $sketch->setNote($custom->getComment());
+                    $sketch->setExtension($custom->getExtension());
+                    $sketch->setOriginalFile($custom->getOriginalFile());
+                    $sketch->setStampShape($custom->getStampShape());
+                    $sketch->setFile($custom->getFile());
+                    $sketch->setSize($custom->getFileSize());
+                    $manager->persist($sketch);
+                }
+            }
+
+            $stampQuote->setStatus('QUOTE STARTED');
+            $manager->persist($stampQuote);
+            $manager->flush();
+
+            $this->addFlash('success', 'Quote has been created.');
+            return $this->redirectToRoute('quote_show', ['id' => $quote->getId()]);
+        }else{
+            $this->addFlash('danger', 'This quote started.');
+            return $this->redirectToRoute('admin_custom_order_show', ['id' => $stampQuote->getId()]);
+        }
+    }
+
 
 
 }

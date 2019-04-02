@@ -28,13 +28,11 @@ class Mailer
         $body = $this->twig->render('emails/_contact_us.html.twig', [
             'data' => $contactFormData
         ]);
-        $message = (new \Swift_Message('CocktailBrandalism.com - Thank you for contacting us'))
-            ->setFrom('support@cocktailbrandalism.com')
-            ->setTo($contactFormData['email'])
-            ->setBody($body, 'text/html');
-        $this->mailer->send($message);
 
-        $message->setTo('info@cocktailbrandalism.com');
+        $message = (new \Swift_Message('CocktailBrandalism.com - New Contact us'))
+            ->setFrom('info@cocktailbrandalism.com', 'Cocktail Brandalism')
+            ->setTo('kosak.p@gmail.com')
+            ->setBody($body, 'text/html');
         $this->mailer->send($message);
     }
 
@@ -44,13 +42,10 @@ class Mailer
             'enquiry' => $enquiry
         ]);
 
-        $message = (new \Swift_Message('CocktailBrandalism.com - Thank you submitting your enquiry'))
-            ->setFrom('support@cocktailbrandalism.com')
-            ->setTo($enquiry->getEmail())
+        $message = (new \Swift_Message('CocktailBrandalism.com - New Stamp Order'))
+            ->setFrom('info@cocktailbrandalism.com', 'Cocktail Brandalism')
+            ->setTo('kosak.p@gmail.com')
             ->setBody($body, 'text/html');
-        $this->mailer->send($message);
-
-        $message->setTo('info@cocktailbrandalism.com');
         $this->mailer->send($message);
     }
 

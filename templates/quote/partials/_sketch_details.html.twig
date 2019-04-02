@@ -1,0 +1,26 @@
+<div class="row">
+    <dt class="col-6">Stamp Type</dt>
+    <dd class="col-6">{{ sketch. }}</dd>
+</div>
+<div class="row">
+    <dt class="col-6">Price</dt>
+    <dd class="col-6">£{{ sketch.price }}</dd>
+</div>
+{% if sketch.qty %}
+    <div class="row">
+        <dt class="col-6">Qty</dt>
+        <dd class="col-6">{{ sketch.qty }}</dd>
+    </div>
+{% endif %}
+<div class="row">
+    <dt class="col-6">Weight</dt>
+    <dd class="col-6">{{ sketch.weight }}kg</dd>
+</div>
+<div class="row">
+    <dt class="col-6">Dimensions</dt>
+    <dd class="col-6">{{ sketch.dimension }}</dd>
+</div>
+<div class="row">
+    <dt class="col-6">Stamp Shape</dt>
+    <dd class="col-6">{{ sketch.stampShape }}</dd>
+</div>

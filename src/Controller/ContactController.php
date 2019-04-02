@@ -20,7 +20,7 @@ class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid() && $this->captchaverify($request->get('g-recaptcha-response'))){
-            $this->addFlash('success','Thank you. Message has been sent. <strong>Please check your junk/spam folder</strong>. We will answer your enquire as soon as possible.');
+            $this->addFlash('success','Thank you. Message has been sent. We will answer your enquire as soon as possible.');
             $contactFormData = $form->getData();
 
             $mailer->sendContactUs($contactFormData);
