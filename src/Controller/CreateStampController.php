@@ -432,7 +432,7 @@ class CreateStampController extends AbstractController
         $manager->persist($enquiry);
         $manager->flush();
 
-        $mailer->sendEnquiry($enquiry);
+        $mailer->sendEnquiry($enquiry, $this->getParameter('my_personal_email'));
 
 
         $this->addFlash('success', 'Thank you for your enquiry. Your enquiry has been sent to CocktailBrandalism.<br /> We will prepare your quote as soon as possible and email it to ' . $enquiry->getEmail() . ' or we might contact you to clarify your requirement.');

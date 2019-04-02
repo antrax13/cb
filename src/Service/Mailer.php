@@ -23,7 +23,7 @@ class Mailer
         $this->twig = $twig;
     }
 
-    public function sendContactUs($contactFormData)
+    public function sendContactUs($contactFormData, $email)
     {
         $body = $this->twig->render('emails/_contact_us.html.twig', [
             'data' => $contactFormData
@@ -31,12 +31,12 @@ class Mailer
 
         $message = (new \Swift_Message('CocktailBrandalism.com - New Contact us'))
             ->setFrom('info@cocktailbrandalism.com', 'Cocktail Brandalism')
-            ->setTo('kosak.p@gmail.com')
+            ->setTo($email)
             ->setBody($body, 'text/html');
         $this->mailer->send($message);
     }
 
-    public function sendEnquiry(StampQuote $enquiry)
+    public function sendEnquiry(StampQuote $enquiry, $email)
     {
         $body = $this->twig->render('emails/_enquiry.html.twig', [
             'enquiry' => $enquiry
@@ -44,7 +44,7 @@ class Mailer
 
         $message = (new \Swift_Message('CocktailBrandalism.com - New Stamp Order'))
             ->setFrom('info@cocktailbrandalism.com', 'Cocktail Brandalism')
-            ->setTo('kosak.p@gmail.com')
+            ->setTo($email)
             ->setBody($body, 'text/html');
         $this->mailer->send($message);
     }

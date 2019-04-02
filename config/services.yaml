@@ -9,6 +9,7 @@ parameters:
     product_dir: '%kernel.project_dir%/public/images/products'
     custom_product_dir: '%kernel.project_dir%/public/images/custom-products'
     gallery_dir: '%kernel.project_dir%/public/images/gallery'
+    my_personal_email: '%env(MY_PERSONAL_EMAIL)%'
 
 services:
     # default configuration for services in *this* file
