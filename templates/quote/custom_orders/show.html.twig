@@ -123,8 +123,8 @@
                                 </div>
                                 <div class="card-footer">
                                     <form action="{{ path('admin_custom_order_create', {'id': custom.id}) }}" method="post">
-                                        <button type="submit" class="btn btn-md btn-info"> Create Quote</button>
-
+                                        <button type="submit" class="btn btn-md btn-success"> Create Quote</button>
+                                        <a href="{{ path('admin_custom_order_reminder', {'id': custom.id}) }}" class="btn btn-md btn-info">Send Reminder Email</a>
                                         <a href="#" class="btn btn-md pull-right btn-warning">Close Quote</a>
                                     </form>
                                 </div>

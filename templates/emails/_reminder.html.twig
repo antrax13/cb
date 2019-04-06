@@ -1,0 +1,23 @@
+{% include 'emails/partials/_header.html.twig' %}
+<td bgcolor="#70bbd9" style="padding: 40px 30px 40px 30px;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+                <b>Hi {{ stampQuote.name }},</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                we have noticed you have started your custom order on our website but you didn't complete it.<br />
+                To complete your custom order please visit the following link.<br /><br />
+                <a href="https://cocktailbrandalism.com/create-your-stamp/{{ stampQuote.identifier }}/items">https://cocktailbrandalism.com/create-your-stamp/{{ stampQuote.identifier }}/items</a><br />
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                Your link is valid only for 2 weeks from issue ({{ 'now'|date('d/m/Y') }}) of this email.
+            </td>
+        </tr>
+    </table>
+</td>
+{% include 'emails/partials/_footer.html.twig' %}

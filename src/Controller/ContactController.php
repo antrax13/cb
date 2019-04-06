@@ -23,7 +23,7 @@ class ContactController extends AbstractController
             $this->addFlash('success','Thank you. Message has been sent. We will answer your enquire as soon as possible.');
             $contactFormData = $form->getData();
 
-            $mailer->sendContactUs($contactFormData,$this->getParameter('my_personal_email'));
+            $mailer->sendContactUs($contactFormData, $this->getParameter('my_personal_email'));
 
             return $this->redirectToRoute('contact');
         }

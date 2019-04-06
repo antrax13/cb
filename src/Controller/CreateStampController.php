@@ -36,6 +36,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class CreateStampController extends AbstractController
 {
@@ -90,10 +91,16 @@ class CreateStampController extends AbstractController
      */
     public function showContactDetails(StampQuote $enquiry)
     {
-        if($enquiry->getStatus() == "SENT TO US"){
+        $now = new \DateTime();
+        if(in_array($enquiry->getStatus(), [
+                $enquiry::STATUS_SEND_TO_US,
+                $enquiry::STATUS_QUOTE_STARTED,
+                $enquiry::STATUS_CLOSED
+            ]) || ($enquiry->getStatus() == $enquiry::STATUS_REMINDER_ISSUED && $enquiry->getUpdatedAt()->modify('+2 weeks') < $now )){
             $this->addFlash('warning', 'This enquiry cannot be modified.');
             return $this->redirectToRoute('welcome');
         }
+
         $breadcrumbs = ['Create Your Stamp', 'Contact Details'];
 
         return $this->render('create_stamp/show_contact_details.html.twig', [
@@ -140,7 +147,12 @@ class CreateStampController extends AbstractController
      */
     public function showItems(StampQuote $enquiry)
     {
-        if($enquiry->getStatus() == "SENT TO US"){
+        $now = new \DateTime();
+        if(in_array($enquiry->getStatus(), [
+            $enquiry::STATUS_SEND_TO_US,
+            $enquiry::STATUS_QUOTE_STARTED,
+            $enquiry::STATUS_CLOSED
+        ]) || ($enquiry->getStatus() == $enquiry::STATUS_REMINDER_ISSUED && $enquiry->getUpdatedAt()->modify('+2 weeks') < $now )){
             $this->addFlash('warning', 'This enquiry cannot be modified.');
             return $this->redirectToRoute('welcome');
         }
@@ -159,11 +171,6 @@ class CreateStampController extends AbstractController
      */
     public function createIceStamp(Request $request, StampQuote $enquiry, HandleShapeRepository $shapeRepository, HandleColorRepository $colorRepository, ObjectManager $manager, StampShapeRepository $stampShapeRepository, StampTypeRepository $stampTypeRepository, UploaderHelper $uploaderHelper)
     {
-        if($enquiry->getStatus() == "SENT TO US"){
-            $this->addFlash('warning', 'This enquiry cannot be modified.');
-            return $this->redirectToRoute('welcome');
-        }
-
         $breadcrumbs = ['Create Your Stamp', 'Items', 'Ice Stamp'];
 
         $handleShapes = $shapeRepository->findAll();
@@ -398,10 +405,16 @@ class CreateStampController extends AbstractController
      */
     public function showSummary(Request $request, StampQuote $enquiry, ObjectManager $manager)
     {
-        if($enquiry->getStatus() == "SENT TO US"){
+        $now = new \DateTime();
+        if(in_array($enquiry->getStatus(), [
+                $enquiry::STATUS_SEND_TO_US,
+                $enquiry::STATUS_QUOTE_STARTED,
+                $enquiry::STATUS_CLOSED
+            ]) || ($enquiry->getStatus() == $enquiry::STATUS_REMINDER_ISSUED && $enquiry->getUpdatedAt()->modify('+2 weeks') < $now )){
             $this->addFlash('warning', 'This enquiry cannot be modified.');
             return $this->redirectToRoute('welcome');
         }
+
         $breadcrumbs = ['Create Your Stamp', 'Summary'];
 
         $form = $this->createForm(SummaryCommentFormType::class, $enquiry);
@@ -459,7 +472,7 @@ class CreateStampController extends AbstractController
                 'country' => $custom->getShippingCountry()->getName(),
                 'sketches' => count($custom->getStampQuoteSketches()),
                 'status' => $custom->getStatus(),
-                'updated_at' => $custom->getUpdatedAt()->format('Y-m-d'),
+                'updated_at' => $custom->getUpdatedAt()->format('Y-m-d: H:i:s'),
             ];
         }
 
@@ -491,7 +504,7 @@ class CreateStampController extends AbstractController
      */
     public function createQuote(StampQuote $stampQuote, ObjectManager $manager, CustomerRepository $customerRepository)
     {
-        if($stampQuote->getStatus() != 'QUOTE STARTED' && $stampQuote->getStatus() == "SENT TO US") {
+        if($stampQuote->getStatus() == $stampQuote::STATUS_SEND_TO_US) {
             $customer = $customerRepository->findOneBy([
                 'email' => $stampQuote->getEmail()
             ]);
@@ -551,7 +564,7 @@ class CreateStampController extends AbstractController
                 }
             }
 
-            $stampQuote->setStatus('QUOTE STARTED');
+            $stampQuote->setStatus($stampQuote::STATUS_QUOTE_STARTED);
             $manager->persist($stampQuote);
             $manager->flush();
 
@@ -564,5 +577,25 @@ class CreateStampController extends AbstractController
     }
 
 
+    /**
+     * @Route("/admin/custom-order/{id}/reminder", name="admin_custom_order_reminder")
+     */
+    public function sendReminderEmail(StampQuote $stampQuote, ObjectManager $manager, Mailer $mailer)
+    {
+        if($stampQuote->getStatus() == $stampQuote::STATUS_CREATED){
 
+            $mailer->sendReminderEmail($stampQuote, $this->getParameter('my_personal_email'));
+
+            $stampQuote->setStatus($stampQuote::STATUS_REMINDER_ISSUED);
+            $stampQuote->setUpdatedAt(new \DateTime('now'));
+
+            $manager->persist($stampQuote);
+            $manager->flush();
+            $this->addFlash('success','Reminder email has been issued to <b>'.$stampQuote->getEmail().'</b>.');
+            return $this->redirectToRoute('admin_custom_orders');
+        }
+
+        $this->addFlash('danger', 'There was an error to send reminder');
+        return $this->redirectToRoute('admin_custom_order_show', ['id' => $stampQuote->getId()]);
+    }
 }

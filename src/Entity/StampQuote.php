@@ -12,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class StampQuote
 {
+    const STATUS_CREATED = 'CREATED';
+    const STATUS_SEND_TO_US = 'SENT TO US';
+    const STATUS_QUOTE_STARTED = 'QUOTE STARTED';
+    const STATUS_REMINDER_ISSUED = 'REMINDER ISSUED';
+    const STATUS_CLOSED = 'CLOSED';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

@@ -49,4 +49,17 @@ class Mailer
         $this->mailer->send($message);
     }
 
+    public function sendReminderEmail(StampQuote $stampQuote)
+    {
+        $body = $this->twig->render('emails/_reminder.html.twig', [
+            'stampQuote' => $stampQuote
+        ]);
+
+        $message = (new \Swift_Message('CocktailBrandalism.com - Reminder Of Your Custom Order'))
+            ->setFrom('info@cocktailbrandalism.com', 'Cocktail Brandalism')
+            ->setTo($stampQuote->getEmail())
+            ->setBody($body, 'text/html');
+        $this->mailer->send($message);
+    }
+
 }
