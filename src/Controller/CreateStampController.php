@@ -536,7 +536,7 @@ class CreateStampController extends AbstractController
                     if($custom->getHandleShape()){
                         $handle = $custom->getHandleShape()->getValue();
                         if($custom->getHandleColor()){
-                            $handle.='/'.$custom->getHandleColor()->getValue();
+                            $handle.=''.$custom->getHandleColor()->getValue();
                         }else{
                             $handle = 'N/A';
                         }
