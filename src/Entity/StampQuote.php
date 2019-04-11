@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class StampQuote
 {
+    const CUSTOM_CREATE_QUOTE_KEY = '_create_stamp.quote';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

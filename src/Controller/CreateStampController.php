@@ -19,6 +19,7 @@ use App\Repository\HandleShapeRepository;
 use App\Repository\StampQuoteRepository;
 use App\Repository\StampShapeRepository;
 use App\Repository\StampTypeRepository;
+use App\Service\CreateStamp;
 use App\Service\Mailer;
 use App\Service\UploaderHelper;
 use Couchbase\Document;
@@ -29,16 +30,24 @@ use function PHPSTORM_META\type;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CreateStampController extends AbstractController
 {
+
     /**
      * @Route("/create-your-stamp", name="create_stamp")
      */
-    public function index()
+    public function index(CreateStamp $stamp)
     {
         $breadcrumbs = ['Create Your Stamp'];
+        $quote = $stamp->getQuote();
+        if($quote){
+            return $this->redirectToRoute('create_stamp_items', [
+                'identifier' => $quote->getIdentifier()
+            ]);
+        }
 
         return $this->render('create_stamp/index.html.twig', [
             'title' => $breadcrumbs[0],
@@ -49,7 +58,7 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/contact-details", name="create_stamp_contact_details_new")
      */
-    public function contactDetails(Request $request, ObjectManager $manager)
+    public function contactDetails(Request $request, ObjectManager $manager, CreateStamp $createStamp)
     {
 
         $breadcrumbs = ['Create Your Stamp', 'Contact Details'];
@@ -69,6 +78,7 @@ class CreateStampController extends AbstractController
             $manager->persist($enquiry);
             $manager->flush();
             $this->addFlash('success', 'Thank you. This information will be used to contact you.');
+            $createStamp->createCustomStampSession($enquiry->getId());
             return $this->redirectToRoute('create_stamp_items', ['identifier' => $enquiry->getIdentifier()]);
         }
 
@@ -311,12 +321,14 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/{identifier}/items/branding-iron", name="create_stamp_items_branding_iron")
      */
-    public function createBrandingIron(Request $request, StampQuote $enquiry, ObjectManager $manager, StampTypeRepository $stampTypeRepository, UploaderHelper $uploaderHelper)
+    public function createBrandingIron(Request $request, StampQuote $enquiry, ObjectManager $manager, StampTypeRepository $stampTypeRepository, UploaderHelper $uploaderHelper, CreateStamp $stamp)
     {
         $breadcrumbs = ['Create Your Stamp', 'Items', 'Branding Iron'];
 
         $form = $this->createForm(BrandingIronCustomFormType::class);
         $form->handleRequest($request);
+
+        $stamp->createCustomStampSession(null);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
