@@ -18,6 +18,7 @@ class StampQuote
     const STATUS_REMINDER_ISSUED = 'REMINDER ISSUED';
     const STATUS_CLOSED = 'CLOSED';
 
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

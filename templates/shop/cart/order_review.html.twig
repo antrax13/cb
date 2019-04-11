@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            {{ title }}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td style="width: 40%;">
+                                    <div class="media">
+                                        <img src="{{ asset('images/products/'~product.image)|imagine_filter('thumbnail_gallery') }}"
+                                             class="img-fluid align-self-center mr-3" style="height: 50px;"/>
+                                        <div class="media-body">
+                                            <h5 class="mt-0">{{ product.name }}</h5>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="width: 20%;"><input type="number" class="form-control" name="" value="1" style="width: 50px;" /></td>
+                                <td style="width: 10%;">£{{ product.price }}</td>
+                                <td style="width: 10%;">£{{ (product.price * 2)|number_format(2) }}</td>
+                                <td style="width: 20%;"><a href="#" class="btn btn-danger float-right"><i class="fas fa-trash"></i></a></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">Shopping Cart is empty.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="1"></td>
+                                <td colspan="3"><h5>Subtotal</h5></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="1"></td>
+                                <td colspan="3"><h5>Estimated Shipping</h5></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="1"></td>
+                                <td colspan="3"><h5>Total</h5></td>
+                                <td>£{{ cart.total|number_format(2) }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td colspan="2"><button class="btn btn-md btn-info btn-block">Update Cart</button></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <div id="paypal-button-container"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="{{ path('shop') }}" class="btn btn-primary btn-md">Continue Shopping</a>
+            <a href="#" class="btn btn-success btn-md float-right"> Checkout</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://www.paypal.com/sdk/js?client-id=AVyPRtPqoVTwgBFkRptKyKDJqM_AVwqY-BCYT6y30YU4uPUeQ40NvoXWK91j0gsgT9rWQNxequ50RSog&currency=USD"></script>
+    <script>
+        // paypal.Buttons().render('#paypal-button-container');
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                // Set up the transaction
+                return actions.order.create({
+                    intent: 'CAPTURE',
+                    purchase_units: [{
+                        amount: {
+                            currency_code: 'USD',
+                            value: '0.01'
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                // Capture the funds from the transaction
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to your buyer
+                    alert('Transaction completed by ' + details.purchase_units);
+                    console.log(details.purchase_units[0].shipping.address);
+                    return fetch('/paypal-transaction-complete', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            orderID: data.orderID
+                        })
+                    });
+                });
+            }
+        }).render('#paypal-button-container');
+    </script>
+{% endblock %}
