@@ -516,6 +516,7 @@ class CreateStampController extends AbstractController
 
     /**
      * @Route("/admin/custom-order/{id}/add", name="admin_custom_order_create", methods="POST")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function createQuote(StampQuote $stampQuote, ObjectManager $manager, CustomerRepository $customerRepository)
     {
@@ -594,6 +595,7 @@ class CreateStampController extends AbstractController
 
     /**
      * @Route("/admin/custom-order/{id}/reminder", name="admin_custom_order_reminder")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function sendReminderEmail(StampQuote $stampQuote, ObjectManager $manager, Mailer $mailer)
     {
@@ -611,6 +613,25 @@ class CreateStampController extends AbstractController
         }
 
         $this->addFlash('danger', 'There was an error to send reminder');
+        return $this->redirectToRoute('admin_custom_order_show', ['id' => $stampQuote->getId()]);
+    }
+
+
+    /**
+     * @Route("/admin/custom-order/{id}/close", name="admin_custom_order_close_quote")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function closeCustomQuote(StampQuote $stampQuote, ObjectManager $manager)
+    {
+        if($stampQuote->getStatus() == $stampQuote::STATUS_CREATED){
+            $stampQuote->setStatus($stampQuote::STATUS_CLOSED);
+            $stampQuote->setUpdatedAt(new \DateTime('now'));
+            $manager->flush();
+            $this->addFlash('success', sprintf('Status of Customer Quote has been changed to %s', $stampQuote::STATUS_CLOSED));
+            return $this->redirectToRoute('admin_custom_orders');
+        }
+
+        $this->addFlash('danger', sprintf('Could not close because status is %s', $stampQuote->getStatus()));
         return $this->redirectToRoute('admin_custom_order_show', ['id' => $stampQuote->getId()]);
     }
 }

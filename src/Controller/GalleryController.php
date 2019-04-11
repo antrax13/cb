@@ -7,6 +7,7 @@ use App\Form\Admin\GalleryPhotoNewType;
 use App\Repository\GalleryPhotoRepository;
 use App\Service\UploaderHelper;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -22,9 +23,7 @@ class GalleryController extends AbstractController
     {
         $breadcrumbs = ['Gallery'];
 
-        $photos = $repository->findBy([
-            'isRemoved' => false
-        ]);
+        $photos = $repository->findAllOrdered();
 
         return $this->render('gallery/index.html.twig', [
             'title' => $breadcrumbs[0],
@@ -39,7 +38,7 @@ class GalleryController extends AbstractController
      */
     public function adminGallery(GalleryPhotoRepository $repository)
     {
-        $photos = $repository->findAll();
+        $photos = $repository->findAllOrdered();
         $breadcrumbs = ['Admin', 'Gallery'];
 
         return $this->render('gallery/admin/index.html.twig', [
@@ -97,6 +96,29 @@ class GalleryController extends AbstractController
 
         $this->addFlash('success', 'Gallery Photo has been removed.');
         return $this->redirectToRoute('admin_gallery');
+    }
+
+    /**
+     * @Route("/admin/gallery/reorder", methods="POST", name="admin_gallery_reorder")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function reorderGallery(GalleryPhotoRepository $repository, Request $request, EntityManagerInterface $entityManager)
+    {
+        $orderedIds = json_decode($request->getContent(), true);
+
+        if($orderedIds === false){
+            return $this->json(['details' => 'Invalid Body'], 400);
+        }
+
+        // from (position) => id to (id) -> position
+        $orderedIds = array_flip($orderedIds);
+        foreach($repository->findAll() as $photo){
+            $photo->setPosition($orderedIds[$photo->getId()]);
+        }
+        $entityManager->flush();
+
+        return $this->json($repository->findAllOrdered(), 200, [], []);
+
     }
 
 

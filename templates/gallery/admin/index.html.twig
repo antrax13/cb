@@ -18,6 +18,7 @@
             <table class="table">
                 <thead>
                 <tr class="table-secondary">
+                    <th></th>
                     <th>#</th>
                     <th>Title</th>
                     <th>Image Preview</th>
@@ -25,18 +26,19 @@
                     <th>Action</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="js-sortable-parent">
                 {% for photo in photos %}
-                <tr>
-                    <td>{{ photo.id }}</td>
-                    <td>{{ photo.title }}</td>
+                <tr data-id="{{ photo.id }}">
+                    <td class="text-center" style="vertical-align: middle !important;"><i class="drag-handle fas fa-arrows-alt fa-2x"></i></td>
+                    <td style="vertical-align: middle !important;">{{ photo.id }}</td>
+                    <td style="vertical-align: middle !important;">{{ photo.title }}</td>
                     <td class="text-center"><img src="{{ asset('images/gallery/'~photo.file) }}" height="50" /></td>
-                    <td>{{ photo.isRemoved == false ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>' }}</td>
-                    <td><a href="{{ path('admin_gallery_delete', {'id': photo.id}) }}" class="btn btn-danger btn-sm js-delete-gallery-photo"><i class="fas fa-trash"></i></a></td>
+                    <td style="vertical-align: middle !important;">{{ photo.isRemoved == false ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>' }}</td>
+                    <td style="vertical-align: middle !important;"><a href="{{ path('admin_gallery_delete', {'id': photo.id}) }}" class="btn btn-danger btn-sm js-delete-gallery-photo"><i class="fas fa-trash"></i></a></td>
                 </tr>
                 {% else %}
                     <tr>
-                        <td colspan="5" class="table-info text-center"><b>No photos</b></td>
+                        <td colspan="6" class="table-info text-center"><b>No photos</b></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -50,6 +52,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script>
         $(".js-delete-gallery-photo").on('click', function (e) {
             e.preventDefault();
@@ -68,6 +71,18 @@
                     window.location.href = url;
                 }
             });
+        });
+
+        var sortable = Sortable.create($('.js-sortable-parent')[0], {
+            handle: '.drag-handle',
+            animation: 150,
+            onEnd: function(){
+                $.ajax({
+                    'url': "{{ path('admin_gallery_reorder') }}",
+                    'method': 'POST',
+                    'data': JSON.stringify(sortable.toArray())
+                });
+            }
         });
     </script>
 {% endblock %}

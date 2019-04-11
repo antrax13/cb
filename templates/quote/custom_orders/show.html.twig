@@ -35,7 +35,7 @@
                                         </small>
                                     </div>
                                 </li>
-                                <li class="list-group-item">
+                                <li class="list-group-item {{ custom.status == 'CLOSED' ? 'list-group-item-danger' }}">
                                     <div>
                                         <h6 class="my-0">Status</h6>
                                         <small class="text-muted">{{ custom.status }}</small>
@@ -125,7 +125,7 @@
                                     <form action="{{ path('admin_custom_order_create', {'id': custom.id}) }}" method="post">
                                         <button type="submit" class="btn btn-md btn-success"> Create Quote</button>
                                         <a href="{{ path('admin_custom_order_reminder', {'id': custom.id}) }}" class="btn btn-md btn-info">Send Reminder Email</a>
-                                        <a href="#" class="btn btn-md pull-right btn-warning">Close Quote</a>
+                                        <a href="{{ path('admin_custom_order_close_quote', {'id': custom.id}) }}" class="btn btn-md pull-right btn-warning">Close Quote</a>
                                     </form>
                                 </div>
                             </div>
