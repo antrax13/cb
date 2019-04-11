@@ -36,4 +36,9 @@ class CreateStamp
 
         return $id ? $this->repository->find($id) : null;
     }
+
+    public function emptyStampSession()
+    {
+        $this->createCustomStampSession(null);
+    }
 }

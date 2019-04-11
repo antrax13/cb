@@ -49,6 +49,8 @@ class CreateStampController extends AbstractController
     public function index(CreateStamp $stamp)
     {
         $breadcrumbs = ['Create Your Stamp'];
+
+        // if session is created we want to redirect
         $quote = $stamp->getQuote();
         if($quote){
             return $this->redirectToRoute('create_stamp_items', [
@@ -341,8 +343,6 @@ class CreateStampController extends AbstractController
         $form = $this->createForm(BrandingIronCustomFormType::class);
         $form->handleRequest($request);
 
-        $stamp->createCustomStampSession(null);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
@@ -450,8 +450,11 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/{identifier}/send", name="create_stamp_send_enquiry")
      */
-    public function sendEnquiry(StampQuote $enquiry, ObjectManager $manager, Mailer $mailer)
+    public function sendEnquiry(StampQuote $enquiry, ObjectManager $manager, Mailer $mailer, CreateStamp $stamp)
     {
+        // clear session
+        $stamp->emptyStampSession();
+
         $enquiry->setStatus('SENT TO US');
         $enquiry->setUpdatedAt(new \DateTime('now'));
         $manager->persist($enquiry);
