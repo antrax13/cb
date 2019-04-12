@@ -32,7 +32,7 @@
                     <td class="text-center" style="vertical-align: middle !important;"><i class="drag-handle fas fa-arrows-alt fa-2x"></i></td>
                     <td style="vertical-align: middle !important;">{{ photo.id }}</td>
                     <td style="vertical-align: middle !important;">{{ photo.title }}</td>
-                    <td class="text-center"><img src="{{ aasset('images/gallery/'~photo.file)|imagine_filter('thumbnail_gallery') }}" height="50" /></td>
+                    <td class="text-center"><img src="{{ asset('images/gallery/'~photo.file)|imagine_filter('thumbnail_gallery') }}" height="50" /></td>
                     <td style="vertical-align: middle !important;">{{ photo.isRemoved == false ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>' }}</td>
                     <td style="vertical-align: middle !important;"><a href="{{ path('admin_gallery_delete', {'id': photo.id}) }}" class="btn btn-danger btn-sm js-delete-gallery-photo"><i class="fas fa-trash"></i></a></td>
                 </tr>
