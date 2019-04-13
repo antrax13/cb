@@ -7,10 +7,20 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <img class="img-fluid" src="{{ asset('images/custom-products/'~product.image) }}" style="border: 1px solid #DDDDDD;">
+                    <img class="img-fluid" src="{{ asset('images/custom-products/'~product.image) }}" style="border: 2px solid #DDDDDD; margin-bottom: 20px;">
+                    <div class="row mb-4">
+                        {% for image in product.productReferences %}
+                            <div class="col-3">
+                                <a class="d-block mb-4" data-fancybox="gallery" href="{{ asset('images/product-references/'~image.filename) }}"
+                                   data-caption="{{ image.originalFilename }}" title="{{ image.originalFilename }}">
+                                    <img src="{{ asset('images/product-references/'~image.filename)|imagine_filter('thumbnail_gallery') }}" class="img-fluid gallery-img" alt="{{ image.title }}"/>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="alert alert-info" style="height: 100%; padding-bottom: 0px;">
+                    <div class="alert alert-info" style="padding-bottom: 20px;">
                         <h1 class="display-4">{{ product.type }}</h1>
                         <p class="lead">
                             {{ product.intro }}
@@ -23,5 +33,15 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css"/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
 {% endblock %}
 

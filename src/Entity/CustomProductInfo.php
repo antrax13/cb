@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -83,6 +85,17 @@ class CustomProductInfo
      * @ORM\Column(type="boolean")
      */
     private $isFeatured = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductReference", mappedBy="customProduct")
+     * @ORM\OrderBy({"position"="ASC"})
+     */
+    private $productReferences;
+
+    public function __construct()
+    {
+        $this->productReferences = new ArrayCollection();
+    }
 
 
 
@@ -246,6 +259,37 @@ class CustomProductInfo
     public function setIsFeatured(bool $isFeatured): self
     {
         $this->isFeatured = $isFeatured;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductReference[]
+     */
+    public function getProductReferences(): Collection
+    {
+        return $this->productReferences;
+    }
+
+    public function addProductReference(ProductReference $productReference): self
+    {
+        if (!$this->productReferences->contains($productReference)) {
+            $this->productReferences[] = $productReference;
+            $productReference->setCustomProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductReference(ProductReference $productReference): self
+    {
+        if ($this->productReferences->contains($productReference)) {
+            $this->productReferences->removeElement($productReference);
+            // set the owning side to null (unless already changed)
+            if ($productReference->getCustomProduct() === $this) {
+                $productReference->setCustomProduct(null);
+            }
+        }
 
         return $this;
     }

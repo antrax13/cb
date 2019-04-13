@@ -10,6 +10,7 @@ namespace App\Service;
 
 
 use Gedmo\Sluggable\Util\Urlizer;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploaderHelper
@@ -27,5 +28,14 @@ class UploaderHelper
         );
 
         return $newFileName;
+    }
+
+    public function deleteFile($path)
+    {
+
+        $result = unlink($path);
+        if ($result === false) {
+            throw new \Exception(sprintf('Error deleting "%s"', $path));
+        }
     }
 }

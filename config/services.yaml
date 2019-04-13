@@ -8,6 +8,7 @@ parameters:
     sketch_dir: '%kernel.project_dir%/public/uploads/sketches'
     product_dir: '%kernel.project_dir%/public/images/products'
     custom_product_dir: '%kernel.project_dir%/public/images/custom-products'
+    product_reference_dir: '%kernel.project_dir%/public/images/product-references'
     gallery_dir: '%kernel.project_dir%/public/images/gallery'
     my_personal_email: '%env(MY_PERSONAL_EMAIL)%'
 

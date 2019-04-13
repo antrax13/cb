@@ -14,21 +14,41 @@
                     <div class="alert alert-secondary">
                         {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
                         {{ form_widget(form) }}
-                        <div class="g-recaptcha" data-sitekey="6LfL8ZMUAAAAAKiPnLFlj9XZ0P7RrLktoGk0uBgb" style="margin-bottom: 10px;"></div>
+                        <div class="g-recaptcha" data-sitekey="6LfL8ZMUAAAAAKiPnLFlj9XZ0P7RrLktoGk0uBgb"
+                             style="margin-bottom: 10px;"></div>
                         <button type="submit" class="btn btn-md btn-outline-success">Send Enquiry</button>
                         {{ form_end(form) }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <h1 class="display-4">Emails</h1>
-                    <p class="lead">info@cocktailbrandalism.com</p>
+                    <p class="lead">vladimir@scotka.com<br/>info@cocktailbrandalism.com</p>
 
                     <h1 class="display-4">Social Media</h1>
                     <p class="lead">
-                        You can also contact us and support on social media.<br />
-                        <i class="fab fa-facebook-square" style="color: #3b5999;"></i> <a href="https://www.facebook.com/CocktailBrandalism">CocktailBrandalism on facebook</a><br />
-                        <i class="fab fa-instagram"  style="color: #e4405f;"></i> <a href="https://www.instagram.com/cocktailbrandalism/"> CocktailBrandalism on instagram</a><br />
-                        <i class="fab fa-youtube"  style="color: #cd201f;"></i> <a href="https://www.youtube.com/channel/UCZLus1e8f1o9FOIixlsk_IQ"> CocktailBrandalism on youtube</a>
+                        You can also contact us and support on social media.<br/>
+                        <i class="fab fa-facebook-square" style="color: #3b5999;"></i> <a
+                                href="https://www.facebook.com/CocktailBrandalism">CocktailBrandalism on
+                            facebook</a><br/>
+                        <i class="fab fa-instagram" style="color: #e4405f;"></i> <a
+                                href="https://www.instagram.com/cocktailbrandalism/"> CocktailBrandalism on
+                            instagram</a><br/>
+                        <i class="fab fa-youtube" style="color: #cd201f;"></i> <a
+                                href="https://www.youtube.com/channel/UCZLus1e8f1o9FOIixlsk_IQ"> CocktailBrandalism on
+                            youtube</a>
+                    </p>
+                    <h1 class="display-4">Leaflets</h1>
+                    <p class="lead">
+                        <i class="far fa-arrow-alt-circle-down"></i> <a href="{{ asset('images/CBP.pdf') }}"
+                                                                       title="Download CocktailBrandalism.com leaflet"
+                                                                       download>download stamp leaflet</a>
+                        <small class="text-muted">[3.7MB]</small>
+                        <br/>
+                        <i class="far fa-arrow-alt-circle-down"></i>
+                        <a href="{{ asset('images/Hand-Carved-Bar-Tools.pdf') }}"
+                           title="Download CocktailBrandalism.com Hand Carved Tools with Ice Stamp" download>hand carved
+                            examples</a>
+                        <small class="text-muted">[3.9MB]</small>
                     </p>
                 </div>
             </div>

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -107,6 +109,16 @@ class Product
      * @Gedmo\Slug(fields={"name"})
      */
     private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductReference", mappedBy="shopProduct")
+     */
+    private $productReferences;
+
+    public function __construct()
+    {
+        $this->productReferences = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -264,6 +276,37 @@ class Product
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductReference[]
+     */
+    public function getProductReferences(): Collection
+    {
+        return $this->productReferences;
+    }
+
+    public function addProductReference(ProductReference $productReference): self
+    {
+        if (!$this->productReferences->contains($productReference)) {
+            $this->productReferences[] = $productReference;
+            $productReference->setShopProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductReference(ProductReference $productReference): self
+    {
+        if ($this->productReferences->contains($productReference)) {
+            $this->productReferences->removeElement($productReference);
+            // set the owning side to null (unless already changed)
+            if ($productReference->getShopProduct() === $this) {
+                $productReference->setShopProduct(null);
+            }
+        }
 
         return $this;
     }
