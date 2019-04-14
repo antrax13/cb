@@ -15,7 +15,12 @@ class ContactController extends AbstractController
      */
     public function index(Request $request, Mailer $mailer)
     {
-        $breadcrumbs = ['Contact'];
+        $breadcrumbs = [
+            [
+                'name' => 'Contact',
+                'url' => $this->generateUrl('contact')
+            ]
+        ];
         $form = $this->createForm(ContactFormType::class);
         $form->handleRequest($request);
 
@@ -33,7 +38,7 @@ class ContactController extends AbstractController
         }
 
         return $this->render('contact/index.html.twig', [
-            'title' => $breadcrumbs[0],
+            'title' => $breadcrumbs[0]['name'],
             'breadcrumbs' => $breadcrumbs,
             'form' => $form->createView()
         ]);

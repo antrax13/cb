@@ -19,13 +19,18 @@ class ShopController extends AbstractController
      */
     public function index(CategoryRepository $repository)
     {
-        $breadcrumbs = ['Shop'];
+        $breadcrumbs = [
+            [
+                'name' => 'Shop',
+                'url' => $this->generateUrl('shop')
+            ]
+        ];
 
         $categories = $repository->findAll();
 
         return $this->render('shop/index.html.twig', [
             'breadcrumbs' => $breadcrumbs,
-            'title' => $breadcrumbs[0],
+            'title' => $breadcrumbs[0]['name'],
             'categories' => $categories,
         ]);
     }
@@ -35,11 +40,22 @@ class ShopController extends AbstractController
      */
     public function showCategoryProducts(Category $category)
     {
-        $breadcrumbs = ['Shop', $category->getName()];
+        $breadcrumbs = [
+            [
+                'name' => 'Shop',
+                'url' => $this->generateUrl('shop')
+            ],
+            [
+                'name' => $category->getName(),
+                'url' => $this->generateUrl('shop_category', [
+                    'slug' => $category->getSlug()
+                ])
+            ]
+        ];
 
         return $this->render('shop/categories.html.twig', [
             'breadcrumbs' => $breadcrumbs,
-            'title' => implode(' | ', $breadcrumbs),
+            'title' =>  $breadcrumbs[1]['name'].' | '.$breadcrumbs[0]['name'],
             'category' => $category,
         ]);
     }
@@ -49,11 +65,28 @@ class ShopController extends AbstractController
      */
     public function showProduct(Product $product)
     {
-        $breadcrumbs = ['Shop',$product->getCategory()->getName(),$product->getName()];
+        $breadcrumbs = [
+            [
+                'name' => 'Shop',
+                'url' => $this->generateUrl('shop')
+            ],
+            [
+                'name' => $product->getCategory()->getName(),
+                'url' => $this->generateUrl('shop_category', [
+                    'slug' => $product->getCategory()->getSlug()
+                ])
+            ],
+            [
+                'name' => $product->getName(),
+                'url' => $this->generateUrl('shop_show_product_details', [
+                    'slug' => $product->getSlug()
+                ])
+            ]
+        ];
 
         return $this->render('shop/product/show.html.twig', [
             'breadcrumbs' => $breadcrumbs,
-            'title' => implode(' | ', $breadcrumbs),
+            'title' => $breadcrumbs[2]['name'].' | '.$breadcrumbs[1]['name'].' | '.$breadcrumbs[0]['name'],
             'product' => $product,
         ]);
     }

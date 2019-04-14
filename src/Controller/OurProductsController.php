@@ -21,7 +21,14 @@ class OurProductsController extends AbstractController
      */
     public function index(CustomProductInfoRepository $repository)
     {
-        $breadcrumbs = ['Our Products'];
+        $breadcrumbs = [
+            [
+                'name' => 'Our Products',
+                'url' => $this->generateUrl('our_products')
+            ]
+        ];
+
+
         $items = $repository->findBy([],[
             'fetchOrder' => 'ASC'
         ]);
@@ -38,10 +45,21 @@ class OurProductsController extends AbstractController
      */
     public function showAction(CustomProductInfo $productInfo)
     {
-        $breadcrumbs = ['Our Products', $productInfo->getType()];
+        $breadcrumbs = [
+            [
+                'name' => 'Our Products',
+                'url' => $this->generateUrl('our_products')
+            ],
+            [
+                 'name' => $productInfo->getType(),
+                 'url' => $this->generateUrl('our_products_show', [
+                    'slug' => $productInfo->getSlug()
+                 ])
+            ]
+        ];
         return $this->render('our_products/show.html.twig', [
             'breadcrumbs' => $breadcrumbs,
-            'title' => $breadcrumbs[1],
+            'title' => $productInfo->getType(),
             'product' => $productInfo
         ]);
     }

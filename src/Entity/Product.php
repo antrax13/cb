@@ -112,6 +112,7 @@ class Product
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProductReference", mappedBy="shopProduct")
+     * @ORM\OrderBy({"position"="ASC"})
      */
     private $productReferences;
 

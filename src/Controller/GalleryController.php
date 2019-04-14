@@ -21,12 +21,17 @@ class GalleryController extends AbstractController
      */
     public function index(GalleryPhotoRepository $repository)
     {
-        $breadcrumbs = ['Gallery'];
+        $breadcrumbs = [
+            [
+                'name' => 'Gallery',
+                'url' => $this->generateUrl('gallery')
+            ]
+        ];
 
         $photos = $repository->findAllOrdered();
 
         return $this->render('gallery/index.html.twig', [
-            'title' => $breadcrumbs[0],
+            'title' => $breadcrumbs[0]['name'],
             'breadcrumbs' => $breadcrumbs,
             'images' => $photos
         ]);

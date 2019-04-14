@@ -48,7 +48,12 @@ class CreateStampController extends AbstractController
      */
     public function index(CreateStamp $stamp)
     {
-        $breadcrumbs = ['Create Your Stamp'];
+        $breadcrumbs = [
+            [
+                'name' => 'Create Your Stamp',
+                'url' => $this->generateUrl('create_stamp')
+            ]
+        ];
 
         // if session is created we want to redirect
         $quote = $stamp->getQuote();
@@ -59,7 +64,7 @@ class CreateStampController extends AbstractController
         }
 
         return $this->render('create_stamp/index.html.twig', [
-            'title' => $breadcrumbs[0],
+            'title' => $breadcrumbs[0]['name'],
             'breadcrumbs' => $breadcrumbs
         ]);
     }

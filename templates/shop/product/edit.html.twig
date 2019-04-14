@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-7">
             {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
             <div class="card">
                 <h1 class="card-header">
@@ -24,28 +24,6 @@
                             {{ form_row(form.description) }}
                         </div>
                     </div>
-
-                    <div class="alert alert-secondary">
-                        <h4>Current view</h4>
-                        <hr />
-                        <div class="row">
-                            <div class="col-md-6">
-                                <img class="img-fluid" src="{{ asset('images/products/'~product.image) }}">
-                            </div>
-                            <div class="col-md-6">
-                                <div class="alert alert-info">
-                                    <h1 class="display-4">{{ product.name }}</h1>
-                                    <p class="lead">
-                                        {{ product.intro }}
-                                    </p>
-                                    <p>
-                                        {{ product.description|raw }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
@@ -54,11 +32,85 @@
             </div>
             {{ form_end(form) }}
         </div>
+        <div class="col-md-5">
+            <div class="card">
+                <h1 class="card-header">
+                    {{ product.name }} References
+                </h1>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr class="table-secondary">
+                            <th>Order</th>
+                            <th>File</th>
+                            <th>Image Preview</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody class="js-reference-list js-sortable-parent"  data-url="{{ path('admin_shop_product_list_references', {id : product.id }) }}">
+
+                        </tbody>
+                    </table>
+                    <hr/>
+                    <form action="{{ path('admin_shop_product_add_reference', {'id': product.id }) }}" method="POST"
+                          enctype="multipart/form-data" class="dropzone js-reference-dropzone">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="alert alert-secondary">
+                <h4>Current view</h4>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <img class="img-fluid mb-4" src="{{ asset('images/products/'~product.image) }}">
+                        <div class="row mb-4">
+                            {% for image in product.productReferences %}
+                                <div class="col-3">
+                                    <a class="d-block mb-4" data-fancybox="gallery" href="{{ asset('images/product-references/'~image.filename) }}"
+                                       data-caption="{{ image.originalFilename }}" title="{{ image.originalFilename }}">
+                                        <img src="{{ asset('images/product-references/'~image.filename)|imagine_filter('thumbnail_gallery') }}" class="img-fluid gallery-img" alt="{{ image.title }}"/>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-info">
+                            <h1 class="display-4">{{ product.name }}</h1>
+                            <p class="lead">
+                                {{ product.intro }}
+                            </p>
+                            <p>
+                                {{ product.description|raw|nl2br }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css"
+          integrity="sha256-e47xOkXs1JXFbjjpoRr1/LhVcqSzRmGmPqsrUQeVs+g=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.css"/>
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"
+            integrity="sha256-cs4thShDfjkqFGk5s2Lxj35sgSRr4MRcyccmi0WKqCM=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.6/dist/jquery.fancybox.min.js"></script>
+
+    <script src="{{ asset('scripts/admin.js') }}"></script>
     <script>
         $('.custom-file-input').on('change',function(){
             var fileName = document.getElementById("product_image2").files[0].name;
