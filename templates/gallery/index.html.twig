@@ -13,7 +13,7 @@
     <div class="row mb-4">
         {% for image in images %}
             <div class="col-3">
-                <a class="d-block mb-4" data-fancybox="gallery" href="{{ asset('images/gallery/'~image.file) }}"
+                <a class="d-block mb-4" data-fancybox="gallery" href="{{ asset('images/gallery/'~image.file)|imagine_filter('watermark_pictures') }}"
                    data-caption="{{ image.title }}" title="{{ image.title }}">
                     <img src="{{ asset('images/gallery/'~image.file)|imagine_filter('thumbnail_gallery') }}" class="img-fluid gallery-img" alt="{{ image.title }}"/>
                 </a>

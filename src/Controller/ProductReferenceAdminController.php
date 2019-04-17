@@ -66,6 +66,7 @@ class ProductReferenceAdminController extends AbstractController
         $productReference = new ProductReference();
         $productReference->setCustomProduct($productInfo);
         $productReference->setFilename($filename);
+        $productReference->setTitle($uploadedFile->getClientOriginalName() ?? $filename);
         $productReference->setOriginalFilename($uploadedFile->getClientOriginalName() ?? $filename);
         $productReference->setExtension($uploadedFile->getClientOriginalExtension());
         // octet-stream - no idea what filetype is that uploaded file in other words :)
@@ -124,6 +125,7 @@ class ProductReferenceAdminController extends AbstractController
         $productReference = new ProductReference();
         $productReference->setShopProduct($product);
         $productReference->setFilename($filename);
+        $productReference->setTitle($uploadedFile->getClientOriginalName() ?? $filename);
         $productReference->setOriginalFilename($uploadedFile->getClientOriginalName() ?? $filename);
         $productReference->setExtension($uploadedFile->getClientOriginalExtension());
         // octet-stream - no idea what filetype is that uploaded file in other words :)

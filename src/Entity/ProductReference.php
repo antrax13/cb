@@ -37,7 +37,7 @@ class ProductReference
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"main", "input"})
+     * @Groups({"main"})
      * @Assert\NotBlank()
      * @Assert\Length(max=100)
      */
@@ -61,7 +61,7 @@ class ProductReference
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("main")
+     * @Groups({"main", "input"})
      */
     private $title;
 

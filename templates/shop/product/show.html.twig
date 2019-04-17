@@ -12,7 +12,7 @@
                     {% for image in product.productReferences %}
                         <div class="col-3">
                             <a class="d-block mb-4" data-fancybox="gallery" href="{{ asset('images/product-references/'~image.filename) }}"
-                               data-caption="{{ image.originalFilename }}" title="{{ image.originalFilename }}">
+                               data-caption="{{ image.title }}" title="{{ image.title }}">
                                 <img src="{{ asset('images/product-references/'~image.filename)|imagine_filter('thumbnail_gallery') }}" class="img-fluid gallery-img" alt="{{ image.title }}"/>
                             </a>
                         </div>

@@ -11,6 +11,16 @@ liip_imagine:
                     mode:          outbound
                     allow_upscale: true
 
+        watermark_pictures:
+            filters:
+                watermark:
+                    # path to the watermark file (prepended with "%kernel.root_dir%")
+                    image: Resources/data/logoBig.png
+                    # size of the water mark relative to the input image
+                    size: 0.5
+                    # set the position of the watermark
+                    position: center
+
 #
 #        # an example thumbnail transformation definition
 #        # https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html#create-thumbnails

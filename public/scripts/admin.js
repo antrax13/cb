@@ -71,7 +71,7 @@ class ReferenceList
             return reference.id === id;
         });
 
-        reference.originalFilename = $(event.currentTarget).val();
+        reference.title = $(event.currentTarget).val();
 
         $.ajax({
             'url': '/admin/custom-products/references/'+id,
@@ -85,7 +85,7 @@ class ReferenceList
             return `
 <tr data-id="${reference.id}">
     <td style="vertical-align: middle !important;" class="text-center"><i class="drag-handle fas fa-arrows-alt fa-2x"></i></td>
-    <td style="vertical-align: middle !important;"><input type="text" class="form-control js-reference-edit" value="${reference.originalFilename}" style="width: auto;"></td>
+    <td style="vertical-align: middle !important;"><input type="text" class="form-control js-reference-edit" value="${reference.title}" style="width: auto;"></td>
     <td style="vertical-align: middle !important;" class="text-center"><img src="/images/product-references/${reference.filename}" height="50"></td>
     <td style="vertical-align: middle !important;" class="text-center"><button class="btn btn-sm btn-danger js-reference-delete"><i class="fas fa-trash"></i></td>
 </tr>
