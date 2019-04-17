@@ -17,9 +17,9 @@ liip_imagine:
                     # path to the watermark file (prepended with "%kernel.root_dir%")
                     image: Resources/data/logoBig.png
                     # size of the water mark relative to the input image
-                    size: 0.5
+                    size: 0.25
                     # set the position of the watermark
-                    position: center
+                    position: bottomright
 
 #
 #        # an example thumbnail transformation definition

@@ -7,11 +7,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <img class="img-fluid" src="{{ asset('images/custom-products/'~product.image) }}" style="border: 2px solid #DDDDDD; margin-bottom: 20px;">
+                    <img class="img-fluid" src="{{ asset('images/custom-products/'~product.image)|imagine_filter('watermark_pictures') }}" style="border: 2px solid #DDDDDD; margin-bottom: 20px;">
                     <div class="row mb-4">
                         {% for image in product.productReferences %}
                             <div class="col-3">
-                                <a class="d-block mb-4" data-fancybox="gallery" href="{{ asset('images/product-references/'~image.filename) }}"
+                                <a class="d-block mb-4" data-fancybox="gallery" href="{{ asset('images/product-references/'~image.filename)|imagine_filter('watermark_pictures') }}"
                                    data-caption="{{ image.title }}" title="{{ image.title }}">
                                     <img src="{{ asset('images/product-references/'~image.filename)|imagine_filter('thumbnail_gallery') }}" class="img-fluid gallery-img" alt="{{ image.title }}"/>
                                 </a>

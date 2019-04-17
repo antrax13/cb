@@ -49,6 +49,13 @@
                                                                     style="width: 100%;"
                                                             >
                                                             <br/>
+                                                            <small>
+                                                                <a href="{{ asset('uploads/sketches/'~sketch.file) }}"
+                                                                   DOWNLOAD><i
+                                                                            class="fas fa-download"></i> {{ sketch.originalFile }}
+                                                                </a>
+                                                            </small>
+                                                            <br/>
                                                             <small class="text-muted">{{ sketch.size }}</small>
                                                         </div>
                                                         <div class="col-md-8">
@@ -105,7 +112,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <br />
+                                            <br/>
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -120,7 +127,8 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addNewModal"><i class="fas fa-plus-circle"></i> Add New
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addNewModal"><i
+                                class="fas fa-plus-circle"></i> Add New
                         Sketch
                     </button>
                     <a href="{{ path('quote_show', {'id': quote.id}) }}" class="btn btn-secondary float-right">Close</a>
@@ -151,7 +159,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="addNewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addNewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
             <div class="modal-content">
@@ -202,7 +211,8 @@
                     <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Add New
                         Sketch
                     </button>
-                    <a href="{{ asset('images/prices.pdf') }}" target="_blank" class="btn btn-md btn-primary" ><i class="fas fa-pound-sign"></i> Price Examples</a>
+                    <a href="{{ asset('images/prices.pdf') }}" target="_blank" class="btn btn-md btn-primary"><i
+                                class="fas fa-pound-sign"></i> Price Examples</a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -234,7 +244,7 @@
             });
         });
 
-        $('.custom-file-input').on('change',function(){
+        $('.custom-file-input').on('change', function () {
             var fileName = document.getElementById("brand_sketch_form_file").files[0].name;
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
 
