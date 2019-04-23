@@ -29,7 +29,11 @@
                                             <a href="{{ path('shop_show_product_details', {'slug': product.slug}) }}">
                                                 <img class="pic-1 img-fluid" src="{{ asset('images/products/'~product.image)|imagine_filter('thumbnail_gallery') }}">
                                             </a>
-                                            <span class="product-new-label">£{{ product.price }}</span>
+                                            {% if product.stock > 0 %}
+                                                <span class="product-new-label">£{{ product.price }}</span>
+                                            {% else %}
+                                                <span class="product-discount-label">Sold out</span>
+                                            {% endif %}
                                             {#<ul class="social">#}
                                                 {#<li><a href="#" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>#}
                                             {#</ul>#}

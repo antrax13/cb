@@ -103,6 +103,7 @@ class ProductController extends AbstractController
                 'id' => $product->getId(),
                 'name' => $product->getName(),
                 'category' => $product->getCategory()->getName(),
+                'stock' => $product->getStock(),
                 'price' => $product->getPrice(),
                 'is_active' => $product->getIsActive(),
                 'updated_at' => $product->getUpdatedAt()->format('Y-m-d'),

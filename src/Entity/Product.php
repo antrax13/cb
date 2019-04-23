@@ -116,6 +116,12 @@ class Product
      */
     private $productReferences;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     */
+    private $stock = 0;
+
     public function __construct()
     {
         $this->productReferences = new ArrayCollection();
@@ -308,6 +314,18 @@ class Product
                 $productReference->setShopProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): self
+    {
+        $this->stock = $stock;
 
         return $this;
     }

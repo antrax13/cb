@@ -15,7 +15,12 @@
                             <h5 class="card-title">{{ product.name }}</h5>
                             <p class="card-text">{{ product.intro }}</p>
                             <p class="card-text">
-                                <small class="text-muted">Last updated 3 mins ago</small>
+                                {% if product.stock > 0 %}
+                                    <span class="product-new-label">£{{ product.price }}</span>
+                                {% else %}
+                                    <span class="product-discount-label">Sold out</span>
+                                {% endif %}
+                                {#<small class="text-muted">Last updated 3 mins ago</small>#}
                             </p>
                             <a href="{{ path('shop_show_product_details', {'slug': product.slug}) }}"
                                class="btn btn-primary btn-block">Details</a>
