@@ -173,7 +173,7 @@ $('#visibleButton').on('click', function (e) {
         cancelButtonColor: '#6c757d',
         confirmButtonText: '<i class="fas fa-check"></i>  Yes',
         allowOutsideClick: false,
-    }).then((result) => {
+    }).then(function(result) {
         if (result.value) {
             $('#realButton').click();
         }

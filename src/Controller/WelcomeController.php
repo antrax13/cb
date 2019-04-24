@@ -25,7 +25,7 @@ class WelcomeController extends AbstractController
 
         $productsArray = [];
         if(count($products) > 0) {
-            $noProducts = 4;
+            $noProducts = 3;
             $randomNumbers = array_rand($products, $noProducts);
             foreach ($randomNumbers as $number) {
                 $productsArray[] = $products[$number];

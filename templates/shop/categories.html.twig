@@ -9,18 +9,19 @@
             {% if product.isActive %}
                 <div class="col-md-4 col-sm-6">
                     <div class="card shadow-sm" style="margin-bottom: 10px;">
-                        <img class="card-img-top" src="{{ asset('images/products/'~product.image)|imagine_filter('thumbnail_gallery') }}"
+                        <img class="card-img-top"
+                             src="{{ asset('images/products/'~product.image)|imagine_filter('thumbnail_gallery') }}"
                              alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">{{ product.name }}</h5>
                             <p class="card-text">{{ product.intro }}</p>
                             <p class="card-text">
                                 {% if product.stock > 0 %}
-                                    <span class="product-new-label">£{{ product.price }}</span>
+                                <span class="product-new-label">£{{ product.price }}</span>
                                 {% else %}
-                                    <span class="product-discount-label">Sold out</span>
-                                {% endif %}
-                                {#<small class="text-muted">Last updated 3 mins ago</small>#}
+                            <h4><span class="badge badge-secondary">Sold out</span></h4>
+                            {% endif %}
+                            {#<small class="text-muted">Last updated 3 mins ago</small>#}
                             </p>
                             <a href="{{ path('shop_show_product_details', {'slug': product.slug}) }}"
                                class="btn btn-primary btn-block">Details</a>
