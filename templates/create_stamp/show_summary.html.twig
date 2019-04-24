@@ -100,7 +100,7 @@
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: '<i class="fas fa-check"></i>  Yes, delete this item!',
                 allowOutsideClick: false,
-            }).then((result) => {
+            }).then(function(result) {
                 if (result.value) {
                     window.location.href = url;
                 }
@@ -134,7 +134,7 @@
                     cancelButtonColor: '#6c757d',
                     confirmButtonText: '<i class="fas fa-check"></i>  Yes, send enquiry',
                     allowOutsideClick: false,
-                }).then((result) => {
+                }).then(function(result) {
                     if (result.value) {
                         window.location.href = url;
                     }
