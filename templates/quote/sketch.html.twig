@@ -16,7 +16,7 @@
                                 <div class="row js-sortable-parent" data-url="{{ path('quote_sketch_reorder', {'id': quote.id}) }}">
                                     {% for sketch in quote.brandSketches %}
 
-                                        <div class="col-md-6" data-id="{{ sketch.id }}">
+                                        <div class="col-md-12" data-id="{{ sketch.id }}">
                                             <div class="card inner-card">
                                                 <div class="card-header drag-handle">
                                                     <div class="d-flex">
@@ -58,15 +58,14 @@
                                                             <br/>
                                                             <small class="text-muted">{{ sketch.size }}</small>
                                                         </div>
-                                                        <div class="col-md-8">
-                                                            <p class="card-text">
+                                                        <div class="col-md-4">
                                                             <div class="row">
                                                                 <dt class="col-6"><strong
-                                                                            class="d-inline-block mb-2 text-{{ sketch.isRemoved ? 'danger':'success' }}">ItemNo</strong>
+                                                                            class="text-{{ sketch.isRemoved ? 'danger':'success' }}">ItemNo</strong>
                                                                 </dt>
                                                                 <dd class="col-6">
                                                                     <strong
-                                                                            class="d-inline-block mb-2 text-{{ sketch.isRemoved ? 'danger':'success' }}">#{{ '%05d'|format(sketch.id) }}</strong> {{ sketch.isRemoved ? '<small class="text-danger">Removed</small>':'' }}
+                                                                            class="text-{{ sketch.isRemoved ? 'danger':'success' }}">#{{ '%05d'|format(sketch.id) }}</strong> {{ sketch.isRemoved ? '<small class="text-danger">Removed</small>':'' }}
                                                                 </dd>
                                                             </div>
                                                             <div class="row">
@@ -83,6 +82,8 @@
                                                                     <dd class="col-6">{{ sketch.qty }}</dd>
                                                                 </div>
                                                             {% endif %}
+                                                        </div>
+                                                        <div class="col-md-4">
                                                             <div class="row">
                                                                 <dt class="col-6">Weight</dt>
                                                                 <dd class="col-6">{{ sketch.weight }}kg</dd>
@@ -107,7 +108,6 @@
                                                                     <dd class="col-6">{{ sketch.note }}</dd>
                                                                 </div>
                                                             {% endif %}
-                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
