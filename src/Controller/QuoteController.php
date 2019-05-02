@@ -13,6 +13,7 @@ use App\Repository\InvoiceRepository;
 use App\Repository\QuoteRepository;
 use App\Service\UploaderHelper;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -319,5 +320,25 @@ class QuoteController extends AbstractController
             'quote' => $quote,
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/quote/{id}/reorder", name="quote_sketch_reorder", methods="POST")
+     */
+    public function reorderSketchesInQuote(Quote $quote, Request $request, EntityManagerInterface $em)
+    {
+        $orderedIds = json_decode($request->getContent(), true);
+        if($orderedIds === false){
+            return $this->json(['detail' => 'Invalid body'], 400);
+        }
+
+        // from (position) => (id) to (id) => (position)
+        $orderedIds = array_flip($orderedIds);
+        foreach($quote->getBrandSketches() as $sketch){
+            $sketch->setPosition($orderedIds[$sketch->getId()]);
+        }
+        $em->flush();
+
+        return $this->json($quote->getBrandSketches(), 200, [], ['groups' => ['main']]);
     }
 }

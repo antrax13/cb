@@ -13,12 +13,12 @@
                     <div class="row">
                         <div class="col-md-12">
                             {% if quote.brandSketches|length > 0 %}
-                                <div class="row">
+                                <div class="row js-sortable-parent" data-url="{{ path('quote_sketch_reorder', {'id': quote.id}) }}">
                                     {% for sketch in quote.brandSketches %}
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" data-id="{{ sketch.id }}">
                                             <div class="card inner-card">
-                                                <div class="card-header">
+                                                <div class="card-header drag-handle">
                                                     <div class="d-flex">
                                                         <strong>#{{ '%05d'|format(sketch.id) }} {{ sketch.name }}</strong>
                                                         {% if sketch.isRemoved %}
@@ -224,6 +224,8 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
     <script>
         $(".js-delete-sketch").on('click', function (e) {
             e.preventDefault();
@@ -254,6 +256,19 @@
         {% if not form.vars.valid %}
         $('#addNewModal').modal('toggle');
         {% endif %}
+
+        var sortable = Sortable.create($('.js-sortable-parent')[0], {
+            handle: '.drag-handle',
+            animation: 800,
+            onEnd: function(){
+                console.log(sortable.toArray());
+                $.ajax({
+                    'url': $('.js-sortable-parent').data('url'),
+                    'method': 'POST',
+                    'data': JSON.stringify(sortable.toArray())
+                });
+            }
+        });
     </script>
 
 {% endblock %}

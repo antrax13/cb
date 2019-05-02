@@ -39,7 +39,7 @@ class Quote
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\BrandSketch", mappedBy="quote")
-     * @ORM\OrderBy({"isRemoved" = "ASC"})
+     * @ORM\OrderBy({"isRemoved" = "ASC", "position"="ASC"})
      */
     private $brandSketches;
 
