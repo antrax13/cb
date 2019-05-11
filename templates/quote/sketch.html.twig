@@ -70,6 +70,8 @@
                                                                         {{ reference.originalFile|length > 10 ? reference.originalFile|slice(0,10)~'...'~reference.extension : reference.originalFile }}
                                                                     </a></small>
                                                                 <small class="text-muted">({{ reference.size }})</small><br />
+                                                            {% else %}
+                                                                <b class="small text-info">No previous sketches</b>
                                                             {% endfor %}
                                                         </div>
                                                         <div class="col-md-3" style="font-size: 14px;">
