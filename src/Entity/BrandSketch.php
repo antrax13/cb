@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -106,6 +108,17 @@ class BrandSketch
      * @ORM\Column(type="integer")
      */
     private $position = 0;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SketchReference", mappedBy="brandSketch")
+     * @ORM\OrderBy({"createdAt"="DESC"})
+     */
+    private $sketchReferences;
+
+    public function __construct()
+    {
+        $this->sketchReferences = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -301,6 +314,37 @@ class BrandSketch
     public function setPosition(int $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SketchReference[]
+     */
+    public function getSketchReferences(): Collection
+    {
+        return $this->sketchReferences;
+    }
+
+    public function addSketchReference(SketchReference $sketchReference): self
+    {
+        if (!$this->sketchReferences->contains($sketchReference)) {
+            $this->sketchReferences[] = $sketchReference;
+            $sketchReference->setBrandSketch($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSketchReference(SketchReference $sketchReference): self
+    {
+        if ($this->sketchReferences->contains($sketchReference)) {
+            $this->sketchReferences->removeElement($sketchReference);
+            // set the owning side to null (unless already changed)
+            if ($sketchReference->getBrandSketch() === $this) {
+                $sketchReference->setBrandSketch(null);
+            }
+        }
 
         return $this;
     }

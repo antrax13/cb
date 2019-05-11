@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\BrandSketch;
 use App\Entity\Invoice;
 use App\Entity\Quote;
+use App\Entity\SketchReference;
 use App\Form\BrandSketchFormType;
 use App\Form\InvoiceNewFormType;
 use App\Form\QuoteFormType;
@@ -253,6 +254,8 @@ class QuoteController extends AbstractController
         $form = $this->createForm(SketchEditType::class, $sketch);
         $form->handleRequest($request);
 
+        $oldSketch = clone $sketch;
+
         if($form->isSubmitted() && $form->isValid()){
 
             /** @var UploadedFile $file */
@@ -267,8 +270,11 @@ class QuoteController extends AbstractController
                 $sketch->setSize($fileSize);
                 $sketch->setExtension($fileExtension);
                 $sketch->setFile($fileName);
-            }
 
+                $reference = new SketchReference($sketch, $oldSketch->getFile(), $oldSketch->getExtension(), $oldSketch->getOriginalFile(), $oldSketch->getSize());
+
+            }
+            $manager->persist($reference);
             $manager->persist($sketch);
             $manager->flush();
 

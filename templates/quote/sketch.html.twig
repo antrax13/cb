@@ -13,7 +13,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             {% if quote.brandSketches|length > 0 %}
-                                <div class="row js-sortable-parent" data-url="{{ path('quote_sketch_reorder', {'id': quote.id}) }}">
+                                <div class="row js-sortable-parent"
+                                     data-url="{{ path('quote_sketch_reorder', {'id': quote.id}) }}">
                                     {% for sketch in quote.brandSketches %}
 
                                         <div class="col-md-12" data-id="{{ sketch.id }}">
@@ -42,7 +43,7 @@
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        <div class="col-md-4 text-center">
+                                                        <div class="col-md-2 text-center">
                                                             <img
                                                                     src="{{ asset('uploads/sketches/'~sketch.file) }}"
                                                                     alt="{{ sketch.file }}"
@@ -54,10 +55,24 @@
                                                                    DOWNLOAD><i
                                                                             class="fas fa-download"></i> {{ sketch.originalFile }}
                                                                 </a>
-                                                            </small><small class="text-muted">({{ sketch.size }})</small>
+                                                            </small>
+                                                            <small class="text-muted">({{ sketch.size }})</small>
+
 
                                                         </div>
                                                         <div class="col-md-4">
+                                                            <dt>Previous sketches</dt>
+                                                            {% for reference in sketch.sketchReferences %}
+                                                                <small>{{ reference.createdAt|date('d/m/Y H:i') }}
+                                                                    <a href="{{ asset('uploads/sketches/'~reference.file) }}"
+                                                                       DOWNLOAD><i
+                                                                                class="fas fa-download"></i>
+                                                                        {{ reference.originalFile|length > 10 ? reference.originalFile|slice(0,10)~'...'~reference.extension : reference.originalFile }}
+                                                                    </a></small>
+                                                                <small class="text-muted">({{ reference.size }})</small><br />
+                                                            {% endfor %}
+                                                        </div>
+                                                        <div class="col-md-3" style="font-size: 14px;">
                                                             <div class="row">
                                                                 <dt class="col-6"><strong
                                                                             class="text-{{ sketch.isRemoved ? 'danger':'success' }}">ItemNo</strong>
@@ -82,7 +97,7 @@
                                                                 </div>
                                                             {% endif %}
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3" style="font-size: 14px;">
                                                             <div class="row">
                                                                 <dt class="col-6">Weight</dt>
                                                                 <dd class="col-6">{{ sketch.weight }}kg</dd>
@@ -259,7 +274,7 @@
         var sortable = Sortable.create($('.js-sortable-parent')[0], {
             handle: '.drag-handle',
             animation: 800,
-            onEnd: function(){
+            onEnd: function () {
                 console.log(sortable.toArray());
                 $.ajax({
                     'url': $('.js-sortable-parent').data('url'),
