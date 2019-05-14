@@ -482,7 +482,9 @@ class CreateStampController extends AbstractController
         $title = 'Custom Online Stamps';
         $breadcrumbs = ['Admin', 'Custom Online Stamps'];
 
-        $customs = $repository->findAll();
+        $customs = $repository->findBy([],[
+            'id' => 'DESC'
+        ]);
         $array = [];
         foreach($customs as $custom){
             $array[] = [

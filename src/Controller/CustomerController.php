@@ -22,7 +22,9 @@ class CustomerController extends AbstractController
     public function index(CustomerRepository $repository)
     {
         $breadcrumbs = ['Customers'];
-        $customers = $repository->findAll();
+        $customers = $repository->findBy([],[
+            'id' => 'DESC'
+        ]);
 
         $array = [];
         foreach($customers as $customer){

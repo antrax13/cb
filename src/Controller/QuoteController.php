@@ -36,6 +36,8 @@ class QuoteController extends AbstractController
         $array = [];
         $quotes = $repository->findBy([
             'isRemoved' => false
+        ], [
+            'id' => 'DESC'
         ]);
         foreach($quotes as $quote){
             $array[] = [
