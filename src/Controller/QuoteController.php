@@ -274,9 +274,9 @@ class QuoteController extends AbstractController
                 $sketch->setFile($fileName);
 
                 $reference = new SketchReference($sketch, $oldSketch->getFile(), $oldSketch->getExtension(), $oldSketch->getOriginalFile(), $oldSketch->getSize());
-
+                $manager->persist($reference);
             }
-            $manager->persist($reference);
+
             $manager->persist($sketch);
             $manager->flush();
 
