@@ -301,7 +301,7 @@ class CreateStampController extends AbstractController
             $data = $form->getData();
 
             $stampType = $stampTypeRepository->findOneBy([
-                'value' => 'Heat Stamp'
+                'value' => 'Heat Stamp / Manual Brander'
             ]);
 
             /** @var UploadedFile $file */
