@@ -21,9 +21,7 @@ class SketchController extends AbstractController
         $breadcrumbs = ['Sketches'];
 
         $records = [];
-        $sketches = $repository->findBy([],[
-            'id' => 'DESC',
-        ]);
+        $sketches = $repository->findAllSketchesNotRemoved();
         foreach($sketches as $sketch){
             $records[] = [
                 'sketch_id' => $sketch->getId(),
