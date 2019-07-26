@@ -32,6 +32,17 @@ class BrandSketchRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllSketchesNotRemoved()
+    {
+        return $this->createQueryBuilder('b')
+            ->leftJoin('b.quote', 'q')
+            ->andWhere('q.isRemoved = 0')
+            ->andWhere('b.isRemoved = 0')
+            ->orderBy('b.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     /*
     public function findOneBySomeField($value): ?BrandSketch
