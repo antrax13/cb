@@ -38,7 +38,7 @@ class BrandSketchRepository extends ServiceEntityRepository
             ->leftJoin('b.quote', 'q')
             ->andWhere('q.isRemoved = 0')
             ->andWhere('b.isRemoved = 0')
-            ->orderBy('b.id', 'ASC')
+            ->orderBy('b.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
