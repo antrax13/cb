@@ -72,7 +72,7 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold;">Price</td>
-                            <td style="font-weight: bold; color: green;">£{{ sketch.price }}</td>
+                            <td style="font-weight: bold; color: green;">€{{ sketch.price }}</td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold;">Weight</td>
@@ -145,7 +145,7 @@
                 <ul>
                     {% for key, item in shipping.shippingWeights %}
                         <li>Estimated price for <span style="font-weight: bold;">{{ key }}kg</span> parcel is <span
-                                    style="font-weight: bold;">£{{ item.0|number_format(2) }}</span></li>
+                                    style="font-weight: bold;">€{{ item.0|number_format(2) }}</span></li>
                     {% else %}
                         <li>Shipping costs will be specified on the invoice.</li>
                     {% endfor %}
@@ -185,7 +185,45 @@
 
 <!-- Thank you message -->
 <hr />
+
+<h2 style="color: #00aae7;">Do you wish to proceed? Great</h2>
+We need some information in order to create an invoice and place your order into our workshop.
+<ol>
+    <li>We need shipping address (required for invoice)</li>
+    <li>We need billing address (required for invoice)</li>
+    <li>We need Phone number (required by Fedex when they will deliver)</li>
+    <li>We need VAT Number if applicable (required for invoice if applicable otherwise VAT will be charged)</li>
+    <br />
+    <br />
+    Once we have above information we will forward this quote to Vladimir, who will send you an invoice.
+    <br />
+    <br />
+
+    <li>Once the invoice has been created, it will be sent to you.</li>
+    <li>Just pay the invoice and let us know (info@cocktailbrandalism.com or vladimir@scotka.com)</li>
+    <li>As soon as we get a payment, we will place your order to our workshop.</li>
+    <li>Just wait and you will get it. If you wont receive it within next 2-3 weeks let us know so we can start chasing Fedex and resolve issue ASAP.</li>
+</ol>
+
 <h1 style="text-align: center; font-size: 36px; color: #00aae7; margin-top: 100px;">We are looking forward to hear from you.</h1>
+
+<table border="0">
+
+    <tr nobr="true" style="text-align: center;">
+        <td style="text-align: center;" colspan="2"><img src="{{ asset('images/b.jpeg') }}" style="" /></td>
+        <td style="text-align: center;" colspan="2"><img src="{{ asset('images/bi.jpeg') }}" style="" /></td>
+    </tr>
+    <tr>
+        <td><img src="{{ asset('images/n.jpeg') }}" /></td>
+        <td><img src="{{ asset('images/n.jpeg') }}" /></td>
+        <td><img src="{{ asset('images/n.jpeg') }}" /></td>
+        <td><img src="{{ asset('images/n.jpeg') }}" /></td>
+    </tr>
+    <tr nobr="true" style="text-align: center;">
+        <td style="text-align: center;" colspan="2"><img src="{{ asset('images/b.jpeg') }}" style="" /></td>
+        <td style="text-align: center;" colspan="2"><img src="{{ asset('images/bi.jpeg') }}" style="" /></td>
+    </tr>
+</table>
 
 
 

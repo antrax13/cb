@@ -8,7 +8,10 @@
             {% include 'create_stamp/partials/_tabs.html.twig' %}
         </div>
         <div class="card-body">
-            <h1 class="display-4">Summary</h1>
+            <div class="row">
+                <div class="col-md-6"><h1 class="display-4">Summary</h1></div>
+                <div class="col-md-6 text-right"><a href="{{ path('create_stamp_send_enquiry', {'identifier': enquiry.identifier}) }}" style="padding: 10px;" class="btn btn-lg btn-success js-confirm-send">Confirm & Send Your </a></div>
+            </div>
             <p class="lead">Double check your details are correct. Once you are happy with summary click on Confirm &
                 Send Button to send your request. We will send you an email once we will create a quote.</p>
 
@@ -78,7 +81,7 @@
 
         </div>
         <div class="card-footer">
-            <a href="{{ path('create_stamp_send_enquiry', {'identifier': enquiry.identifier}) }}" class="btn btn-md btn-success" id="js-confirm-send">Confirm & Send</a>
+            <a href="{{ path('create_stamp_send_enquiry', {'identifier': enquiry.identifier}) }}" class="btn btn-md btn-success js-confirm-send">Confirm & Send</a>
             <a href="{{ path('welcome') }}" class="btn btn-md btn-outline-secondary float-right">Close</a>
         </div>
     </div>
@@ -114,7 +117,7 @@
             $('#js-save-comment-save').show();
         });
 
-        $('#js-confirm-send').click(function(e){
+        $('.js-confirm-send').click(function(e){
             e.preventDefault();
             if(!canProgress){
                 swal({

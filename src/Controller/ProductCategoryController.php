@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\Shop\CategoryType;
 use App\Repository\CategoryRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ class ProductCategoryController extends AbstractController
      * @Route("/admin/category/new", name="admin_category_new")
      *
      */
-    public function newCategory(Request $request, ObjectManager $manager)
+    public function newCategory(Request $request, EntityManagerInterface $manager)
     {
         $breadcrumbs = ['Admin', 'Product Category', 'New'];
 
@@ -49,7 +49,7 @@ class ProductCategoryController extends AbstractController
      * @Route("/admin/category/{category}/edit", name="admin_category_edit")
      *
      */
-    public function editCategory(Category $category, Request $request, ObjectManager $manager)
+    public function editCategory(Category $category, Request $request, EntityManagerInterface $manager)
     {
         $breadcrumbs = ['Admin', $category->getName(), 'Edit'];
 

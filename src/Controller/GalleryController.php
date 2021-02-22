@@ -6,7 +6,6 @@ use App\Entity\GalleryPhoto;
 use App\Form\Admin\GalleryPhotoNewType;
 use App\Repository\GalleryPhotoRepository;
 use App\Service\UploaderHelper;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -57,7 +56,7 @@ class GalleryController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      * @Route("/admin/gallery/new", name="admin_gallery_new")
      */
-    public function newAction(Request $request, ObjectManager $manager, UploaderHelper $uploaderHelper)
+    public function newAction(Request $request, EntityManagerInterface $manager, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Admin', 'Gallery', 'New'];
 
@@ -90,7 +89,7 @@ class GalleryController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      * @Route("/admin/gallery/{id}/delete", name="admin_gallery_delete")
      */
-    public function removeAction(GalleryPhoto $galleryPhoto, ObjectManager $manager)
+    public function removeAction(GalleryPhoto $galleryPhoto, EntityManagerInterface $manager)
     {
         $file = $this->getParameter('gallery_dir').'/'.$galleryPhoto->getFile();
         if(file_exists($file)){

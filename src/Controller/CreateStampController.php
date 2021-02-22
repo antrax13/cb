@@ -27,8 +27,6 @@ use App\Service\CreateStamp;
 use App\Service\Mailer;
 use App\Service\UploaderHelper;
 use Couchbase\Document;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use function PHPSTORM_META\type;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -72,7 +70,7 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/contact-details", name="create_stamp_contact_details_new")
      */
-    public function contactDetails(Request $request, ObjectManager $manager, CreateStamp $createStamp)
+    public function contactDetails(Request $request, EntityManagerInterface $manager, CreateStamp $createStamp)
     {
 
         $breadcrumbs = ['Create Your Stamp', 'Contact Details'];
@@ -131,7 +129,7 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/{identifier}/contact-details/edit", name="create_stamp_contact_details_edit")
      */
-    public function editContactDetails(StampQuote $enquiry, Request $request, ObjectManager $manager)
+    public function editContactDetails(StampQuote $enquiry, Request $request, EntityManagerInterface $manager)
     {
         if($enquiry->getStatus() == "SENT TO US"){
             $this->addFlash('warning', 'This enquiry cannot be modified.');
@@ -186,7 +184,7 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/{identifier}/items/ice-stamp", name="create_stamp_items_ice_stamp")
      */
-    public function createIceStamp(Request $request, StampQuote $enquiry, HandleShapeRepository $shapeRepository, HandleColorRepository $colorRepository, ObjectManager $manager, StampShapeRepository $stampShapeRepository, StampTypeRepository $stampTypeRepository, UploaderHelper $uploaderHelper)
+    public function createIceStamp(Request $request, StampQuote $enquiry, HandleShapeRepository $shapeRepository, HandleColorRepository $colorRepository, EntityManagerInterface $manager, StampShapeRepository $stampShapeRepository, StampTypeRepository $stampTypeRepository, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Create Your Stamp', 'Items', 'Ice Stamp'];
 
@@ -290,7 +288,7 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/{identifier}/items/heat-stamp", name="create_stamp_items_heat_stamp")
      */
-    public function createHeatStamp(Request $request, StampQuote $enquiry, ObjectManager $manager, StampTypeRepository $stampTypeRepository, UploaderHelper $uploaderHelper)
+    public function createHeatStamp(Request $request, StampQuote $enquiry, EntityManagerInterface $manager, StampTypeRepository $stampTypeRepository, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Create Your Stamp', 'Items', 'Heat Stamp'];
 
@@ -341,7 +339,7 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/{identifier}/items/branding-iron", name="create_stamp_items_branding_iron")
      */
-    public function createBrandingIron(Request $request, StampQuote $enquiry, ObjectManager $manager, StampTypeRepository $stampTypeRepository, UploaderHelper $uploaderHelper, CreateStamp $stamp)
+    public function createBrandingIron(Request $request, StampQuote $enquiry, EntityManagerInterface $manager, StampTypeRepository $stampTypeRepository, UploaderHelper $uploaderHelper, CreateStamp $stamp)
     {
         $breadcrumbs = ['Create Your Stamp', 'Items', 'Branding Iron'];
 
@@ -392,7 +390,7 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/sketch/delete/{id}", name="create_stamp_items_delete")
      */
-    public function deleteSketch(StampQuoteSketch $sketch, ObjectManager $manager, StampQuoteRepository $stampQuoteRepository)
+    public function deleteSketch(StampQuoteSketch $sketch, EntityManagerInterface $manager, StampQuoteRepository $stampQuoteRepository)
     {
 
         $identifier = $sketch->getStampQuote()->getIdentifier();
@@ -420,7 +418,7 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/{identifier}/summary", name="create_stamp_summary")
      */
-    public function showSummary(Request $request, StampQuote $enquiry, ObjectManager $manager)
+    public function showSummary(Request $request, StampQuote $enquiry, EntityManagerInterface $manager)
     {
         $now = new \DateTime();
         if(in_array($enquiry->getStatus(), [
@@ -455,7 +453,7 @@ class CreateStampController extends AbstractController
     /**
      * @Route("/create-your-stamp/{identifier}/send", name="create_stamp_send_enquiry")
      */
-    public function sendEnquiry(StampQuote $enquiry, ObjectManager $manager, Mailer $mailer, CreateStamp $stamp)
+    public function sendEnquiry(StampQuote $enquiry, EntityManagerInterface $manager, Mailer $mailer, CreateStamp $stamp)
     {
         // clear session
         $stamp->emptyStampSession();
@@ -525,7 +523,7 @@ class CreateStampController extends AbstractController
      * @Route("/admin/custom-order/{id}/add", name="admin_custom_order_create", methods="POST")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function createQuote(StampQuote $stampQuote, ObjectManager $manager, CustomerRepository $customerRepository)
+    public function createQuote(StampQuote $stampQuote, EntityManagerInterface $manager, CustomerRepository $customerRepository)
     {
         if($stampQuote->getStatus() == $stampQuote::STATUS_SEND_TO_US || $stampQuote->getStatus() == $stampQuote::STATUS_REMINDER_ISSUED) {
             $customer = $customerRepository->findOneBy([
@@ -604,9 +602,9 @@ class CreateStampController extends AbstractController
      * @Route("/admin/custom-order/{id}/reminder", name="admin_custom_order_reminder")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function sendReminderEmail(StampQuote $stampQuote, ObjectManager $manager, Mailer $mailer)
+    public function sendReminderEmail(StampQuote $stampQuote, EntityManagerInterface $manager, Mailer $mailer)
     {
-        if($stampQuote->getStatus() == $stampQuote::STATUS_CREATED){
+//        if($stampQuote->getStatus() == $stampQuote::STATUS_CREATED){
 
             $mailer->sendReminderEmail($stampQuote, $this->getParameter('my_personal_email'));
 
@@ -617,10 +615,10 @@ class CreateStampController extends AbstractController
             $manager->flush();
             $this->addFlash('success','Reminder email has been issued to <b>'.$stampQuote->getEmail().'</b>.');
             return $this->redirectToRoute('admin_custom_orders');
-        }
+//        }
 
-        $this->addFlash('danger', 'There was an error to send reminder');
-        return $this->redirectToRoute('admin_custom_order_show', ['id' => $stampQuote->getId()]);
+//        $this->addFlash('danger', 'There was an error to send reminder');
+//        return $this->redirectToRoute('admin_custom_order_show', ['id' => $stampQuote->getId()]);
     }
 
 
@@ -628,17 +626,17 @@ class CreateStampController extends AbstractController
      * @Route("/admin/custom-order/{id}/close", name="admin_custom_order_close_quote")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function closeCustomQuote(StampQuote $stampQuote, ObjectManager $manager)
+    public function closeCustomQuote(StampQuote $stampQuote, EntityManagerInterface $manager)
     {
-        if($stampQuote->getStatus() == $stampQuote::STATUS_CREATED){
+//        if($stampQuote->getStatus() == $stampQuote::STATUS_CREATED){
             $stampQuote->setStatus($stampQuote::STATUS_CLOSED);
             $stampQuote->setUpdatedAt(new \DateTime('now'));
             $manager->flush();
             $this->addFlash('success', sprintf('Status of Customer Quote has been changed to %s', $stampQuote::STATUS_CLOSED));
             return $this->redirectToRoute('admin_custom_orders');
-        }
+//        }
 
-        $this->addFlash('danger', sprintf('Could not close because status is %s', $stampQuote->getStatus()));
-        return $this->redirectToRoute('admin_custom_order_show', ['id' => $stampQuote->getId()]);
+//        $this->addFlash('danger', sprintf('Could not close because status is %s', $stampQuote->getStatus()));
+//        return $this->redirectToRoute('admin_custom_order_show', ['id' => $stampQuote->getId()]);
     }
 }

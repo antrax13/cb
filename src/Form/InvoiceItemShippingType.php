@@ -19,7 +19,7 @@ class InvoiceItemShippingType extends AbstractType
                 ]
             ])
             ->add('price', null, [
-                'label' => 'Price of Shipping (£)',
+                'label' => 'Price of Shipping (€)',
                 'constraints' => [
                     new NotBlank()
                 ]

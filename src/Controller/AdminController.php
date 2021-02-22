@@ -9,7 +9,7 @@ use App\Form\ShippingOptionType;
 use App\Repository\ManufacturingTextRepository;
 use App\Repository\PaymentOptionTextRepository;
 use App\Repository\ShippingRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/payment", name="admin_payment")
      */
-    public function payment(Request $request, ObjectManager $manager, PaymentOptionTextRepository $repo)
+    public function payment(Request $request, EntityManagerInterface $manager, PaymentOptionTextRepository $repo)
     {
         $breadcrumbs = ['Admin', 'Payment Options'];
 
@@ -53,7 +53,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/manufacturing", name="admin_manufacturing")
      */
-    public function manufacturing(Request $request, ObjectManager $manager, ManufacturingTextRepository $repo)
+    public function manufacturing(Request $request, EntityManagerInterface $manager, ManufacturingTextRepository $repo)
     {
         $breadcrumbs = ['Admin', 'Manufacturing'];
 

@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Form\CustomerFormType;
 use App\Repository\CustomerRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +46,7 @@ class CustomerController extends AbstractController
     /**
      * @Route("/customer/new", name="customer_new")
      */
-    public function newAction(Request $request, ObjectManager $manager){
+    public function newAction(Request $request, EntityManagerInterface $manager){
 
         $breadcrumbs = ['Customers', 'New'];
         $form = $this->createForm(CustomerFormType::class);
@@ -73,7 +73,7 @@ class CustomerController extends AbstractController
     /**
      * @Route("/customer/{id}", name="customer_show")
      */
-    public function showAction(Request $request, Customer $customer, ObjectManager $manager){
+    public function showAction(Request $request, Customer $customer, EntityManagerInterface $manager){
 
         $breadcrumbs = ['Customers', $customer->getName()];
 

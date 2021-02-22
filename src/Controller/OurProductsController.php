@@ -6,7 +6,7 @@ use App\Entity\CustomProductInfo;
 use App\Form\Admin\CustomProductInfoType;
 use App\Repository\CustomProductInfoRepository;
 use App\Service\UploaderHelper;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
@@ -95,7 +95,7 @@ class OurProductsController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      * @Route("/admin/custom-products/new", name="admin_custom_products_new")
      */
-    public function newAction(Request $request, ObjectManager $manager, UploaderHelper $uploaderHelper)
+    public function newAction(Request $request, EntityManagerInterface $manager, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Admin','Custom Products', 'New'];
 
@@ -130,7 +130,7 @@ class OurProductsController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      * @Route("/admin/custom-products/{id}/edit", name="admin_custom_products_edit")
      */
-    public function editAction(Request $request, CustomProductInfo $productInfo, ObjectManager $manager, UploaderHelper $uploaderHelper)
+    public function editAction(Request $request, CustomProductInfo $productInfo, EntityManagerInterface $manager, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Admin','Custom Products', $productInfo->getType(), 'Edit'];
 

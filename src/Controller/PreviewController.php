@@ -9,7 +9,6 @@ use App\Repository\ManufacturingTextRepository;
 use App\Repository\PaymentOptionTextRepository;
 use App\Service\InvoicePDF;
 use App\Service\MyPDF;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use jonasarts\Bundle\TCPDFBundle\TCPDF\TCPDF;
@@ -51,7 +50,7 @@ class PreviewController extends AbstractController
     /**
      * @Route("/generate-quote/{id}", name="generate_pdf")
      */
-    public function generatePDF(Quote $quote, PaymentOptionTextRepository $paymentRepository, ManufacturingTextRepository $manufacturingRepository, FedexDeliveryRepository $fedexDeliveryRepository, ObjectManager $manager)
+    public function generatePDF(Quote $quote, PaymentOptionTextRepository $paymentRepository, ManufacturingTextRepository $manufacturingRepository, FedexDeliveryRepository $fedexDeliveryRepository, EntityManagerInterface $manager)
     {
         $payment = $paymentRepository->find(1);
 

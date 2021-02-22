@@ -33,7 +33,7 @@ class SketchEditType extends AbstractType
                 'help' => 'in kilograms (kg)'
             ])
             ->add('price', null, [
-                'help' => 'price in pounds (£)'
+                'help' => 'price in pounds (€)'
             ])
             ->add('qty', null, [
                 'label' => 'Quantity'

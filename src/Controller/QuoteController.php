@@ -13,7 +13,6 @@ use App\Form\SketchEditType;
 use App\Repository\InvoiceRepository;
 use App\Repository\QuoteRepository;
 use App\Service\UploaderHelper;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -62,7 +61,7 @@ class QuoteController extends AbstractController
     /**
      * @Route("/quote/new", name="quote_new")
      */
-    public function newAction(Request $request, ObjectManager $manager)
+    public function newAction(Request $request, EntityManagerInterface $manager)
     {
         $breadcrumbs = ['Quote', 'New'];
 
@@ -111,7 +110,7 @@ class QuoteController extends AbstractController
     /**
      * @Route("/quote/{id}/edit", name="quote_show_edit")
      */
-    public function editQuoteAction(Request $request,Quote $quote, ObjectManager $manager){
+    public function editQuoteAction(Request $request,Quote $quote, EntityManagerInterface $manager){
         if($quote->getIsRemoved()){
             $this->addFlash('danger','Quote has been removed. Contact Administrator to update Quote: '.$quote->getId().' manually.');
             return $this->redirectToRoute('quotes');
@@ -146,7 +145,7 @@ class QuoteController extends AbstractController
     /**
      * @Route("/quote/{id}/sketch", name="quote_sketch_show")
      */
-    public function showQuoteSketches(Request $request, Quote $quote, ObjectManager $manager, UploaderHelper $uploaderHelper)
+    public function showQuoteSketches(Request $request, Quote $quote, EntityManagerInterface $manager, UploaderHelper $uploaderHelper)
     {
         if($quote->getIsRemoved()){
             $this->addFlash('danger','Quote has been removed. Contact Administrator to update Quote: '.$quote->getId().' manually.');
@@ -202,7 +201,7 @@ class QuoteController extends AbstractController
     /**
      * @Route("/sketch/{id}/delete", name="delete_sketch")
      */
-    public function deleteSketch(BrandSketch $sketch, ObjectManager $manager)
+    public function deleteSketch(BrandSketch $sketch, EntityManagerInterface $manager)
     {
         $sketch->setIsRemoved(true);
         $manager->persist($sketch);
@@ -218,7 +217,7 @@ class QuoteController extends AbstractController
     /**
      * @Route("/sketch/{id}/undo-delete", name="undo_delete_sketch")
      */
-    public function undoDeleteSketch(BrandSketch $sketch, ObjectManager $manager)
+    public function undoDeleteSketch(BrandSketch $sketch, EntityManagerInterface $manager)
     {
         $sketch->setIsRemoved(false);
         $manager->persist($sketch);
@@ -234,7 +233,7 @@ class QuoteController extends AbstractController
     /**
      * @Route("/quote/{id}/delete", name="delete_quote")
      */
-    public function deleteQuote(Quote $quote, ObjectManager $manager)
+    public function deleteQuote(Quote $quote, EntityManagerInterface $manager)
     {
         $quote->setIsRemoved(true);
         $manager->persist($quote);
@@ -248,7 +247,7 @@ class QuoteController extends AbstractController
     /**
      * @Route("/sketch/{id}/edit", name="edit_sketch")
      */
-    public function editSketch(Request $request, BrandSketch $sketch, ObjectManager $manager, UploaderHelper $uploaderHelper)
+    public function editSketch(Request $request, BrandSketch $sketch, EntityManagerInterface $manager, UploaderHelper $uploaderHelper)
     {
 
         $breadcrumbs = ['Sketch', $sketch->getId(), 'Edit'];
@@ -297,7 +296,7 @@ class QuoteController extends AbstractController
     /**
      * @Route("/quote/{id}/invoice", name="quote_invoice")
      */
-    public function createInvoice(Request $request, Quote $quote, ObjectManager $manager, InvoiceRepository $repository)
+    public function createInvoice(Request $request, Quote $quote, EntityManagerInterface $manager, InvoiceRepository $repository)
     {
         $breadcrumbs = ['Quote', '#CBQ00'.$quote->getId(), 'Invoice'];
 

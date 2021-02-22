@@ -11,55 +11,58 @@ namespace App\Service;
 
 use App\Entity\StampQuote;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
 
 class Mailer
 {
     private $mailer;
-    private $twig;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig)
+    public function __construct(MailerInterface $mailer)
     {
         $this->mailer = $mailer;
-        $this->twig = $twig;
     }
 
     public function sendContactUs($contactFormData, $email)
     {
-        $body = $this->twig->render('emails/_contact_us.html.twig', [
-            'data' => $contactFormData
-        ]);
+        $email = (new TemplatedEmail())
+            ->from('info@cocktailbrandalism.com')
+            ->to($email)
+            ->subject('CocktailBrandalism.com - New Contact us')
+            ->htmlTemplate('emails/_contact_us.html.twig')
+            ->context([
+                'data' => $contactFormData
+            ]);
 
-        $message = (new \Swift_Message('CocktailBrandalism.com - New Contact us'))
-            ->setFrom('info@cocktailbrandalism.com', 'Cocktail Brandalism')
-            ->setTo($email)
-            ->setBody($body, 'text/html');
-        $this->mailer->send($message);
+        $this->mailer->send($email);
     }
 
     public function sendEnquiry(StampQuote $enquiry, $email)
     {
-        $body = $this->twig->render('emails/_enquiry.html.twig', [
-            'enquiry' => $enquiry
-        ]);
+        $email = (new TemplatedEmail())
+            ->from('info@cocktailbrandalism.com')
+            ->to($email)
+            ->subject('CocktailBrandalism.com - New Stamp Order')
+            ->htmlTemplate('emails/_enquiry.html.twig')
+            ->context([
+                'enquiry' => $enquiry
+            ]);
 
-        $message = (new \Swift_Message('CocktailBrandalism.com - New Stamp Order'))
-            ->setFrom('info@cocktailbrandalism.com', 'Cocktail Brandalism')
-            ->setTo($email)
-            ->setBody($body, 'text/html');
-        $this->mailer->send($message);
+        $this->mailer->send($email);
     }
 
     public function sendReminderEmail(StampQuote $stampQuote)
     {
-        $body = $this->twig->render('emails/_reminder.html.twig', [
-            'stampQuote' => $stampQuote
-        ]);
+        $email = (new TemplatedEmail())
+            ->from('info@cocktailbrandalism.com')
+            ->to($stampQuote->getEmail())
+            ->subject('CocktailBrandalism.com - Reminder Of Your Custom Order')
+            ->htmlTemplate('emails/_reminder.html.twig')
+            ->context([
+                'stampQuote' => $stampQuote
+            ]);
 
-        $message = (new \Swift_Message('CocktailBrandalism.com - Reminder Of Your Custom Order'))
-            ->setFrom('info@cocktailbrandalism.com', 'Cocktail Brandalism')
-            ->setTo($stampQuote->getEmail())
-            ->setBody($body, 'text/html');
-        $this->mailer->send($message);
+        $this->mailer->send($email);
     }
 
 }

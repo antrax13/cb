@@ -4,6 +4,7 @@ namespace App\Form\Admin;
 
 use App\Entity\CustomProductInfo;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,6 +26,13 @@ class CustomProductInfoType extends AbstractType
             ->add('details', null, [
                 'attr' => [
                     'rows' => 20,
+                ]
+            ])
+            ->add('isFeatured', ChoiceType::class,[
+                'label' => 'Make this product visible?',
+                'choices' => [
+                    'Yes' => true,
+                    'No' => false
                 ]
             ])
             ->add('fetchOrder')

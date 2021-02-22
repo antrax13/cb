@@ -27,7 +27,7 @@ class InvoiceItemEditFormType extends AbstractType
                 ]
             ])
             ->add('price', null, [
-                'help' => 'price in pounds (£)',
+                'help' => 'price in pounds (€)',
                 'constraints' => [
                     new NotBlank()
                 ]

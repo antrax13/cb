@@ -7,7 +7,6 @@ use App\Entity\Product;
 use App\Form\Shop\CategoryType;
 use App\Form\Shop\ProductType;
 use App\Repository\CategoryRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

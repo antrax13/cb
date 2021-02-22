@@ -24,7 +24,7 @@ class WelcomeController extends AbstractController
         ]);
 
         $productsArray = [];
-        if(count($products) > 0) {
+        if (count($products) > 0) {
             $noProducts = 3;
             $randomNumbers = array_rand($products, $noProducts);
             foreach ($randomNumbers as $number) {
@@ -33,17 +33,24 @@ class WelcomeController extends AbstractController
         }
 
         $productsCustomArray = [];
-        if(count($customItems) > 0) {
+        if (count($customItems) > 0) {
             $noProductsCustom = 2;
             $randomCustomNumbers = array_rand($customItems, $noProductsCustom);
             foreach ($randomCustomNumbers as $number) {
                 $productsCustomArray[] = $customItems[$number];
             }
         }
+
         $galleryPhotos = $galleryPhotoRepository->findAll();
 
-        $galleryPhoto = $galleryPhotos[rand(0,count($galleryPhotos)-1)];
-        $customCarouselPhoto = $customItems[rand(0, count($customItems)-1)];
+        $galleryPhoto = '';
+        $customCarouselPhoto = '';
+        if ($galleryPhotos) {
+            $galleryPhoto = $galleryPhotos[rand(0, count($galleryPhotos) - 1)];
+        }
+        if ($customItems) {
+            $customCarouselPhoto = $customItems[rand(0, count($customItems) - 1)];
+        }
 
         return $this->render('welcome/index.html.twig', [
             'breadcrumbs' => [],

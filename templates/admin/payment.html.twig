@@ -15,7 +15,7 @@
                     <div class="alert alert-info">
                         <h1>Preview</h1>
                         <hr />
-                        {{ data.description|raw }}
+                        {{ data.description|default('')|raw }}
                     </div>
                 </div>
                 <div class="card-footer">

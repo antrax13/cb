@@ -6,7 +6,7 @@ use App\Entity\Product;
 use App\Form\Shop\ProductType;
 use App\Repository\ProductRepository;
 use App\Service\UploaderHelper;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/admin/product/new", name="admin_product_new")
      */
-    public function newProduct(Request $request, ObjectManager $manager, UploaderHelper $uploaderHelper)
+    public function newProduct(Request $request, EntityManagerInterface $manager, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Shop','Product','New'];
 
@@ -55,7 +55,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/admin/product/{product}/edit", name="admin_product_edit_details")
      */
-    public function editProduct(Product $product, Request $request, ObjectManager $manager, UploaderHelper $uploaderHelper)
+    public function editProduct(Product $product, Request $request, EntityManagerInterface $manager, UploaderHelper $uploaderHelper)
     {
         $breadcrumbs = ['Shop', $product->getName(), 'Edit'];
 

@@ -11,8 +11,10 @@ namespace App\Twig;
 
 use App\Repository\CategoryRepository;
 use App\Repository\CustomProductInfoRepository;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class FooterExtension extends \Twig_Extension
+class FooterExtension extends AbstractExtension
 {
     private $customProductInfoRepository;
     private $categoryRepository;
@@ -26,8 +28,8 @@ class FooterExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('get_shop_categories', array($this, 'get_shop_categories')),
-            new \Twig_SimpleFunction('get_custom_products', array($this, 'get_custom_products')),
+            new TwigFunction('get_shop_categories', array($this, 'get_shop_categories')),
+            new TwigFunction('get_custom_products', array($this, 'get_custom_products')),
         ];
     }
 

@@ -75,11 +75,11 @@
                                     </td>
                                     <td class="js-table-row-weight" data-weight="{{ item.weightPerItem }}">{{ item.weightPerItem }}{{ not item.isPaypalItem and not item.isShippingItem ? 'kg' }}</td>
                                     <td class="js-table-row-qty" data-qty="{{ item.qty }}">{{ item.qty }}</td>
-                                    <td class="js-table-row-price" data-price="{{ item.price }}">£{{ item.price }}</td>
-                                    <td>£{{ itemSubtotal|number_format(2) }}</td>
-                                    <td>£{{ itemVat|number_format(2) }}</td>
+                                    <td class="js-table-row-price" data-price="{{ item.price }}">€{{ item.price }}</td>
+                                    <td>€{{ itemSubtotal|number_format(2) }}</td>
+                                    <td>€{{ itemVat|number_format(2) }}</td>
                                     <td class="text-right">
-                                        £{{ (itemSubtotal + itemVat)|number_format(2) }}</td>
+                                        €{{ (itemSubtotal + itemVat)|number_format(2) }}</td>
                                 </tr>
 
 
@@ -87,10 +87,10 @@
                             <tr class="table-success">
                                 <td></td>
                                 <td colspan="4">Invoiced Total</td>
-                                <td><strong>£{{ invoiceTotal|number_format(2) }}</strong></td>
-                                <td><strong>£{{ vatTotal|number_format(2) }}</strong></td>
+                                <td><strong>€{{ invoiceTotal|number_format(2) }}</strong></td>
+                                <td><strong>€{{ vatTotal|number_format(2) }}</strong></td>
                                 <td class="text-right">
-                                    <strong>£{{ (invoiceTotal + vatTotal)|number_format(2) }}</strong>
+                                    <strong>€{{ (invoiceTotal + vatTotal)|number_format(2) }}</strong>
                                 </td>
                             </tr>
                         {% else %}

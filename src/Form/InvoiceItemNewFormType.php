@@ -18,7 +18,7 @@ class InvoiceItemNewFormType extends AbstractType
                 'help' => 'name to be visible on invoice'
             ])
             ->add('price', null, [
-                'help' => 'price in pounds (£)'
+                'help' => 'price in pounds (€)'
             ])
             ->add('qty', null, [
                 'label' => 'Quantity'

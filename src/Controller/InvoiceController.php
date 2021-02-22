@@ -13,7 +13,7 @@ use App\Form\InvoiceNewFormType;
 use App\Repository\BrandSketchRepository;
 use App\Repository\InvoiceItemRepository;
 use App\Repository\InvoiceRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +53,7 @@ class InvoiceController extends AbstractController
     /**
      * @Route("/invoices/new", name="invoices_new")
      */
-    public function newAction(Request $request, ObjectManager $manager, InvoiceRepository $repository)
+    public function newAction(Request $request, EntityManagerInterface $manager, InvoiceRepository $repository)
     {
         $breadcrumbs = ['Invoices', 'New'];
 
@@ -98,7 +98,7 @@ class InvoiceController extends AbstractController
     /**
      * @Route("/invoices/{id}/edit", name="invoices_show_edit")
      */
-    public function editInvoiceDetails(Request $request, Invoice $invoice, ObjectManager $manager)
+    public function editInvoiceDetails(Request $request, Invoice $invoice, EntityManagerInterface $manager)
     {
         $breadcrumbs = ['Invoice', $invoice->getReference(),'Details', 'Edit'];
         $currentVat = $invoice->getVat();
@@ -137,7 +137,7 @@ class InvoiceController extends AbstractController
     /**
      * @Route("/invoices/{id}/items", name="invoices_items")
      */
-    public function orderAction(Request $request, Invoice $invoice, ObjectManager $manager, BrandSketchRepository $sketchRepository)
+    public function orderAction(Request $request, Invoice $invoice, EntityManagerInterface $manager, BrandSketchRepository $sketchRepository)
     {
         $breadcrumbs = ['Invoice', $invoice->getReference(), 'Items'];
 
@@ -185,7 +185,7 @@ class InvoiceController extends AbstractController
     /**
      * @Route("/invoices/{id}/add/{sketchString}", name="invoices_add_items")
      */
-    public function addItemsToInvoiceAction($sketchString, ObjectManager $manager, Invoice $invoice, BrandSketchRepository $repo)
+    public function addItemsToInvoiceAction($sketchString, EntityManagerInterface $manager, Invoice $invoice, BrandSketchRepository $repo)
     {
         $sketches = explode(',', $sketchString);
 
@@ -224,7 +224,7 @@ class InvoiceController extends AbstractController
     /**
      * @Route("/invoices/{id}/review-items", name="invoices_review_items")
      */
-    public function orderReviewAction(Request $request, Invoice $invoice, ObjectManager $manager, InvoiceItemRepository $repository)
+    public function orderReviewAction(Request $request, Invoice $invoice, EntityManagerInterface $manager, InvoiceItemRepository $repository)
     {
         $breadcrumbs = ['Invoice', $invoice->getReference(), 'Review Items'];
 
@@ -341,7 +341,7 @@ class InvoiceController extends AbstractController
     /**
      * @Route("/item-delete/{id}", name="invoices_delete_item")
      */
-    public function deleteItemAction(InvoiceItem $item, ObjectManager $manager)
+    public function deleteItemAction(InvoiceItem $item, EntityManagerInterface $manager)
     {
         $invoiceid = $item->getInvoice()->getId();
 

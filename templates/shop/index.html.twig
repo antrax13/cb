@@ -30,7 +30,7 @@
                                                 <img class="pic-1 img-fluid" src="{{ asset('images/products/'~product.image)|imagine_filter('thumbnail_gallery') }}">
                                             </a>
                                             {% if product.stock > 0 %}
-                                                <span class="product-new-label">£{{ product.price }}</span>
+                                                <span class="product-new-label">€{{ product.price }}</span>
                                             {% else %}
                                                 <span class="product-discount-label">Sold out</span>
                                             {% endif %}

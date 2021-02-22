@@ -105,19 +105,19 @@
             <tr style="font-size: 8px;">
                 <td style="width: 250px;">{{ item.name }}</td>
                 <td style="width: 50px; text-align: center;">{{ item.qty }}</td>
-                <td style="width: 50px; text-align: right;">£{{ item.price }}</td>
-                <td style="width: 50px; text-align: right;">£{{ itemSubtotal|number_format(2) }}</td>
-                <td style="width: 50px; text-align: right;">£{{ itemVat|number_format(2) }}</td>
+                <td style="width: 50px; text-align: right;">€{{ item.price }}</td>
+                <td style="width: 50px; text-align: right;">€{{ itemSubtotal|number_format(2) }}</td>
+                <td style="width: 50px; text-align: right;">€{{ itemVat|number_format(2) }}</td>
                 <td style="width: 60px; text-align: right;">
-                    £{{ (itemSubtotal + itemVat)|number_format(2) }}</td>
+                    €{{ (itemSubtotal + itemVat)|number_format(2) }}</td>
             </tr>
         {% endfor %}
         <tr style="font-weight: bold; font-size: 10px;">
             <td colspan="3">Invoiced Total</td>
-            <td style="text-align: right;"><strong>£{{ invoiceTotal|number_format(2) }}</strong></td>
-            <td style="text-align: right;"><strong>£{{ vatTotal|number_format(2) }}</strong></td>
+            <td style="text-align: right;"><strong>€{{ invoiceTotal|number_format(2) }}</strong></td>
+            <td style="text-align: right;"><strong>€{{ vatTotal|number_format(2) }}</strong></td>
             <td style="text-align: right;">
-                <strong>£{{ (invoiceTotal + vatTotal)|number_format(2) }}</strong>
+                <strong>€{{ (invoiceTotal + vatTotal)|number_format(2) }}</strong>
             </td>
         </tr>
         </tbody>
@@ -132,16 +132,16 @@
                     <tr>
                         <td style="width: 100px; text-align: right;">Invoiced Amount</td>
                         <td style="width: 60px; text-align: right;">
-                            <strong>£{{ invoiceTotal|number_format(2) }}</strong></td>
+                            <strong>€{{ invoiceTotal|number_format(2) }}</strong></td>
                     </tr>
                     <tr>
                         <td style="text-align: right;">VAT</td>
-                        <td style="text-align: right;"><strong>£{{ vatTotal|number_format(2) }}</strong></td>
+                        <td style="text-align: right;"><strong>€{{ vatTotal|number_format(2) }}</strong></td>
                     </tr>
                     <tr>
                         <td style="text-align: right;">Invoiced Total</td>
                         <td style="text-align: right;">
-                            <strong>£{{ (invoiceTotal + vatTotal)|number_format(2) }}</strong></td>
+                            <strong>€{{ (invoiceTotal + vatTotal)|number_format(2) }}</strong></td>
                     </tr>
                 </table>
             </td>
