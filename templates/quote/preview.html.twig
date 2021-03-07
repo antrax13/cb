@@ -14,17 +14,19 @@
 
                     <small class="text-muted">Internet Explorer wont load PDF please use different browser.</small>
 
-                    <div class="p-3 mt-3 bg-light">
+                    <div class="p-3 mt-3 bg-secondary">
                         <h4>Use this as a default message if you want</h4>
                         Email: <b>{{ quote.customer.email }}</b>
                         <hr />
-                        Hi {{ quote.customer.name }},<br /><br />
+                        {% set firstname = quote.customer.name|split(',') %}
+
+                        Hi {{ firstname[1] }},<br /><br />
 
                         thank you for your inquiry.<br /><br />
 
-                        Attachment is your quote.<br /><br />
+                        Attachment is your quote with requested {{ quote.brandSketchesNotRemoved|length > 1 ? 'items' : 'item' }}.<br /><br />
 
-                        Any questions let us know.<br /><br />
+                        Any questions let us know so we can proceed.<br /><br />
 
                         Have a nice day.<br /><br />
 
