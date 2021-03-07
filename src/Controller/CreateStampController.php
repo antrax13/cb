@@ -525,6 +525,8 @@ class CreateStampController extends AbstractController
      */
     public function createQuote(StampQuote $stampQuote, EntityManagerInterface $manager, CustomerRepository $customerRepository)
     {
+        dump($stampQuote->getStatus());
+        exit;
         if($stampQuote->getStatus() == $stampQuote::STATUS_SEND_TO_US || $stampQuote->getStatus() == $stampQuote::STATUS_REMINDER_ISSUED) {
             $customer = $customerRepository->findOneBy([
                 'email' => $stampQuote->getEmail()

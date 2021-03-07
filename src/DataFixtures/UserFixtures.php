@@ -33,9 +33,20 @@ class UserFixtures extends Fixture
         $user_vlad->setEmail('vladimir@scotka.com');
         $user_vlad->setFirstName('Vladimir');
         $user_vlad->setLastName('Scotka');
-        $user_vlad->setPassword($this->passwordEncoder->encodePassword($user, 'vl@d1mir'));
+        $user_vlad->setPassword($this->passwordEncoder->encodePassword($user_vlad, 'vl@d1mir'));
         $user_vlad->setRoles(['ROLE_ADMIN']);
         $manager->persist($user_vlad);
         $manager->flush();
+
+        $scarlett_vlad = new User();
+        $scarlett_vlad->setEmail('scarlett.palesova@gmail.com');
+        $scarlett_vlad->setFirstName('Scarlett');
+        $scarlett_vlad->setLastName('Palesova');
+        $scarlett_vlad->setPassword($this->passwordEncoder->encodePassword($scarlett_vlad, 'Skaj@1234'));
+        $scarlett_vlad->setRoles(['ROLE_ADMIN']);
+        $manager->persist($scarlett_vlad);
+        $manager->flush();
+
+
     }
 }
