@@ -16,9 +16,9 @@
 
                     <div class="p-3 mt-3 bg-secondary">
                         <h4>Use this as a default message if you want</h4>
-                        Email: <b>{{ quote.customer.email }}</b>
+                        Email to: <b>{{ quote.customer.email }}</b>
                         <hr />
-                        {% set firstname = quote.customer.name|split(',') %}
+                        {% set firstname = quote.customer.name|split(' ') %}
 
                         Hi {{ firstname[0] }},<br /><br />
 
