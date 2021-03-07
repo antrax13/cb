@@ -14,6 +14,20 @@
 
                     <small class="text-muted">Internet Explorer wont load PDF please use different browser.</small>
 
+                    <div class="p-3 mt-3 bg-secondary">
+                        Hi {{ quote.customer.name }},
+
+                        thank you for your inquiry.
+
+                        Attachment is your quote.
+
+                        Any questions let us know.
+
+                        Have a nice day.
+
+                        Regards
+                        Peter from CocktailBrandalism.com
+                    </div>
                 </div>
                 <div class="card-footer">
                     <a href="{{ path('generate_pdf', {'id' : quote.id}) }}" class="btn btn-success"><i class="fas fa-file-export"></i> Download PDF</a>
