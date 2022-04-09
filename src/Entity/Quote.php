@@ -84,6 +84,11 @@ class Quote
      */
     private $shippingDetails;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $shippingInfo;
+
     public function __construct()
     {
         $this->brandSketches = new ArrayCollection();
@@ -274,6 +279,18 @@ class Quote
     public function setShippingDetails(?string $shippingDetails): self
     {
         $this->shippingDetails = $shippingDetails;
+
+        return $this;
+    }
+
+    public function getShippingInfo(): ?string
+    {
+        return $this->shippingInfo;
+    }
+
+    public function setShippingInfo(?string $shippingInfo): self
+    {
+        $this->shippingInfo = $shippingInfo;
 
         return $this;
     }

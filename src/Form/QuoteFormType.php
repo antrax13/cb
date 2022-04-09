@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -37,6 +38,9 @@ class QuoteFormType extends AbstractType
             ->add('shippingCountry', EntityType::class,[
                 'class' => Country::class,
                 'placeholder' => 'Please choose',
+            ])
+            ->add('shippingInfo',TextareaType::class, [
+                'help' => 'Provide costs, weight, currier etc. This section is visible on Quote',
             ])
             ->add('billingDetails')
             ->add('shippingDetails')

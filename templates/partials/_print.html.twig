@@ -179,22 +179,23 @@
     <tr nobr="true">
         <td colspan="2">
             <h4 style="color: #00aae7;">Shipping {{ shipping.shippingCountry ? 'to '~shipping.shippingCountry.name : 'destination to be confirmed' }}</h4>
-            {% if shipping.shippingCountry %}
-                <p>FedEx - very reliable {{ shipping.shippingCountry.fedexDeliveryDay }} day(s) delivery service
-                    to {{ shipping.shippingCountry.name }}.</p>
-                <p>Estimated weight for all items on this quote: <span
-                            style="font-weight: bold;">{{ totalWeight|number_format(2) }}kg</span></p>
-                <ul>
-                    {% for key, item in shipping.shippingWeights %}
-                        <li>Estimated price for <span style="font-weight: bold;">{{ key }}kg</span> parcel is <span
-                                    style="font-weight: bold;">€{{ item.0|number_format(2) }}</span></li>
-                    {% else %}
-                        <li>Shipping costs will be specified on the invoice.</li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <span style="color: #E73F4D;">To be confirmed with customer to estimate shipping costs.</span>
-            {% endif %}
+            <p>{{ quote.shippingInfo|nl2br }}</p>
+{#            {% if shipping.shippingCountry %}#}
+{#                <p>FedEx - very reliable {{ shipping.shippingCountry.fedexDeliveryDay }} day(s) delivery service#}
+{#                    to {{ shipping.shippingCountry.name }}.</p>#}
+{#                <p>Estimated weight for all items on this quote: <span#}
+{#                            style="font-weight: bold;">{{ totalWeight|number_format(2) }}kg</span></p>#}
+{#                <ul>#}
+{#                    {% for key, item in shipping.shippingWeights %}#}
+{#                        <li>Estimated price for <span style="font-weight: bold;">{{ key }}kg</span> parcel is <span#}
+{#                                    style="font-weight: bold;">€{{ item.0|number_format(2) }}</span></li>#}
+{#                    {% else %}#}
+{#                        <li>Shipping costs will be specified on the invoice.</li>#}
+{#                    {% endfor %}#}
+{#                </ul>#}
+{#            {% else %}#}
+{#                <span style="color: #E73F4D;">To be confirmed with customer to estimate shipping costs.</span>#}
+{#            {% endif %}#}
         </td>
     </tr>
     <tr nobr="true">

@@ -94,14 +94,8 @@
                                             <dd class="col-9">{{ quote.shippingCountry.name|default('Not Known') }}</dd>
                                         </div>
                                         <div class="row">
-                                            <dt class="col-3">Shipping Time</dt>
-                                            <dd class="col-9">
-                                                {% if quote.shippingCountry %}
-                                                    {{ quote.shippingCountry.fedexDeliveryDay~' day(s)' }}
-                                                {% else %}
-                                                    Not known
-                                                {% endif %}
-                                            </dd>
+                                            <dt class="col-3">Shipping Info</dt>
+                                            <dd class="col-9">{{ quote.shippingInfo|nl2br }}</dd>
                                         </div>
                                     </div>
                                 </div>
